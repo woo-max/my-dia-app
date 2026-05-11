@@ -23,7 +23,7 @@ export const DetailPopup = ({ selectedDate, detailData, theme, onClose, onShiftM
           </div>
           <div className="text-right"><div className="text-[10px] font-black opacity-20 mb-0.5 uppercase">출근</div><div className="text-5xl font-black tracking-tighter">{detailData.reportTime || "--:--"}</div></div>
         </div>
-        {detailData.content1 && <div className="border rounded-xl p-3 flex items-center gap-3 mb-1.5 bg-white/5"><div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-[10px] opacity-40 border shrink-0">전반</div><div className="font-bold text-[15px] leading-snug">{detailData.content1}</div></div>}
+        {detailData.content1 && <div className="border rounded-xl p-3 flex items-center gap-3 mb-1.5 bg-white/5"><div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-[10px] opacity-40 border shrink-0">전반</div><div className="font-bold text-[14px] leading-snug">{detailData.content1}</div></div>}
         {detailData.content2 && <div className="border rounded-xl p-3 flex items-center gap-3 mb-1.5 bg-white/5"><div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-[10px] opacity-40 border shrink-0">후반</div><div className="font-bold text-[15px] leading-snug">{detailData.content2}</div></div>}
         <div className="mt-4 flex flex-col gap-2">
           {memoList.map((m: string, i: number) => (
