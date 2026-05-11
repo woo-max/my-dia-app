@@ -27,19 +27,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 3. 웹 빌드 (vite build 실행 -> www 폴더 생성)
+      # 3. 웹 빌드 (vite build 실행 -> dist 폴더 생성)
       - name: Build web app
         run: npm run build
 
       # 4. 빌드 결과물 검증
       - name: Verify build output
         run: |
-          if [ ! -d "www" ]; then
-            echo "Error: 'www' directory not found. Check outDir in vite.config.ts"
+          if [ ! -d "dist" ]; then
+            echo "Error: 'dist' directory not found. Check outDir in vite.config.ts"
             exit 1
           fi
-          if [ ! -f "www/index.html" ]; then
-            echo "Error: index.html not found in www/"
+          if [ ! -f "dist/index.html" ]; then
+            echo "Error: index.html not found in dist/"
             exit 1
           fi
 
