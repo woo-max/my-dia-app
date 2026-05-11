@@ -13,17 +13,15 @@ function RootComponent() {
   useEffect(() => {
     const setupBackButton = async () => {
       const backHandler = await CapApp.addListener('backButton', () => {
-        // 팝업, 모달, 혹은 고정 레이어가 하나라도 있는지 정밀 체크
-        const isPopupActive = !!document.querySelector('[role="dialog"]') || 
-                             !!document.querySelector('.fixed.inset-0') ||
-                             !!document.querySelector('[data-state="open"]');
+        // [핵심] 현재 URL에 #이 붙어있거나 팝업이 하나라도 있으면 뒤로가기만 수행
+        const hasModal = !!document.querySelector('[role="dialog"]') || 
+                         !!document.querySelector('.fixed') || 
+                         window.location.hash.includes('modal');
 
-        if (isPopupActive) {
-          // 팝업이 감지되면 히스토리만 뒤로 보내 팝업만 닫음
-          window.history.back();
+        if (hasModal) {
+          window.history.back(); // 팝업만 닫기
         } else if (window.location.pathname === '/') {
-          // 메인이고 팝업 없으면 앱 종료
-          CapApp.exitApp();
+          CapApp.exitApp(); // 메인에선 종료
         } else {
           window.history.back();
         }
