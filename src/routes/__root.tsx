@@ -12,16 +12,17 @@ function RootComponent() {
 
   useEffect(() => {
     const setupBackButton = async () => {
-      // 안드로이드 뒤로가기 버튼 리스너
       const backHandler = await CapApp.addListener('backButton', () => {
-        // [강력 체크] 화면에 팝업(모달, 다이얼로그)이 존재하는지 직접 확인
-        const isPopupOpen = !!document.querySelector('[role="dialog"]') || !!document.querySelector('.fixed.inset-0');
+        // [강력 체크] 팝업, 모달, 혹은 고정된 오버레이가 하나라도 있는지 확인
+        const isPopupActive = !!document.querySelector('[role="dialog"]') || 
+                             !!document.querySelector('.fixed.inset-0') ||
+                             !!document.querySelector('[data-state="open"]');
 
-        if (isPopupOpen) {
-          // 팝업이 하나라도 있으면 웹 히스토리를 뒤로 돌려 팝업만 닫음
+        if (isPopupActive) {
+          // 팝업이 있으면 팝업만 닫음
           window.history.back();
         } else if (window.location.pathname === '/') {
-          // 메인이고 팝업 없으면 즉시 종료
+          // 메인이고 팝업 없으면 종료
           CapApp.exitApp();
         } else {
           window.history.back();
@@ -31,9 +32,7 @@ function RootComponent() {
     };
 
     const handlerPromise = setupBackButton();
-    return () => {
-      handlerPromise.then(handler => handler.remove());
-    };
+    return () => { handlerPromise.then(h => h.remove()); };
   }, []);
 
   return (
