@@ -25,7 +25,6 @@ export const useShiftLogic = (allData: any, overrides: any) => {
 
       const hToday = getHolidayData(date);
       const num = parseInt(targetDia.replace(/[^0-9]/g, '') || '0', 10);
-      
       let sheet = allData.wd; let cat = hToday.isH ? "휴일" : "평일";
 
       if (num >= 34 && num <= 54) {
@@ -38,9 +37,10 @@ export const useShiftLogic = (allData: any, overrides: any) => {
         sheet = hToday.isH ? allData.hd : allData.wd;
       }
 
-      const row = (sheet || []).find((r: any) => r.matchNum === targetDia.replace(/[^a-zA-Z0-9가-힣~]/g, ""));
+      const matchNum = targetDia.replace(/[^a-zA-Z0-9가-힣~]/g, "");
+      const row = (sheet || []).find((r: any) => r.matchNum === matchNum);
       return { ...base, label: base.label || cat, ...(row || {}) };
-    } catch { return { diaNum: "?", label: "에러", isRed: false, isUser }; }
+    } catch { return { diaNum: "?", label: "ERR", isUser }; }
   }, [allData, overrides]);
 
   return { calculateShift, getStandbyLoc };
