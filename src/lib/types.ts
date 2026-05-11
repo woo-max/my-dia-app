@@ -12,11 +12,11 @@ export const getHolidayData = (date: Date) => {
     '6-6': '현충일', '8-15': '광복절', '10-3': '개천절', '10-9': '한글날', '12-25': '성탄절'
   };
   if (date.getFullYear() === 2026) {
-    if (['2-16','2-17','2-18'].includes(mmdd)) return { isH: true, name: '설날' };
+    if (['2-16', '2-17', '2-18'].includes(mmdd)) return { isH: true, name: '설날' };
     if (mmdd === '2-19') return { isH: true, name: '대체' };
     if (mmdd === '5-24') return { isH: true, name: '석탄' };
     if (mmdd === '5-25') return { isH: true, name: '대체' };
-    if (['9-24','9-25','9-26'].includes(mmdd)) return { isH: true, name: '추석' };
+    if (['9-24', '9-25', '9-26'].includes(mmdd)) return { isH: true, name: '추석' };
     if (mmdd === '9-28') return { isH: true, name: '대체' };
   }
   return { isH: !!hList[mmdd] || date.getDay() === 0, isSat: date.getDay() === 6, name: hList[mmdd] || '' };
