@@ -13,16 +13,16 @@ function RootComponent() {
   useEffect(() => {
     const setupBackButton = async () => {
       const backHandler = await CapApp.addListener('backButton', () => {
-        // 팝업 오버레이나 다이얼로그가 하나라도 떠 있는지 체크
-        const hasPopup = !!document.querySelector('[role="dialog"]') || 
-                         !!document.querySelector('.fixed') || 
-                         !!document.querySelector('[data-state="open"]');
+        // 팝업, 모달, 혹은 고정 레이어가 하나라도 있는지 정밀 체크
+        const isPopupActive = !!document.querySelector('[role="dialog"]') || 
+                             !!document.querySelector('.fixed.inset-0') ||
+                             !!document.querySelector('[data-state="open"]');
 
-        if (hasPopup) {
-          // 팝업이 있으면 히스토리 백으로 팝업만 닫기
+        if (isPopupActive) {
+          // 팝업이 감지되면 히스토리만 뒤로 보내 팝업만 닫음
           window.history.back();
         } else if (window.location.pathname === '/') {
-          // 메인 화면이고 팝업 없으면 앱 종료
+          // 메인이고 팝업 없으면 앱 종료
           CapApp.exitApp();
         } else {
           window.history.back();
