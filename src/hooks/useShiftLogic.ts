@@ -1,4 +1,3 @@
-// src/hooks/useShiftLogic.ts
 import { useCallback } from 'react';
 import { format, differenceInDays, addDays, parseISO } from 'date-fns';
 import { ROTATION_ORDER, RED_ITEMS, getHolidayData } from '../lib/types';
@@ -36,7 +35,6 @@ export const useShiftLogic = (allData: any, overrides: any) => {
       } else if (num >= 1 && num <= 33) {
         sheet = hToday.isH ? allData.hd : allData.wd;
       }
-
       const matchNum = targetDia.replace(/[^a-zA-Z0-9가-힣~]/g, "");
       const row = (sheet || []).find((r: any) => r.matchNum === matchNum);
       return { ...base, label: base.label || cat, ...(row || {}) };
