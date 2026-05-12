@@ -52,7 +52,10 @@ export const ShiftCalendar = () => {
     localStorage.setItem('shift_user_config', JSON.stringify(userAnchor));
   }, [peers, overrides, memos, isDarkMode, userAnchor]);
 
-  const openPop = (setter: (v: boolean) => void) => { window.history.pushState({ modal: true }, "", "#modal"); setter(true); };
+  const openPop = (setter: (v: boolean) => void) => { 
+    window.history.pushState({ modal: true }, "", "#modal"); 
+    setter(true); 
+  };
 
   useEffect(() => {
     if (activeTab === 'peers' && peerScrollRef.current) {
@@ -101,7 +104,7 @@ export const ShiftCalendar = () => {
                       <td style={{ backgroundColor: theme.card, borderColor: theme.border }} className="p-3 border sticky left-0 z-10 text-[12px] font-black shadow-sm">{p.name}</td>
                       {eachDayOfInterval({ start: startOfMonth(currentMonth), end: endOfMonth(currentMonth) }).map(d => {
                         const s = calculateShift(d, p.anchorD, p.anchorI, p.isUser); const standby = getStandbyLoc(s.content1); const closing = s.content2?.match(/\d{1,2}:\d{2}/g)?.pop();
-                        return <td key={d.toString()} style={{ backgroundColor: isSameDay(d, new Date()) ? theme.highlight7 : (s.diaNum === '~' ? '#D1D5DB' : (s.diaNum.includes('휴') ? (isDarkMode ? '#411C1C' : '#FEE2E2') : theme.card)), borderColor: theme.border }} className="p-2 border h-14 min-w-[54px] relative">{standby && <div style={{ color: (standby === '동' ? '#22D3EE' : standby === '불' ? '#22C55E' : standby === '기' ? '#F472B6' : '#F97316') }} className="absolute top-0.5 left-1 font-black text-[10px] leading-none">{standby}</div>}<div style={{ color: s.isRed ? '#EF4444' : theme.text }} className="text-[14px] font-black">{s.diaNum}</div>{closing && <div className="absolute bottom-0.5 right-0.5 font-bold text-[9px] italic opacity-40">{closing}</div>}</td>;
+                        return <td key={d.toString()} onClick={() => { setSelectedDate(d); openPop(setShowDetail); }} style={{ backgroundColor: isSameDay(d, new Date()) ? theme.highlight7 : (s.diaNum === '~' ? '#D1D5DB' : (s.diaNum.includes('휴') ? (isDarkMode ? '#411C1C' : '#FEE2E2') : theme.card)), borderColor: theme.border }} className="p-2 border h-14 min-w-[54px] relative">{standby && <div style={{ color: (standby === '동' ? '#22D3EE' : standby === '불' ? '#22C55E' : standby === '기' ? '#F472B6' : '#F97316') }} className="absolute top-0.5 left-1 font-black text-[10px] leading-none">{standby}</div>}<div style={{ color: s.isRed ? '#EF4444' : theme.text }} className="text-[14px] font-black">{s.diaNum}</div>{closing && <div className="absolute bottom-0.5 right-0.5 font-bold text-[9px] italic opacity-40">{closing}</div>}</td>;
                       })}
                     </tr>
                   ))}
@@ -132,8 +135,26 @@ export const ShiftCalendar = () => {
       {showSettings && (
         <div className="fixed inset-0 z-[600] flex items-center justify-center p-6"><div className="absolute inset-0 bg-black/80" onClick={() => window.history.back()}/><div style={{ backgroundColor: theme.bg }} className="relative w-full max-w-sm rounded-[32px] p-6 shadow-2xl overflow-y-auto max-h-[80vh]"><div className="flex justify-between items-center mb-6 font-black"><h2>설정</h2><button onClick={() => window.history.back()}><X className="w-6 h-6 opacity-30"/></button></div><div className="space-y-4"><div style={{ backgroundColor: theme.card }} className="p-5 rounded-2xl border text-center"><label className="block text-[10px] font-black uppercase mb-3 opacity-40">내 근무 기준</label><input type="date" value={userAnchor.date} onChange={e => setUserConfig({ ...userAnchor, date: e.target.value })} className="w-full p-3 rounded-xl font-bold bg-white/5 border text-sm mb-3"/><select value={ROTATION_ORDER[userAnchor.index]} onChange={e => setUserConfig({ ...userAnchor, index: ROTATION_ORDER.indexOf(e.target.value) })} className="w-full p-3 rounded-xl font-bold bg-white/5 border text-sm mb-4">{DIA_NUMBERS.map(n => <option key={n} value={n}>{n}</option>)}</select><button onClick={() => window.history.back()} className="w-full bg-slate-800 text-white py-3 rounded-xl font-black text-xs">확인</button></div><div style={{ backgroundColor: theme.card }} className="flex items-center justify-between p-5 rounded-2xl border font-bold text-sm"><span>다크 모드</span><button onClick={() => setIsDarkMode(!isDarkMode)} className={cn("w-12 h-7 rounded-full p-1", isDarkMode ? "bg-blue-600" : "bg-slate-300")}><div className={cn("w-5 h-5 bg-white rounded-full transition-transform", isDarkMode ? "translate-x-5" : "translate-x-0")}/></button></div></div></div></div>
       )}
-      
-      {/* ... (그 외 모달 로직 생략, Step 4 전체는 동일한 window.history.back 구조 유지) */}
+
+      {showEditPeers && (
+        <div className="fixed inset-0 z-[600] flex items-center justify-center p-6"><div className="absolute inset-0 bg-black/80" onClick={() => window.history.back()}/><div style={{ backgroundColor: theme.bg }} className="relative w-full max-w-sm rounded-[32px] p-6 shadow-2xl max-h-[70vh] flex flex-col font-bold"><h2 className="text-xl mb-4">동료 편집</h2><div className="flex-1 overflow-y-auto space-y-2 pr-1">{peers.map((p, i) => (<div key={p.id} style={{ backgroundColor: theme.card, borderColor: theme.border }} className="flex items-center py-2 px-3 rounded-xl border gap-3"><div className="flex flex-col"><button onClick={() => { if(i>0) { const up=[...peers]; [up[i-1], up[i]]=[up[i], up[i-1]]; setPeers(up); }}} className="p-1 opacity-30"><ArrowUp className="w-3 h-3"/></button><button onClick={() => { if(i<peers.length-1) { const up=[...peers]; [up[i], up[i+1]]=[up[i+1], up[i]]; setPeers(up); }}} className="p-1 opacity-30"><ArrowDown className="w-3 h-3"/></button></div><div className="flex-1 text-sm">{p.name}</div><button onClick={() => setPeers(peers.filter(x=>x.id !== p.id))} className="p-2 text-red-500"><Trash2 className="w-4 h-4"/></button></div>))}</div><button onClick={() => window.history.back()} className="mt-4 w-full bg-slate-800 text-white py-3 rounded-xl font-black">완료</button></div></div>
+      )}
+
+      {showShiftMenu && (
+        <div className="fixed inset-0 z-[600] flex items-center justify-center p-6"><div className="absolute inset-0 bg-black/60" onClick={() => window.history.back()}/><div style={{ backgroundColor: theme.card }} className="relative w-full max-w-sm rounded-2xl p-4 shadow-2xl grid grid-cols-2 gap-2">{RED_ITEMS.map(t => <button key={t} onClick={() => { const dk = format(selectedDate, 'yyyy-MM-dd'); setOverrides({ ...overrides, [dk]: { diaNum: t, label: t } }); window.history.back(); }} className="py-2.5 bg-red-50 text-red-600 rounded-lg font-bold text-[11px]">{t}</button>)}{['지정근무','대기충당','교번교체','휴무충당'].map(t => <button key={t} onClick={() => openPop(setShowDiaPicker.bind(null, { type: t }))} className="py-2.5 bg-slate-100 rounded-lg font-bold text-[11px]">{t}</button>)}<button onClick={() => { const dk = format(selectedDate, 'yyyy-MM-dd'); const up = { ...overrides }; delete up[dk]; setOverrides(up); window.history.back(); }} className="col-span-2 py-2.5 opacity-40 font-bold text-[10px] italic">기본 복구</button></div></div>
+      )}
+
+      {showDiaPicker && (
+        <div className="fixed inset-0 z-[700] flex flex-col items-center justify-center p-8 bg-black/95"><h3 className="text-white text-xl font-black mb-6">{showDiaPicker.type}</h3><div className="w-full bg-white rounded-3xl p-2 max-h-[60vh] overflow-y-auto grid grid-cols-3 gap-2">{DIA_NUMBERS.map(n => <button key={n} onClick={() => { const dk = format(selectedDate, 'yyyy-MM-dd'); setOverrides({ ...overrides, [dk]: { diaNum: n, label: showDiaPicker.type } }); window.history.back(); setTimeout(() => window.history.back(), 50); }} className="py-4 border rounded-xl font-black text-lg text-black active:bg-slate-200">{n}</button>)}</div><button onClick={() => window.history.back()} className="mt-8 text-white font-bold underline">취소</button></div>
+      )}
+
+      {showAddPeer && (
+        <div className="fixed inset-0 z-[600] flex items-center justify-center p-6"><div className="absolute inset-0 bg-black/70" onClick={() => window.history.back()}/><div style={{ backgroundColor: theme.bg }} className="relative w-full max-w-sm rounded-[32px] p-6 shadow-2xl font-bold"><h2 className="text-xl mb-6">동료 등록</h2><div className="space-y-3"><input type="text" placeholder="이름" id="pName" className="w-full p-4 rounded-xl border"/><input type="date" id="pDate" className="w-full p-4 rounded-xl border"/><select id="pDia" className="w-full p-4 rounded-xl border">{DIA_NUMBERS.map(n => <option key={n} value={n}>{n}</option>)}</select><button onClick={() => { const n = (document.getElementById('pName') as HTMLInputElement).value; const d = (document.getElementById('pDate') as HTMLInputElement).value; const dia = (document.getElementById('pDia') as HTMLSelectElement).value; if (n && d) { setPeers([...peers, { id: Date.now(), name: n, anchorD: d, anchorI: ROTATION_ORDER.indexOf(dia) }]); window.history.back(); } }} className="w-full bg-blue-600 text-white py-4 rounded-xl shadow-lg">완료</button></div></div></div>
+      )}
+
+      {showMemoInput && (
+        <div className="fixed inset-0 z-[700] flex items-center justify-center p-6"><div className="absolute inset-0 bg-black/80" onClick={() => window.history.back()}/><div style={{ backgroundColor: theme.card }} className="relative w-full max-w-sm rounded-3xl p-5 shadow-2xl flex items-center gap-3"><input autoFocus value={memoInput} onChange={e => setMemoInput(e.target.value)} className="flex-1 p-3.5 rounded-xl font-bold bg-white/5 border text-sm" placeholder="메모 입력..."/><button onClick={() => { if (memoInput.trim()) { const dk = format(selectedDate, 'yyyy-MM-dd'); setMemos({ ...memos, [dk]: [...(memos[dk] || []), memoInput] }); setMemoInput(""); window.history.back(); } }} className="bg-blue-600 text-white p-3.5 rounded-xl"><Check className="w-5 h-5"/></button></div></div>
+      )}
     </div>
   );
 };
