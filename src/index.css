@@ -3,36 +3,43 @@
 @tailwind utilities;
 
 :root {
-  /* [Case 6] Semantic Tokens - Light Mode */
-  --bg-main: #FDF7F2;          /* 전체 배경 */
-  --surface-card: #FFFFFF;      /* 셀, 팝업 배경 */
-  --surface-active: rgba(76, 217, 100, 0.1); /* 오늘 날짜 하이라이트 */
-  --text-main: #1B1F3B;        /* 기본 텍스트 */
-  --text-memo: #000000;        /* 메모 텍스트 (고대비) */
-  --text-muted: rgba(27, 31, 59, 0.4); /* 🔒, 날짜 보조 정보 */
-  --border-line: rgba(27, 31, 59, 0.06); /* 격자 및 구분선 */
-  --memo-bg: rgba(0, 0, 0, 0.04); /* 메모 바 배경 */
+  --bg-main: #FDF7F2;
+  --surface-card: #FFFFFF;
+  --surface-active: rgba(76, 217, 100, 0.1);
+  --today-highlight: rgba(76, 217, 100, 0.2);
+  --text-primary: #1B1F3B;
+  --text-secondary: rgba(27, 31, 59, 0.5);
+  --text-memo: #000000;
+  --border-line: rgba(27, 31, 59, 0.06);
+  --memo-bg: rgba(0, 0, 0, 0.04);
+  --off-gray: rgba(142, 142, 147, 0.15);
+  --holiday-red: rgba(255, 59, 48, 0.25);
 }
 
 .dark {
-  /* [Case 6] Semantic Tokens - Dark Mode */
   --bg-main: #121212;
   --surface-card: #1E1E1E;
   --surface-active: rgba(76, 217, 100, 0.2);
-  --text-main: #FFFFFF;
+  --today-highlight: rgba(76, 217, 100, 0.25);
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.4);
   --text-memo: #FFFFFF;
-  --text-muted: rgba(255, 255, 255, 0.3);
   --border-line: rgba(255, 255, 255, 0.1);
-  --memo-bg: rgba(255, 255, 255, 0.15);
+  --memo-bg: rgba(255, 255, 255, 0.1);
+  --off-gray: rgba(255, 255, 255, 0.08);
+  --holiday-red: rgba(255, 69, 58, 0.3);
 }
 
 body {
   background-color: var(--bg-main);
-  color: var(--text-main);
+  color: var(--text-primary);
   margin: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
-  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
-/* 스와이프 삭제 버튼 등 공통 스타일 */
-.modal-shadow { box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.tm-cell-width { width: 50px; min-width: 50px; }
+.tm-name-width { width: 65px; min-width: 65px; }
