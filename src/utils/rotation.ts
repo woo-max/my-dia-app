@@ -1,4 +1,4 @@
-import { differenceInDays, startOfDay, format } from 'date-fns';
+import { differenceInDays, startOfDay, format, isSunday, isSaturday, addDays, subMinutes, parse } from 'date-fns';
 
 export const MASTER_121_DIAS = [
   '대1', '49', '~', '휴1', '16', '34', '~', '휴10', '8', '26', '휴16', '대12', '~', '휴22',
@@ -21,6 +21,35 @@ const HOLIDAYS_2026: { [key: string]: string } = {
 };
 
 export const getHolidayName = (date: Date) => HOLIDAYS_2026[format(date, 'yyyy-MM-dd')] || null;
+export const getBaseDayType = (date: Date) => (isSunday(date) || isSaturday(date) || !!getHolidayName(date)) ? 'hd' : 'wd';
+
+const DAY_DIAS = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','대1','대2','대3','대4','대5','대6'];
+
+export const getShiftMapping = (date: Date, dia: string, customDayTypes: any) => {
+  const getFinalType = (d: Date) => customDayTypes[format(d, 'yyyy-MM-dd')] || getBaseDayType(d);
+  const isDaytime = DAY_DIAS.includes(dia);
+  const today = getFinalType(date);
+
+  if (isDaytime) return { label: today === 'wd' ? '평일' : '휴일', tab: today === 'wd' ? '평일주간' : '휴일주간' };
+
+  const tomorrow = getFinalType(addDays(date, 1));
+  const mapping: { [key: string]: string } = { 'wdwd': '평평', 'wdhd': '평휴', 'hdhd': '휴휴', 'hdwd': '휴평' };
+  const label = mapping[today + tomorrow] || '평일';
+  return { label, tab: label };
+};
+
+// [로직] HH:mm 인식 후 30분 차감
+export const calculateReportTime = (content: string) => {
+  if (!content) return '--:--';
+  const match = content.match(/(\d{2}):(\d{2})/);
+  if (match) {
+    try {
+      const time = parse(match[0], 'HH:mm', new Date());
+      return format(subMinutes(time, 30), 'HH:mm');
+    } catch (e) { return '--:--'; }
+  }
+  return '--:--';
+};
 
 export const getShiftForDate = (targetDate: Date, refDate: Date, refDia: string) => {
   let startOffset = MASTER_121_DIAS.indexOf(refDia);
@@ -28,6 +57,5 @@ export const getShiftForDate = (targetDate: Date, refDate: Date, refDia: string)
   const diff = differenceInDays(startOfDay(targetDate), startOfDay(refDate));
   const totalLength = MASTER_121_DIAS.length;
   const index = ((startOffset + diff) % totalLength + totalLength) % totalLength;
-  const dia = MASTER_121_DIAS[index];
-  return { dia, type: dia === '~' ? 'OFF' : dia.includes('휴') ? 'HOLIDAY' : dia.startsWith('대') ? 'STANDBY' : 'WORK' };
+  return { dia: MASTER_121_DIAS[index] };
 };

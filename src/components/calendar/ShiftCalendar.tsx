@@ -1,14 +1,24 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { format, addMonths, subMonths, startOfMonth, eachDayOfInterval, isSameDay, startOfWeek, isSameMonth, startOfDay } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Target, Moon, Sun } from 'lucide-react';
-import { getShiftForDate } from '../../utils/rotation';
+import { Settings, Target, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
+import { App as CapacitorApp } from '@capacitor/app';
+import { getShiftForDate, getShiftMapping } from '../../utils/rotation';
 import CalendarCell from './CalendarCell';
+import DayDetailModal from '../modals/DayDetailModal';
 
-const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, lockedShifts, setLockedShifts }: any) => {
+const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, lockedShifts, setLockedShifts, customDayTypes, setCustomDayTypes, sheetData }: any) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [confirmModal, setConfirmModal] = useState<any>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<any>(null);
+
+  useEffect(() => {
+    const backListener = CapacitorApp.addListener('backButton', () => {
+      if (selectedDay) { setSelectedDay(null); return; }
+      if (confirmModal) { setConfirmModal(null); return; }
+    });
+    return () => { backListener.then(h => h.remove()); };
+  }, [selectedDay, confirmModal]);
 
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
@@ -17,71 +27,88 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       const date = new Date(calendarStart);
       date.setDate(calendarStart.getDate() + i);
       const dateKey = format(date, 'yyyy-MM-dd');
+      
+      // 기본 근무 정보 계산
       const lockData = lockedShifts[dateKey];
-      const shiftInfo = lockData ? { dia: lockData.dia, type: lockData.type } : getShiftForDate(date, refConfig.date, refConfig.dia);
-      return { date, ...shiftInfo, isToday: isSameDay(date, startOfDay(new Date())), isInMonth: isSameMonth(date, monthStart), isLocked: !!lockData };
+      const shiftInfo = lockData ? { dia: lockData.dia } : getShiftForDate(date, refConfig.date, refConfig.dia);
+      
+      // [신규] '운휴' 체크 로직
+      let isUnhyu = false;
+      if (sheetData && shiftInfo.dia !== '~') {
+        const mapping = getShiftMapping(date, shiftInfo.dia, customDayTypes);
+        const targetTab = sheetData[mapping.tab] || [];
+        // 해당 날짜/다이아의 데이터 중 '운휴' 글자가 포함된 행이 있는지 확인
+        isUnhyu = targetTab.some((row: any) => 
+          String(row.dia).trim() === String(shiftInfo.dia).trim() && 
+          row.content.includes('운휴')
+        );
+      }
+
+      return { 
+        date, 
+        ...shiftInfo, 
+        isToday: isSameDay(date, startOfDay(new Date())), 
+        isInMonth: isSameMonth(date, monthStart), 
+        isLocked: !!lockData,
+        isUnhyu // 캘린더 셀로 전달
+      };
     });
-  }, [currentDate, refConfig, lockedShifts]);
-
-  const handleLockToggle = () => {
-    const { date, isLocked } = confirmModal;
-    const newLocked = { ...lockedShifts };
-    if (isLocked) {
-      const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
-      range.forEach(d => delete newLocked[format(d, 'yyyy-MM-dd')]);
-    } else {
-      const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
-      range.forEach(d => {
-        const key = format(d, 'yyyy-MM-dd');
-        const dayData = days.find(day => isSameDay(day.date, d));
-        if (dayData) newLocked[key] = { dia: dayData.dia, type: dayData.type, locked: true };
-      });
-    }
-    setLockedShifts(newLocked);
-    setConfirmModal(null);
-  };
-
-  const safeMoveMonth = (offset: number) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCurrentDate(prev => offset > 0 ? addMonths(prev, 1) : subMonths(prev, 1));
-  };
+  }, [currentDate, refConfig, lockedShifts, sheetData, customDayTypes]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[var(--bg-color)] overflow-hidden">
       <header className="p-6 pt-12 flex justify-between items-end z-10">
-        <h1 className="text-5xl font-black font-serif tracking-tighter text-[var(--text-color)] leading-none italic">{format(currentDate, 'MMMM')}</h1>
+        <div className="flex items-end gap-3">
+          <div className="flex gap-2 mb-1">
+            <button onClick={() => setCurrentDate(prev => subMonths(prev, 1))} className="p-1 opacity-20"><ChevronLeft size={24}/></button>
+            <h1 className="text-5xl font-black font-serif tracking-tighter text-[var(--text-color)] leading-none italic mx-1">{format(currentDate, 'M월')}</h1>
+            <button onClick={() => setCurrentDate(prev => addMonths(prev, 1))} className="p-1 opacity-20"><ChevronRight size={24}/></button>
+          </div>
+        </div>
         <div className="flex gap-3 items-center">
           <button onClick={toggleDarkMode} className="p-2 opacity-30 text-[var(--text-color)]">{isDarkMode ? <Sun size={22}/> : <Moon size={22}/>}</button>
           <button onClick={() => setCurrentDate(new Date())} className="p-2 opacity-30 text-[var(--text-color)]"><Target size={22}/></button>
-          <button onClick={onOpenSettings} className="p-2 bg-black/5 dark:bg-white/5 rounded-full opacity-30 text-[var(--text-color)]"><Settings size={20}/></button>
+          <button onClick={onOpenSettings} className="p-2 bg-black/5 rounded-full opacity-20 text-[var(--text-color)]"><Settings size={20}/></button>
         </div>
       </header>
+
       <div className="grid grid-cols-7 border-b border-[var(--grid-line)]">
         {['S','M','T','W','T','F','S'].map((d, i) => (
           <div key={i} className={`py-3 text-center text-[10px] font-black tracking-widest ${i===0?'text-red-500':i===6?'text-blue-500':'text-[var(--text-color)] opacity-20'}`}>{d}</div>
         ))}
       </div>
+
       <div className="flex-1 relative bg-[var(--grid-line)] min-h-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={format(currentDate, 'yyyy-MM')}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onAnimationComplete={() => setIsAnimating(false)}
+            transition={{ duration: 0 }}
             drag="x" dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(_, info) => { if (info.offset.x < -80) safeMoveMonth(1); if (info.offset.x > 80) safeMoveMonth(-1); }}
+            onDragEnd={(_, info) => { if (info.offset.x < -80) setCurrentDate(prev => addMonths(prev, 1)); if (info.offset.x > 80) setCurrentDate(prev => subMonths(prev, 1)); }}
             className="grid grid-cols-7 grid-rows-6 absolute inset-0 touch-none bg-[var(--grid-line)] px-px gap-[0.5px]"
           >
             {days.map(day => (
-              <CalendarCell key={day.date.toString()} day={day} isLocked={day.isLocked} onLongPress={(date: any, dia: any, isLocked: any) => setConfirmModal({ date, dia, isLocked })} />
+              <div key={day.date.toString()} onClick={() => setSelectedDay(day)}>
+                <CalendarCell day={day} isLocked={day.isLocked} onLongPress={(date: any, dia: any, isLocked: any) => setConfirmModal({ date, dia, isLocked })} />
+              </div>
             ))}
           </motion.div>
         </AnimatePresence>
       </div>
+
       <AnimatePresence>
+        {selectedDay && (
+          <DayDetailModal 
+            date={selectedDay.date} dia={selectedDay.dia} customDayTypes={customDayTypes}
+            onClose={() => setSelectedDay(null)}
+            onDayTypeChange={(date: Date, type: string) => setCustomDayTypes({ ...customDayTypes, [format(date, 'yyyy-MM-dd')]: type })}
+            sheetData={sheetData}
+          />
+        )}
         {confirmModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[var(--bg-color)] p-8 rounded-[32px] w-full max-sm border border-[var(--grid-line)] shadow-2xl">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" onClick={() => setConfirmModal(null)}>
+            <motion.div onClick={e => e.stopPropagation()} initial={{ scale: 1 }} className="bg-[var(--bg-color)] p-8 rounded-[32px] w-full max-w-sm border border-[var(--grid-line)] shadow-2xl">
               <h3 className="text-xl font-black mb-2 text-[var(--text-color)]">{confirmModal.isLocked ? '고정 해제' : '근무 고정'}</h3>
               <p className="text-sm opacity-60 mb-8 text-[var(--text-color)] leading-relaxed">
                 {format(confirmModal.date, 'M월 1일')}부터 {format(confirmModal.date, 'd일')}까지의 <br/>
@@ -89,7 +116,23 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
               </p>
               <div className="flex gap-3">
                 <button onClick={() => setConfirmModal(null)} className="flex-1 py-4 bg-black/5 dark:bg-white/5 rounded-2xl font-bold text-[var(--text-color)]">취소</button>
-                <button onClick={handleLockToggle} className="flex-1 py-4 bg-blue-500 text-white rounded-2xl font-black">확인</button>
+                <button onClick={() => {
+                  const { date, isLocked } = confirmModal;
+                  const newLocked = { ...lockedShifts };
+                  if (isLocked) {
+                    const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
+                    range.forEach(d => delete newLocked[format(d, 'yyyy-MM-dd')]);
+                  } else {
+                    const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
+                    range.forEach(d => {
+                      const key = format(d, 'yyyy-MM-dd');
+                      const dayData = days.find(day => isSameDay(day.date, d));
+                      if (dayData) newLocked[key] = { dia: dayData.dia, locked: true };
+                    });
+                  }
+                  setLockedShifts(newLocked);
+                  setConfirmModal(null);
+                }} className="flex-1 py-4 bg-blue-500 text-white rounded-2xl font-black">확인</button>
               </div>
             </motion.div>
           </div>

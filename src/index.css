@@ -7,15 +7,15 @@
   --bg-color: #FDF7F2;      /* 시몬스 베이지 */
   --text-color: #1B1F3B;    /* 딥 네이비 */
   --grid-line: #D1CDC7;     /* 선명한 실선 그리드 */
-  --cell-bg: #FFFFFF;       /* 라이트 셀 배경 */
-  --mint-highlight: rgba(168, 230, 207, 0.30); /* [수정] 오늘 하이라이트 30% */
+  --cell-bg: #FFFFFF;       
+  --mint-highlight: rgba(168, 230, 207, 0.30);
 }
 
 .dark {
-  --bg-color: #121212;      /* 표준 다크 블랙 */
-  --text-color: #FFFFFF;    /* 다크 화이트 */
+  --bg-color: #121212;      
+  --text-color: #FFFFFF;    
   --grid-line: #333333;
-  --cell-bg: #1E1E1E;       /* 다크 셀 배경 */
+  --cell-bg: #1E1E1E;       
 }
 
 body {
@@ -24,10 +24,11 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0; padding: 0;
   overflow: hidden;
-  transition: background-color 0.3s ease;
   -webkit-font-smoothing: antialiased;
 }
 
 .font-serif { font-family: 'Playfair Display', serif; font-style: italic; }
 ::-webkit-scrollbar { display: none; }
 * { -webkit-tap-highlight-color: transparent; outline: none; }
+
+.modal-shadow { box-shadow: 0 -10px 40px rgba(0,0,0,0.15); }
