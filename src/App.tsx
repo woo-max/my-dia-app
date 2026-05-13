@@ -1,66 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { App as CapacitorApp } from '@capacitor/app'; // 네이티브 앱 제어 모듈
 import ShiftCalendar from './components/calendar/ShiftCalendar';
 import SettingsModal from './components/modals/SettingsModal';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [refConfig, setRefConfig] = useState({ date: new Date(), dia: '대1' });
   
-  /**
-   * [Case 2] 데이터 보존 로직
-   * 앱이 시작될 때 LocalStorage에서 기존 설정을 불러옵니다.
-   */
-  const [refConfig, setRefConfig] = useState(() => {
-    const saved = localStorage.getItem('shift_ref_config');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      // 저장된 날짜 문자열을 다시 Date 객체로 변환하여 복구
-      return {
-        date: new Date(parsed.date),
-        dia: parsed.dia
-      };
-    }
-    // 저장된 데이터가 없으면 오늘 날짜와 '대1'을 기본값으로 사용
-    return {
-      date: new Date(),
-      dia: '대1'
-    };
-  });
+  const lastTimeRef = useRef<number>(0);
 
-  /**
-   * [Case 2] 자동 저장 로직
-   * refConfig가 변경될 때마다 LocalStorage에 실시간 기록합니다.
-   */
   useEffect(() => {
-    localStorage.setItem('shift_ref_config', JSON.stringify(refConfig));
-  }, [refConfig]);
+    // [핵심] 안드로이드 시스템 백버튼 신호를 직접 수신
+    const backListener = CapacitorApp.addListener('backButton', () => {
+      const now = Date.now();
 
-  // 안드로이드 백버튼 트랩 (기존 로직 유지)
-  const backPressedRef = useRef(false);
-  useEffect(() => {
-    window.history.pushState({ app: true }, '');
-    const handlePopState = () => {
+      // 1. 설정창이 열려있으면 설정창만 닫고 종료 프로세스 중단
       if (showSettings) {
         setShowSettings(false);
-        window.history.pushState({ app: true }, '');
-        return;
+        return; 
       }
-      if (!backPressedRef.current) {
-        backPressedRef.current = true;
-        window.history.pushState({ app: true }, '');
-        setTimeout(() => { backPressedRef.current = false; }, 2000);
-        return;
+
+      // 2. 메인 화면에서 2초 이내에 다시 눌렀는지 확인
+      if (now - lastTimeRef.current < 2000) {
+        // [결정] 진짜로 앱을 죽임
+        CapacitorApp.exitApp();
+      } else {
+        // [방어] 첫 번째 클릭 시 시간만 기록 (안내문구 없이 그냥 무시)
+        lastTimeRef.current = now;
+        console.log("Back button pressed once - Ignoring exit");
       }
-      console.log("Exit App");
+    });
+
+    // 리스너 해제 (메모리 누수 방지)
+    return () => {
+      backListener.then(handler => handler.remove());
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [showSettings]);
+  }, [showSettings]); // showSettings 상태가 바뀔 때마다 리스너가 최신 상태를 참조하게 함
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark' : ''} bg-[var(--bg-color)]`}>
-      <div className="w-full max-w-[430px] mx-auto bg-[var(--bg-color)] min-h-screen flex flex-col relative overflow-hidden shadow-2xl transition-colors duration-300">
-        <main className="flex-1 flex flex-col overflow-hidden relative h-full">
+    /* ... 기존 렌더링 코드 유지 ... */
+    <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
+      <div className="w-full max-w-[430px] mx-auto bg-[var(--bg-color)] min-h-screen flex flex-col relative overflow-hidden transition-colors">
+        <main className="flex-1 flex flex-col overflow-hidden relative">
           <ShiftCalendar 
             onOpenSettings={() => setShowSettings(true)} 
             isDarkMode={isDarkMode} 
@@ -72,10 +54,7 @@ function App() {
           <SettingsModal 
             onClose={() => setShowSettings(false)} 
             currentConfig={refConfig}
-            onSave={(newConfig: any) => {
-              setRefConfig(newConfig);
-              setShowSettings(false);
-            }}
+            onSave={(newConfig: any) => { setRefConfig(newConfig); setShowSettings(false); }}
           />
         )}
       </div>
