@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
-import { X, Edit3, ChevronLeft, GripVertical, Trash2, Plus } from 'lucide-react';
+import { X, ChevronLeft, GripVertical, Trash2, Plus } from 'lucide-react';
 import { App as CapacitorApp } from '@capacitor/app';
 import { getShiftMapping, calculateReportTime, getBaseDayType } from '../../utils/rotation';
 import MemoModal from './MemoModal';
@@ -57,6 +57,7 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
         transition={{ duration: 0.1 }}
         className="bg-[var(--bg-main)] w-full max-w-[430px] h-[85vh] rounded-t-[32px] flex flex-col overflow-hidden relative shadow-2xl"
       >
+        {/* 헤더 부분 수정 */}
         <header className="p-5 border-b border-[var(--border-line)] flex justify-between items-start">
           <div className="flex flex-col gap-1">
             <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-0.5 w-fit mb-1 text-[var(--text-main)]">
@@ -64,23 +65,36 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
                 <button key={t} onClick={() => onDayTypeChange(date, t)} className={`px-4 py-1 text-[10px] rounded-md font-black ${(customDayTypes[dateKey] || getBaseDayType(date)) === t ? 'bg-[var(--surface-card)] shadow-sm opacity-100' : 'opacity-30'}`}>{t==='wd'?'평일':'휴일'}</button>
               ))}
             </div>
-            <h2 className="text-3xl font-serif font-black italic mt-1 text-[var(--text-main)]">{format(date || new Date(), 'MM.dd')} <span className="text-sm font-sans opacity-20 ml-1">{format(date || new Date(), 'eee', { locale: ko }).charAt(0)}</span></h2>
+            <h2 className="text-3xl font-serif font-black italic text-[var(--text-main)]">{format(date || new Date(), 'MM.dd')} <span className="text-sm font-sans opacity-20 ml-1">{format(date || new Date(), 'eee', { locale: ko }).charAt(0)}</span></h2>
           </div>
-          <div className="flex gap-3">
-            <button onClick={() => setShowOverrideMenu(true)} className="px-4 py-2 bg-[var(--surface-card)] border border-[var(--border-line)] rounded-full text-[11px] font-black shadow-sm text-[var(--text-main)]"><Edit3 size={12} className="inline mr-1"/>변경</button>
+          
+          {/* X표 밑으로 근무변경 버튼 배치 */}
+          <div className="flex flex-col items-end gap-2">
             <button onClick={onClose} className="p-1 opacity-20 text-[var(--text-main)]"><X size={24}/></button>
+            <button 
+              onClick={() => setShowOverrideMenu(true)} 
+              className="px-3 py-1.5 bg-[var(--bg-main)] border border-[var(--border-line)] rounded-full text-[10px] font-black shadow-sm text-[var(--text-main)] active:scale-95 transition-transform"
+            >
+              근무변경
+            </button>
           </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-5 flex flex-col gap-6">
           <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-end gap-2">
               <div className="flex flex-col leading-none">
                 <span className={`text-5xl font-black ${currentOverrideType === 'red' ? 'text-red-500' : currentOverrideType === 'blue' ? 'text-blue-500' : currentOverrideType === 'yellow' ? 'text-amber-500' : 'text-[var(--text-main)]'}`}>{currentDia}</span>
                 <span className="text-[12pt] font-black opacity-60 mt-2 text-[var(--text-main)]">{mapping.label} {currentOverride && <span className="opacity-30 text-[10pt] ml-2">(원래 {originalDia})</span>}</span>
               </div>
-              {currentOverrideType !== 'red' && <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter">{calculateReportTime(realData[0]?.content || "")}</span>}
+              
+              {currentOverrideType !== 'red' && (
+                <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter leading-none">
+                  {calculateReportTime(realData[0]?.content || "")}
+                </span>
+              )}
             </div>
+            
             <div className="flex flex-col gap-2.5">
               {realData.map((item: any, i: number) => (
                 <div key={i} className="border border-[var(--border-line)] p-4 rounded-2xl bg-[var(--memo-bg)]">
@@ -102,6 +116,7 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
           </div>
         </main>
 
+        {/* Override Menu 및 Picker 생략 (동일) */}
         <AnimatePresence>
           {showOverrideMenu && (
             <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ duration: 0.1 }} className="absolute inset-0 z-[120] bg-[var(--bg-main)] p-6 pt-10 flex flex-col">
