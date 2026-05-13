@@ -19,15 +19,15 @@ export const fetchSheetData = async (sheetId: string, apiKey: string) => {
       const rows = range.values || [];
       
       let lastDia = "";
-      // [로직] A열 빈칸 시 이전 DIA 번호를 유지하며 전처리
+      // A열이 비어있으면 이전 번호를 유지하는 스캔 로직
       result[tabName] = rows.map((row: any[]) => {
         if (row[0] && row[0].trim() !== "") {
           lastDia = row[0].trim();
         }
         return {
-          dia: lastDia,      // 번호 상속 로직 적용
-          type: row[1] || "", // 전반/후반
-          content: row[3] || "" // 사업내용
+          dia: lastDia,
+          type: row[1] || "",
+          content: row[3] || ""
         };
       });
     });

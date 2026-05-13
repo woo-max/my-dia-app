@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { getHolidayName } from '../../utils/rotation';
 
 const CalendarCell = React.memo(({ day, isLocked, onLongPress }: any) => {
-  const { date, dia, isToday, isInMonth, isUnhyu } = day;
+  const { date, dia, isToday, isInMonth, isUnhyu, overrideType } = day;
   const isSun = format(date, 'i') === '7';
   const isSat = format(date, 'i') === '6';
   const holidayName = getHolidayName(date);
@@ -12,14 +12,17 @@ const CalendarCell = React.memo(({ day, isLocked, onLongPress }: any) => {
   const handleStart = () => { timerRef.current = setTimeout(() => { onLongPress(date, dia, isLocked); timerRef.current = null; }, 600); };
   const handleEnd = () => { if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; } };
 
-  // 휴 포함 시 빨간색 OR 시트 내용에 '운휴' 포함 시 빨간색
-  const isRedText = dia.includes('휴') || isUnhyu;
+  let textColor = 'text-[var(--text-color)]';
+  if (overrideType === 'red') textColor = 'text-red-500';
+  else if (overrideType === 'blue') textColor = 'text-blue-500';
+  else if (overrideType === 'yellow') textColor = 'text-amber-500'; 
+  else if (dia.includes('휴') || isUnhyu) textColor = 'text-red-500';
 
   return (
     <div 
       onMouseDown={handleStart} onMouseUp={handleEnd} onMouseLeave={handleEnd}
       onTouchStart={handleStart} onTouchEnd={handleEnd} onTouchCancel={handleEnd}
-      className={`relative flex flex-col border-r border-b border-[var(--grid-line)] h-full transition-all ${
+      className={`relative flex flex-col border-r border-b border-[var(--grid-line)] h-full transition-none ${
         isInMonth ? 'bg-[var(--cell-bg)]' : 'bg-transparent opacity-[0.1]'
       }`}
     >
@@ -33,8 +36,8 @@ const CalendarCell = React.memo(({ day, isLocked, onLongPress }: any) => {
         {holidayName && <span className="text-[5pt] font-bold text-red-500 truncate max-w-[35px] leading-none">{holidayName}</span>}
       </div>
 
-      <div className="flex-1 flex flex-col p-1 relative">
-        <span className={`text-[10pt] font-black leading-none tracking-tighter ${isRedText ? 'text-red-500' : 'text-[var(--text-color)]'}`}>
+      <div className="flex-1 flex flex-col p-1 relative overflow-hidden">
+        <span className={`font-black leading-none tracking-tighter text-[10pt] ${textColor}`}>
           {dia}
         </span>
       </div>

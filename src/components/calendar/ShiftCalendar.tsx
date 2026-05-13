@@ -7,18 +7,10 @@ import { getShiftForDate, getShiftMapping } from '../../utils/rotation';
 import CalendarCell from './CalendarCell';
 import DayDetailModal from '../modals/DayDetailModal';
 
-const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, lockedShifts, setLockedShifts, customDayTypes, setCustomDayTypes, sheetData }: any) => {
+const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, lockedShifts, setLockedShifts, customDayTypes, setCustomDayTypes, overrides, setOverrides, sheetData }: any) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [confirmModal, setConfirmModal] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<any>(null);
-
-  useEffect(() => {
-    const backListener = CapacitorApp.addListener('backButton', () => {
-      if (selectedDay) { setSelectedDay(null); return; }
-      if (confirmModal) { setConfirmModal(null); return; }
-    });
-    return () => { backListener.then(h => h.remove()); };
-  }, [selectedDay, confirmModal]);
 
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
@@ -27,36 +19,33 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       const date = new Date(calendarStart);
       date.setDate(calendarStart.getDate() + i);
       const dateKey = format(date, 'yyyy-MM-dd');
+      const originalInfo = getShiftForDate(date, refConfig.date, refConfig.dia);
       
-      // 기본 근무 정보 계산
+      let finalInfo = { ...originalInfo };
+      const overrideData = overrides[dateKey];
       const lockData = lockedShifts[dateKey];
-      const shiftInfo = lockData ? { dia: lockData.dia } : getShiftForDate(date, refConfig.date, refConfig.dia);
-      
-      // [신규] '운휴' 체크 로직
+
+      if (overrideData) { finalInfo = { dia: overrideData.dia, type: overrideData.type }; }
+      else if (lockData) { finalInfo = { dia: lockData.dia }; }
+
       let isUnhyu = false;
-      if (sheetData && shiftInfo.dia !== '~') {
-        const mapping = getShiftMapping(date, shiftInfo.dia, customDayTypes);
+      if (sheetData && finalInfo.dia !== '~' && !overrideData) {
+        const mapping = getShiftMapping(date, finalInfo.dia, customDayTypes);
         const targetTab = sheetData[mapping.tab] || [];
-        // 해당 날짜/다이아의 데이터 중 '운휴' 글자가 포함된 행이 있는지 확인
-        isUnhyu = targetTab.some((row: any) => 
-          String(row.dia).trim() === String(shiftInfo.dia).trim() && 
-          row.content.includes('운휴')
-        );
+        isUnhyu = targetTab.some((row: any) => String(row.dia).trim() === String(finalInfo.dia).trim() && row.content.includes('운휴'));
       }
 
       return { 
-        date, 
-        ...shiftInfo, 
+        date, ...finalInfo, originalDia: originalInfo.dia, 
         isToday: isSameDay(date, startOfDay(new Date())), 
         isInMonth: isSameMonth(date, monthStart), 
-        isLocked: !!lockData,
-        isUnhyu // 캘린더 셀로 전달
+        isLocked: !!lockData, isUnhyu, overrideType: overrideData?.type 
       };
     });
-  }, [currentDate, refConfig, lockedShifts, sheetData, customDayTypes]);
+  }, [currentDate, refConfig, lockedShifts, sheetData, customDayTypes, overrides]);
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[var(--bg-color)] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[var(--bg-color)] overflow-hidden transition-none">
       <header className="p-6 pt-12 flex justify-between items-end z-10">
         <div className="flex items-end gap-3">
           <div className="flex gap-2 mb-1">
@@ -78,15 +67,18 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
         ))}
       </div>
 
-      <div className="flex-1 relative bg-[var(--grid-line)] min-h-0">
+      <div className="flex-1 relative bg-[var(--grid-line)] min-h-0 px-px">
         <AnimatePresence mode="wait">
           <motion.div
             key={format(currentDate, 'yyyy-MM')}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0 }}
             drag="x" dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(_, info) => { if (info.offset.x < -80) setCurrentDate(prev => addMonths(prev, 1)); if (info.offset.x > 80) setCurrentDate(prev => subMonths(prev, 1)); }}
-            className="grid grid-cols-7 grid-rows-6 absolute inset-0 touch-none bg-[var(--grid-line)] px-px gap-[0.5px]"
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -100) setCurrentDate(prev => addMonths(prev, 1));
+              if (info.offset.x > 100) setCurrentDate(prev => subMonths(prev, 1));
+            }}
+            className="grid grid-cols-7 grid-rows-6 absolute inset-0 touch-none bg-[var(--grid-line)] gap-[0.5px]"
           >
             {days.map(day => (
               <div key={day.date.toString()} onClick={() => setSelectedDay(day)}>
@@ -100,42 +92,11 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       <AnimatePresence>
         {selectedDay && (
           <DayDetailModal 
-            date={selectedDay.date} dia={selectedDay.dia} customDayTypes={customDayTypes}
-            onClose={() => setSelectedDay(null)}
+            date={selectedDay.date} originalDia={selectedDay.originalDia}
+            customDayTypes={customDayTypes} onClose={() => setSelectedDay(null)}
             onDayTypeChange={(date: Date, type: string) => setCustomDayTypes({ ...customDayTypes, [format(date, 'yyyy-MM-dd')]: type })}
-            sheetData={sheetData}
+            overrides={overrides} setOverrides={setOverrides} sheetData={sheetData}
           />
-        )}
-        {confirmModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" onClick={() => setConfirmModal(null)}>
-            <motion.div onClick={e => e.stopPropagation()} initial={{ scale: 1 }} className="bg-[var(--bg-color)] p-8 rounded-[32px] w-full max-w-sm border border-[var(--grid-line)] shadow-2xl">
-              <h3 className="text-xl font-black mb-2 text-[var(--text-color)]">{confirmModal.isLocked ? '고정 해제' : '근무 고정'}</h3>
-              <p className="text-sm opacity-60 mb-8 text-[var(--text-color)] leading-relaxed">
-                {format(confirmModal.date, 'M월 1일')}부터 {format(confirmModal.date, 'd일')}까지의 <br/>
-                {confirmModal.isLocked ? '근무의 고정을 해제할까요?' : '근무를 현재 상태로 고정하시겠습니까?'}
-              </p>
-              <div className="flex gap-3">
-                <button onClick={() => setConfirmModal(null)} className="flex-1 py-4 bg-black/5 dark:bg-white/5 rounded-2xl font-bold text-[var(--text-color)]">취소</button>
-                <button onClick={() => {
-                  const { date, isLocked } = confirmModal;
-                  const newLocked = { ...lockedShifts };
-                  if (isLocked) {
-                    const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
-                    range.forEach(d => delete newLocked[format(d, 'yyyy-MM-dd')]);
-                  } else {
-                    const range = eachDayOfInterval({ start: startOfMonth(date), end: date });
-                    range.forEach(d => {
-                      const key = format(d, 'yyyy-MM-dd');
-                      const dayData = days.find(day => isSameDay(day.date, d));
-                      if (dayData) newLocked[key] = { dia: dayData.dia, locked: true };
-                    });
-                  }
-                  setLockedShifts(newLocked);
-                  setConfirmModal(null);
-                }} className="flex-1 py-4 bg-blue-500 text-white rounded-2xl font-black">확인</button>
-              </div>
-            </motion.div>
-          </div>
         )}
       </AnimatePresence>
     </div>
