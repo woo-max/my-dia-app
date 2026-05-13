@@ -1,4 +1,4 @@
-import { differenceInDays, startOfDay } from 'date-fns';
+import { differenceInDays, startOfDay, format } from 'date-fns';
 
 export const MASTER_121_DIAS = [
   '대1', '49', '~', '휴1', '16', '34', '~', '휴10', '8', '26', '휴16', '대12', '~', '휴22',
@@ -12,24 +12,22 @@ export const MASTER_121_DIAS = [
   '22', '휴15', '48', '~', '휴27', '7', '25', '36', '~', '휴9'
 ];
 
-/**
- * @param targetDate 계산할 날짜
- * @param refDate 사용자가 설정한 기준 날짜
- * @param refDia 사용자가 설정한 기준 다이아
- */
+const HOLIDAYS_2026: { [key: string]: string } = {
+  '2026-01-01': '신정', '2026-02-16': '설날', '2026-02-17': '설날', '2026-02-18': '설날',
+  '2026-03-01': '삼일절', '2026-03-02': '대체공휴일', '2026-05-05': '어린이날', 
+  '2026-05-24': '석가탄신일', '2026-05-25': '대체공휴일', '2026-06-06': '현충일',
+  '2026-08-15': '광복절', '2026-10-03': '개천절', '2026-10-05': '추석', 
+  '2026-10-06': '추석', '2026-10-07': '추석', '2026-10-09': '한글날', '2026-12-25': '성탄절'
+};
+
+export const getHolidayName = (date: Date) => HOLIDAYS_2026[format(date, 'yyyy-MM-dd')] || null;
+
 export const getShiftForDate = (targetDate: Date, refDate: Date, refDia: string) => {
-  const startOffset = MASTER_121_DIAS.indexOf(refDia);
+  let startOffset = MASTER_121_DIAS.indexOf(refDia);
+  if (startOffset === -1) startOffset = 0;
   const diff = differenceInDays(startOfDay(targetDate), startOfDay(refDate));
-  
-  const index = ((startOffset + diff) % 121 + 121) % 121;
+  const totalLength = MASTER_121_DIAS.length;
+  const index = ((startOffset + diff) % totalLength + totalLength) % totalLength;
   const dia = MASTER_121_DIAS[index];
-
-  let type: 'WORK' | 'OFF' | 'HOLIDAY' | 'STANDBY' = 'WORK';
-  
-  // 타입 판별 로직 (표시는 원본 그대로 하되, 색상 분류는 유지)
-  if (dia === '~') type = 'OFF';
-  else if (dia.includes('휴')) type = 'HOLIDAY';
-  else if (dia.startsWith('대')) type = 'STANDBY';
-
-  return { dia, type }; // "~"를 "비번"으로 바꾸는 로직 삭제
+  return { dia, type: dia === '~' ? 'OFF' : dia.includes('휴') ? 'HOLIDAY' : dia.startsWith('대') ? 'STANDBY' : 'WORK' };
 };

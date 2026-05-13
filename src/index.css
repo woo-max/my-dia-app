@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Inter:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Inter:wght@400;700;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-color: #FDF7F2;
-  --text-color: #1B1F3B; /* 라이트모드 기본 검정 */
-  --grid-line: #EAE5DF;
-  --mint-highlight: rgba(168, 230, 207, 0.1);
+  --bg-color: #FDF7F2;      /* 시몬스 베이지 */
+  --text-color: #1B1F3B;    /* 딥 네이비 */
+  --grid-line: #D1CDC7;     /* 선명한 실선 그리드 */
+  --cell-bg: #FFFFFF;       /* 라이트 셀 배경 */
+  --mint-highlight: rgba(168, 230, 207, 0.30); /* [수정] 오늘 하이라이트 30% */
 }
 
 .dark {
-  --bg-color: #121212;
-  --text-color: #FFFFFF; /* 다크모드 흰색 */
-  --grid-line: #2D2D2D;
-  --mint-highlight: rgba(168, 230, 207, 0.2);
+  --bg-color: #121212;      /* 표준 다크 블랙 */
+  --text-color: #FFFFFF;    /* 다크 화이트 */
+  --grid-line: #333333;
+  --cell-bg: #1E1E1E;       /* 다크 셀 배경 */
 }
 
 body {
@@ -23,6 +24,7 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0; padding: 0;
   overflow: hidden;
+  transition: background-color 0.3s ease;
   -webkit-font-smoothing: antialiased;
 }
 
