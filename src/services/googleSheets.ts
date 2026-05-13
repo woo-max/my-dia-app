@@ -19,7 +19,6 @@ export const fetchSheetData = async (sheetId: string, apiKey: string) => {
       const rows = range.values || [];
       
       let lastDia = "";
-      // A열이 비어있으면 이전 번호를 유지하는 스캔 로직
       result[tabName] = rows.map((row: any[]) => {
         if (row[0] && row[0].trim() !== "") {
           lastDia = row[0].trim();

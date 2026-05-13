@@ -1,34 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Inter:wght@400;700;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-color: #FDF7F2;      /* 시몬스 베이지 */
-  --text-color: #1B1F3B;    /* 딥 네이비 */
-  --grid-line: #D1CDC7;     /* 선명한 실선 그리드 */
-  --cell-bg: #FFFFFF;       
-  --mint-highlight: rgba(168, 230, 207, 0.30);
+  /* [Case 6] Semantic Tokens - Light Mode */
+  --bg-main: #FDF7F2;          /* 전체 배경 */
+  --surface-card: #FFFFFF;      /* 셀, 팝업 배경 */
+  --surface-active: rgba(76, 217, 100, 0.1); /* 오늘 날짜 하이라이트 */
+  --text-main: #1B1F3B;        /* 기본 텍스트 */
+  --text-memo: #000000;        /* 메모 텍스트 (고대비) */
+  --text-muted: rgba(27, 31, 59, 0.4); /* 🔒, 날짜 보조 정보 */
+  --border-line: rgba(27, 31, 59, 0.06); /* 격자 및 구분선 */
+  --memo-bg: rgba(0, 0, 0, 0.04); /* 메모 바 배경 */
 }
 
 .dark {
-  --bg-color: #121212;      
-  --text-color: #FFFFFF;    
-  --grid-line: #333333;
-  --cell-bg: #1E1E1E;       
+  /* [Case 6] Semantic Tokens - Dark Mode */
+  --bg-main: #121212;
+  --surface-card: #1E1E1E;
+  --surface-active: rgba(76, 217, 100, 0.2);
+  --text-main: #FFFFFF;
+  --text-memo: #FFFFFF;
+  --text-muted: rgba(255, 255, 255, 0.3);
+  --border-line: rgba(255, 255, 255, 0.1);
+  --memo-bg: rgba(255, 255, 255, 0.15);
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Inter', sans-serif;
-  margin: 0; padding: 0;
-  overflow: hidden;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
   -webkit-font-smoothing: antialiased;
 }
 
-.font-serif { font-family: 'Playfair Display', serif; font-style: italic; }
-::-webkit-scrollbar { display: none; }
-* { -webkit-tap-highlight-color: transparent; outline: none; }
-
-.modal-shadow { box-shadow: 0 -10px 40px rgba(0,0,0,0.15); }
+/* 스와이프 삭제 버튼 등 공통 스타일 */
+.modal-shadow { box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3); }

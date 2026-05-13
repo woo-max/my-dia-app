@@ -4,7 +4,6 @@ import ShiftCalendar from './components/calendar/ShiftCalendar';
 import SettingsModal from './components/modals/SettingsModal';
 import { fetchSheetData } from './services/googleSheets';
 
-// 동준 님 시트 정보
 const SHEET_ID = "1FkZO46XQLJr52JHL62KKYgSge1ILP3107c8nGjqm_cc";
 const API_KEY = "AIzaSyD59tKDgoKS7urIHCtGT33GbM59f980sv8";
 
@@ -27,6 +26,7 @@ function App() {
   const [lockedShifts, setLockedShifts] = useState(() => JSON.parse(localStorage.getItem('locked_shifts') || '{}'));
   const [customDayTypes, setCustomDayTypes] = useState(() => JSON.parse(localStorage.getItem('custom_day_types') || '{}'));
   const [overrides, setOverrides] = useState(() => JSON.parse(localStorage.getItem('shift_overrides') || '{}'));
+  const [memos, setMemos] = useState(() => JSON.parse(localStorage.getItem('shift_memos') || '{}'));
 
   useEffect(() => {
     const initApp = async () => {
@@ -41,8 +41,9 @@ function App() {
     localStorage.setItem('shift_ref_config', JSON.stringify(refConfig));
     localStorage.setItem('locked_shifts', JSON.stringify(lockedShifts));
     localStorage.setItem('custom_day_types', JSON.stringify(customDayTypes));
-    localStorage.setItem('shift_overrides', JSON.stringify(overrides)); 
-  }, [isDarkMode, refConfig, lockedShifts, customDayTypes, overrides]);
+    localStorage.setItem('shift_overrides', JSON.stringify(overrides));
+    localStorage.setItem('shift_memos', JSON.stringify(memos)); 
+  }, [isDarkMode, refConfig, lockedShifts, customDayTypes, overrides, memos]);
 
   const lastTimeRef = useRef<number>(0);
   useEffect(() => {
@@ -57,7 +58,8 @@ function App() {
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
-      <div className="w-full max-w-[430px] mx-auto bg-[var(--bg-color)] min-h-screen flex flex-col relative overflow-hidden">
+      {/* [보정] bg-main 변수 적용으로 배경색 통일 */}
+      <div className="w-full max-w-[430px] mx-auto bg-[var(--bg-main)] min-h-screen flex flex-col relative overflow-hidden transition-colors duration-300">
         <ShiftCalendar 
           onOpenSettings={() => setShowSettings(true)} 
           isDarkMode={isDarkMode} toggleDarkMode={() => setIsDarkMode(!isDarkMode)} 
@@ -65,6 +67,7 @@ function App() {
           lockedShifts={lockedShifts} setLockedShifts={setLockedShifts}
           customDayTypes={customDayTypes} setCustomDayTypes={setCustomDayTypes}
           overrides={overrides} setOverrides={setOverrides}
+          memos={memos} setMemos={setMemos}
           sheetData={sheetData}
         />
         {showSettings && (
