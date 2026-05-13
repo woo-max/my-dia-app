@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'mint-highlight': 'rgba(168, 230, 207, 0.06)', // 동준님이 원한 6% 민트색
+      },
+    },
   },
   plugins: [],
 }

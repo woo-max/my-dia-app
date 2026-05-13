@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Inter:wght@400;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #FDF7F2;
+  --text-color: #1B1F3B; /* 라이트모드 기본 검정 */
+  --grid-line: #EAE5DF;
+  --mint-highlight: rgba(168, 230, 207, 0.1);
+}
+
+.dark {
+  --bg-color: #121212;
+  --text-color: #FFFFFF; /* 다크모드 흰색 */
+  --grid-line: #2D2D2D;
+  --mint-highlight: rgba(168, 230, 207, 0.2);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif { font-family: 'Playfair Display', serif; font-style: italic; }
+::-webkit-scrollbar { display: none; }
+* { -webkit-tap-highlight-color: transparent; outline: none; }
