@@ -7,7 +7,6 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     if (!sheetData) return null;
     const baseDate = teammate.refDate instanceof Date ? teammate.refDate : new Date(teammate.refDate);
     const shift = getShiftForDate(date, baseDate, teammate.refDia);
-    
     const isTodayHoliday = !!getHolidayName(date) || [0, 6].includes(date.getDay());
     const diaNum = parseInt(shift.dia.replace(/[^0-9]/g, '')) || 0;
     
@@ -30,55 +29,49 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
 
     const findInterim = (text: string) => {
       const targets = ['기', '불', '동', '진', '사', '오'];
-      for (let i = text.length - 1; i >= 0; i--) {
-        if (targets.includes(text[i])) return text[i];
-      }
+      for (let i = text.length - 1; i >= 0; i--) { if (targets.includes(text[i])) return text[i]; }
       return null;
     };
 
     const findEndTime = (text: string) => {
-      const matches = text.match(/\d{2}:\d{2}/g);
+      const matches = text.match(/\d{2}:\d{2}/);
       return matches ? matches[matches.length - 1] : "";
     };
 
-    const isRedHighlight = shift.dia.includes('휴') || shift.dia.includes('운') || rowN.content.includes('운휴');
-
     return { 
-      ...shift, name: teammate.name, interim: findInterim(rowN.content), endTime: findEndTime(rowN1.content), 
-      isRedHighlight, tabLabel: targetTab, rowN, rowN1
+      ...shift, interim: findInterim(rowN.content), endTime: findEndTime(rowN1.content), 
+      isRedHighlight: shift.dia.includes('휴') || shift.dia.includes('운') || rowN.content.includes('운휴')
     };
   }, [date, teammate, sheetData]);
 
-  // 하드코딩 색상을 다크모드에서도 명확한 iOS 시스템 컬러 느낌으로 유지
   const getInterimColor = (char: string | null) => {
-    if (char === '기') return '#FF3B30'; // iOS Red
-    if (char === '불') return '#34C759'; // iOS Green
-    if (char === '동') return '#007AFF'; // iOS Blue
+    if (char === '기') return '#FF3B30';
+    if (char === '불') return '#34C759';
+    if (char === '동') return '#007AFF';
     return 'var(--text-main)';
   };
 
-  if (!dutyInfo) return <div className="tm-cell-width h-[60px] border-r border-b border-[var(--border-line)] bg-[var(--off-gray)]" />;
+  if (!dutyInfo) return <div className="tm-cell-width h-[36px] border-r border-b border-[var(--border-line)] bg-[var(--off-gray)]" />;
 
   return (
     <div 
-      onClick={() => onClick({ date, ...dutyInfo })}
-      className={`tm-cell-width shrink-0 h-[60px] border-r border-b border-[var(--border-line)] relative flex items-center justify-center active:scale-95 transition-all cursor-pointer ${
+      onClick={() => onClick({ date, name: teammate.name, ...dutyInfo })}
+      className={`tm-cell-width shrink-0 h-[36px] border-r border-b border-[var(--border-line)] relative flex items-center justify-center active:scale-95 transition-all cursor-pointer ${
         isToday(date) ? 'bg-[var(--today-highlight)]' : ''
       } ${dutyInfo.isRedHighlight ? 'bg-[var(--holiday-red)]' : dutyInfo.dia === '~' ? 'bg-[var(--off-gray)]' : 'bg-[var(--surface-card)]'}`}
     >
+      {/* 좌상단: 가독성을 위해 opacity-70으로 상향 */}
       {dutyInfo.interim && (
-        <span className="absolute top-1 left-1 text-[9.5pt] font-black leading-none" style={{ color: getInterimColor(dutyInfo.interim) }}>
+        <span className="absolute top-0.5 left-0.5 text-[9.5px] font-black leading-none opacity-90" style={{ color: getInterimColor(dutyInfo.interim) }}>
           {dutyInfo.interim}
         </span>
       )}
-      
-      {/* text-primary 제거 -> text-main 교체 */}
+      {/* 가운데: 14.5px */}
       <span className={`text-[14.5px] font-black leading-none ${dutyInfo.isRedHighlight ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
         {dutyInfo.dia}
       </span>
-
-      {/* opacity-30 대신 text-muted를 사용하여 다크모드 가독성 확보 */}
-      <span className="absolute bottom-1 right-1 text-[9pt] font-black text-[var(--text-muted)] tracking-tighter leading-none">
+      {/* 우하단: [교정] text-main + opacity-50 조합으로 라이트모드 시인성 확보 */}
+      <span className="absolute bottom-0.5 right-0.5 text-[9px] font-black text-[var(--text-main)] tracking-tighter leading-none opacity-50">
         {dutyInfo.endTime}
       </span>
     </div>
