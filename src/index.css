@@ -11,10 +11,10 @@
   --memo-bg: rgba(0, 0, 0, 0.04);
   --surface-active: rgba(76, 217, 100, 0.1);
   
-  /* 상태별 특수 색상 */
-  --today-highlight: rgba(76, 217, 100, 0.18);
-  --holiday-red: rgba(255, 59, 48, 0.12);
-  --off-gray: rgba(142, 142, 147, 0.15);
+  /* [복구 및 강화] 상태별 농도 조절 */
+  --today-highlight: rgba(90, 200, 250, 0.08); /* 연한 하늘색 */
+  --holiday-red: rgba(255, 59, 48, 0.06);     /* 연한 빨간색 */
+  --off-gray: rgba(142, 142, 147, 0.1);       /* 연한 회색 */
 }
 
 .dark {
@@ -26,9 +26,10 @@
   --memo-bg: rgba(255, 255, 255, 0.08);
   --surface-active: rgba(76, 217, 100, 0.2);
   
-  --today-highlight: rgba(76, 217, 100, 0.25);
-  --holiday-red: rgba(255, 69, 58, 0.25);
-  --off-gray: rgba(255, 255, 255, 0.08);
+  /* [다크모드 최적화] 배경 대비를 위해 농도 상향 */
+  --today-highlight: rgba(90, 200, 250, 0.18);
+  --holiday-red: rgba(255, 69, 58, 0.15);
+  --off-gray: rgba(255, 255, 255, 0.06);
 }
 
 body {
@@ -36,12 +37,11 @@ body {
   color: var(--text-main);
   margin: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
-  overflow: hidden; /* 앱 느낌을 위해 브라우저 스크롤 방지 */
+  overflow: hidden;
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 동료 탭 전용 레이아웃 너비 */
 .tm-cell-width { width: 50px; min-width: 50px; }
 .tm-name-width { width: 65px; min-width: 65px; }

@@ -49,11 +49,12 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     };
   }, [date, teammate, sheetData]);
 
+  // 하드코딩 색상을 다크모드에서도 명확한 iOS 시스템 컬러 느낌으로 유지
   const getInterimColor = (char: string | null) => {
-    if (char === '기') return '#FF2D55';
-    if (char === '불') return '#4CD964';
-    if (char === '동') return '#5AC8FA';
-    return 'var(--text-primary)';
+    if (char === '기') return '#FF3B30'; // iOS Red
+    if (char === '불') return '#34C759'; // iOS Green
+    if (char === '동') return '#007AFF'; // iOS Blue
+    return 'var(--text-main)';
   };
 
   if (!dutyInfo) return <div className="tm-cell-width h-[60px] border-r border-b border-[var(--border-line)] bg-[var(--off-gray)]" />;
@@ -65,11 +66,21 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
         isToday(date) ? 'bg-[var(--today-highlight)]' : ''
       } ${dutyInfo.isRedHighlight ? 'bg-[var(--holiday-red)]' : dutyInfo.dia === '~' ? 'bg-[var(--off-gray)]' : 'bg-[var(--surface-card)]'}`}
     >
-      {dutyInfo.interim && <span className="absolute top-1 left-1 text-[9.5pt] font-black leading-none" style={{ color: getInterimColor(dutyInfo.interim) }}>{dutyInfo.interim}</span>}
-      <span className={`text-[14.5px] font-black leading-none ${dutyInfo.isRedHighlight ? 'text-red-500' : 'text-[var(--text-primary)]'}`}>
+      {dutyInfo.interim && (
+        <span className="absolute top-1 left-1 text-[9.5pt] font-black leading-none" style={{ color: getInterimColor(dutyInfo.interim) }}>
+          {dutyInfo.interim}
+        </span>
+      )}
+      
+      {/* text-primary 제거 -> text-main 교체 */}
+      <span className={`text-[14.5px] font-black leading-none ${dutyInfo.isRedHighlight ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
         {dutyInfo.dia}
       </span>
-      <span className="absolute bottom-1 right-1 text-[9pt] font-black opacity-30 text-[var(--text-primary)] tracking-tighter leading-none">{dutyInfo.endTime}</span>
+
+      {/* opacity-30 대신 text-muted를 사용하여 다크모드 가독성 확보 */}
+      <span className="absolute bottom-1 right-1 text-[9pt] font-black text-[var(--text-muted)] tracking-tighter leading-none">
+        {dutyInfo.endTime}
+      </span>
     </div>
   );
 });
