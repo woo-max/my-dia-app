@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { App as CapacitorApp } from '@capacitor/app';
 import ShiftCalendar from './components/calendar/ShiftCalendar';
 import TeammateDashboard from './components/teammate/TeammateDashboard';
+import FullScheduleTab from './components/schedule/FullScheduleTab'; // Case 8 신규 파일
 import SettingsModal from './components/modals/SettingsModal';
 import { fetchSheetData } from './services/googleSheets';
 
@@ -14,7 +15,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [sheetData, setSheetData] = useState<any>(null);
 
-  // 모달 및 서브 상태 관리
+  // --- 기존 데이터 보존 영역 (절대 수정 금지) ---
   const [selectedDay, setSelectedDay] = useState<any>(null);
   const [selectedDuty, setSelectedDuty] = useState<any>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -40,18 +41,16 @@ function App() {
     JSON.parse(localStorage.getItem('group_names') || '["G1", "G2", "G3", "G4", "G5"]')
   );
 
-  // 뒤로가기 버튼 로직: 팝업 계층에 따라 닫기 및 앱 종료 제어
+  // 뒤로가기 버튼 로직 (팝업 계층 제어)
   const lastBackPress = useRef(0);
   useEffect(() => {
     const backHandler = CapacitorApp.addListener('backButton', () => {
-      // 설정창 -> 상세 팝업 -> 추가/수정 팝업 순서로 체크하여 닫기
       if (showSettings) { setShowSettings(false); return; }
       if (selectedDay) { setSelectedDay(null); return; }
       if (selectedDuty) { setSelectedDuty(null); return; }
       if (showAddModal) { setShowAddModal(false); return; }
       if (showGroupModal) { setShowGroupModal(null); return; }
 
-      // 아무것도 안 열려 있으면 2초 내 재클릭 시 종료
       const now = Date.now();
       if (now - lastBackPress.current < 2000) {
         CapacitorApp.exitApp();
@@ -62,6 +61,7 @@ function App() {
     return () => { backHandler.remove(); };
   }, [showSettings, selectedDay, selectedDuty, showAddModal, showGroupModal]);
 
+  // 구글 시트 데이터 로딩
   useEffect(() => {
     const initApp = async () => {
       try {
@@ -74,6 +74,7 @@ function App() {
     initApp();
   }, []);
 
+  // 로컬 스토리지 동기화
   useEffect(() => {
     localStorage.setItem('dark_mode', String(isDarkMode));
     localStorage.setItem('teammates', JSON.stringify(teammates));
@@ -88,6 +89,8 @@ function App() {
   return (
     <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
       <div className="w-full max-w-[430px] mx-auto bg-[var(--bg-main)] min-h-screen flex flex-col relative overflow-hidden shadow-2xl transition-colors duration-300">
+        
+        {/* 메인 컨텐츠 영역 */}
         <main className="flex-1 flex flex-col overflow-hidden">
           {activeView === 'calendar' ? (
             <ShiftCalendar 
@@ -125,10 +128,12 @@ function App() {
               setShowGroupModal={setShowGroupModal}
             />
           ) : (
-            <div className="flex-1 flex items-center justify-center font-black opacity-10 text-[var(--text-main)]">ALL SCHEDULE</div>
+            /* [Case 8] 전체근무 탭 브릿지 연결 */
+            <FullScheduleTab sheetData={sheetData} />
           )}
         </main>
 
+        {/* 하단 네비게이션바 (다크모드 정복 규칙 적용) */}
         <nav className="h-[75px] bg-[var(--surface-card)] border-t border-[var(--border-line)] flex items-center justify-around px-4 pb-5 z-[100]">
           {[
             { id: 'calendar', label: '내 근무' },
@@ -138,16 +143,23 @@ function App() {
             <button 
               key={tab.id} 
               onClick={() => setActiveView(tab.id as any)} 
-              className={`flex-1 flex flex-col items-center gap-1 transition-all ${activeView === tab.id ? 'scale-105' : ''}`}
+              className={`flex-1 flex flex-col items-center gap-1 transition-all ${
+                activeView === tab.id ? 'scale-105' : ''
+              }`}
             >
-              <div className={`w-1.5 h-1.5 rounded-full bg-[var(--text-main)] transition-all ${activeView === tab.id ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
-              <span className={`text-[10px] font-black uppercase tracking-tighter ${activeView === tab.id ? 'text-[var(--text-main)]' : 'text-[var(--text-muted)]'}`}>
+              <div className={`w-1.5 h-1.5 rounded-full bg-[var(--text-main)] transition-all ${
+                activeView === tab.id ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+              }`} />
+              <span className={`text-[10px] font-black uppercase tracking-tighter ${
+                activeView === tab.id ? 'text-[var(--text-main)]' : 'text-[var(--text-muted)]'
+              }`}>
                 {tab.label}
               </span>
             </button>
           ))}
         </nav>
 
+        {/* 설정 모달 */}
         {showSettings && (
           <SettingsModal 
             onClose={() => setShowSettings(false)} 
