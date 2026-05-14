@@ -5,41 +5,43 @@
 :root {
   --bg-main: #FDF7F2;
   --surface-card: #FFFFFF;
-  --surface-active: rgba(76, 217, 100, 0.1);
-  --today-highlight: rgba(76, 217, 100, 0.2);
-  --text-primary: #1B1F3B;
-  --text-secondary: rgba(27, 31, 59, 0.5);
-  --text-memo: #000000;
+  --text-main: #1B1F3B;
+  --text-muted: rgba(27, 31, 59, 0.45);
   --border-line: rgba(27, 31, 59, 0.06);
   --memo-bg: rgba(0, 0, 0, 0.04);
+  --surface-active: rgba(76, 217, 100, 0.1);
+  
+  /* 상태별 특수 색상 */
+  --today-highlight: rgba(76, 217, 100, 0.18);
+  --holiday-red: rgba(255, 59, 48, 0.12);
   --off-gray: rgba(142, 142, 147, 0.15);
-  --holiday-red: rgba(255, 59, 48, 0.25);
 }
 
 .dark {
   --bg-main: #121212;
   --surface-card: #1E1E1E;
-  --surface-active: rgba(76, 217, 100, 0.2);
-  --today-highlight: rgba(76, 217, 100, 0.25);
-  --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.4);
-  --text-memo: #FFFFFF;
+  --text-main: #FFFFFF;
+  --text-muted: rgba(255, 255, 255, 0.5);
   --border-line: rgba(255, 255, 255, 0.1);
-  --memo-bg: rgba(255, 255, 255, 0.1);
+  --memo-bg: rgba(255, 255, 255, 0.08);
+  --surface-active: rgba(76, 217, 100, 0.2);
+  
+  --today-highlight: rgba(76, 217, 100, 0.25);
+  --holiday-red: rgba(255, 69, 58, 0.25);
   --off-gray: rgba(255, 255, 255, 0.08);
-  --holiday-red: rgba(255, 69, 58, 0.3);
 }
 
 body {
   background-color: var(--bg-main);
-  color: var(--text-primary);
+  color: var(--text-main);
   margin: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
-  overflow: hidden;
+  overflow: hidden; /* 앱 느낌을 위해 브라우저 스크롤 방지 */
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* 동료 탭 전용 레이아웃 너비 */
 .tm-cell-width { width: 50px; min-width: 50px; }
 .tm-name-width { width: 65px; min-width: 65px; }

@@ -51,10 +51,20 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
     <div className="flex-1 flex flex-col h-full bg-[var(--bg-main)] overflow-hidden relative transition-none">
       <header className="p-6 pt-12 flex justify-between items-end z-10">
         <div className="flex items-end gap-3">
-          <div className="flex gap-2 mb-1">
-            <button onClick={() => setCurrentDate(prev => subMonths(prev, 1))} className="p-1 opacity-20"><ChevronLeft size={24}/></button>
-            <h1 className="text-5xl font-black font-serif tracking-tighter text-[var(--text-main)] leading-none italic mx-1">{format(currentDate, 'M월')}</h1>
-            <button onClick={() => setCurrentDate(prev => addMonths(prev, 1))} className="p-1 opacity-20"><ChevronRight size={24}/></button>
+          <div className="flex gap-2 mb-1 items-center">
+            {/* [수정] 다크모드 시인성을 위해 opacity 제거 및 변수 적용 */}
+            <button onClick={() => setCurrentDate(prev => subMonths(prev, 1))} className="p-1 text-[var(--text-muted)] active:scale-90 transition-all">
+              <ChevronLeft size={24}/>
+            </button>
+            
+            <h1 className="text-5xl font-black font-serif tracking-tighter text-[var(--text-main)] leading-none italic mx-1">
+              {format(currentDate, 'M월')}
+            </h1>
+            
+            {/* [수정] 다크모드 시인성을 위해 opacity 제거 및 변수 적용 */}
+            <button onClick={() => setCurrentDate(prev => addMonths(prev, 1))} className="p-1 text-[var(--text-muted)] active:scale-90 transition-all">
+              <ChevronRight size={24}/>
+            </button>
           </div>
         </div>
         <div className="flex gap-3 items-center">

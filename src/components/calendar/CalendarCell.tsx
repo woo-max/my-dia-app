@@ -33,6 +33,13 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any
           </span>
           {isLocked && <span className="text-[7px] opacity-40 ml-0.5 text-[var(--text-main)]">🔒</span>}
         </div>
+
+        {/* 공휴일 이름 표시 복구 완료 */}
+        {holidayName && (
+          <span className="text-[7px] font-black text-red-500 truncate max-w-[35px]">
+            {holidayName}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col p-1 gap-0.5 overflow-hidden flex-1">
@@ -42,9 +49,12 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any
         
         <div className="flex flex-col gap-[1px] w-full">
           {memos.slice(0, 5).map((memo: any) => (
-            <div key={memo.id} className="flex items-center h-[12px] w-full bg-[var(--memo-bg)] rounded-[1px] overflow-hidden">
+            <div key={memo.id} className="flex items-center h-[12px] w-full overflow-hidden">
+              {/* [복구] 좌측 세로 색상 바 */}
               <div className="w-[2.5px] h-full flex-shrink-0" style={{ backgroundColor: memo.color }} />
-              <span className="text-[7.5pt] font-black leading-none px-0.5 truncate w-full tracking-tighter text-[var(--text-memo)]">
+              
+              {/* [유지] 배경 하이라이트 없이 텍스트만 표시 */}
+              <span className="text-[7.5pt] font-black leading-none px-1 truncate w-full tracking-tighter text-[var(--text-main)]">
                 {memo.text}
               </span>
             </div>

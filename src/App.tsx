@@ -14,7 +14,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [sheetData, setSheetData] = useState<any>(null);
 
-  // 모달 상태 관리를 위한 Refs (뒤로가기 로직에서 최신 값 참조용)
+  // 모달 및 서브 상태 관리
   const [selectedDay, setSelectedDay] = useState<any>(null);
   const [selectedDuty, setSelectedDuty] = useState<any>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -29,41 +29,47 @@ function App() {
   const [customDayTypes, setCustomDayTypes] = useState(() => JSON.parse(localStorage.getItem('custom_day_types') || '{}'));
   const [overrides, setOverrides] = useState(() => JSON.parse(localStorage.getItem('shift_overrides') || '{}'));
   const [memos, setMemos] = useState(() => JSON.parse(localStorage.getItem('shift_memos') || '{}'));
+  
   const [teammates, setTeammates] = useState(() => {
     const saved = localStorage.getItem('teammates');
     if (!saved) return [];
     return JSON.parse(saved).map((t: any) => ({ ...t, refDate: new Date(t.refDate) }));
   });
-  const [groupNames, setGroupNames] = useState(() => JSON.parse(localStorage.getItem('group_names') || '["G1", "G2", "G3", "G4", "G5"]'));
+  
+  const [groupNames, setGroupNames] = useState(() => 
+    JSON.parse(localStorage.getItem('group_names') || '["G1", "G2", "G3", "G4", "G5"]')
+  );
 
-  // [복원] 뒤로가기 버튼 처리 로직
+  // 뒤로가기 버튼 로직: 팝업 계층에 따라 닫기 및 앱 종료 제어
   const lastBackPress = useRef(0);
   useEffect(() => {
-    const backHandler = CapacitorApp.addListener('backButton', ({ canGoBack }) => {
-      // 1. 열려 있는 모달이 있다면 순차적으로 닫기
+    const backHandler = CapacitorApp.addListener('backButton', () => {
+      // 설정창 -> 상세 팝업 -> 추가/수정 팝업 순서로 체크하여 닫기
       if (showSettings) { setShowSettings(false); return; }
       if (selectedDay) { setSelectedDay(null); return; }
       if (selectedDuty) { setSelectedDuty(null); return; }
       if (showAddModal) { setShowAddModal(false); return; }
       if (showGroupModal) { setShowGroupModal(null); return; }
 
-      // 2. 모달이 없고 2초 내에 다시 뒤로가기를 누르면 앱 종료
+      // 아무것도 안 열려 있으면 2초 내 재클릭 시 종료
       const now = Date.now();
       if (now - lastBackPress.current < 2000) {
         CapacitorApp.exitApp();
       } else {
         lastBackPress.current = now;
-        // 여기에 "한번 더 누르면 종료됩니다" 토스트 알림을 추가할 수 있습니다.
       }
     });
-
     return () => { backHandler.remove(); };
   }, [showSettings, selectedDay, selectedDuty, showAddModal, showGroupModal]);
 
   useEffect(() => {
     const initApp = async () => {
-      const data = await fetchSheetData(SHEET_ID, API_KEY);
-      setSheetData(data);
+      try {
+        const data = await fetchSheetData(SHEET_ID, API_KEY);
+        setSheetData(data);
+      } catch (e) {
+        console.error("Sheet loading failed", e);
+      }
     };
     initApp();
   }, []);
@@ -97,7 +103,7 @@ function App() {
               setOverrides={setOverrides} 
               memos={memos} 
               setMemos={setMemos} 
-              sheetData={sheetData}
+              sheetData={sheetData} 
               setSelectedDay={setSelectedDay}
               selectedDay={selectedDay}
             />
@@ -110,7 +116,7 @@ function App() {
               sheetData={sheetData} 
               myConfig={refConfig} 
               isDarkMode={isDarkMode} 
-              toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+              toggleDarkMode={() => setIsDarkMode(!isDarkMode)} 
               setSelectedDuty={setSelectedDuty}
               selectedDuty={selectedDuty}
               showAddModal={showAddModal}
@@ -119,7 +125,7 @@ function App() {
               setShowGroupModal={setShowGroupModal}
             />
           ) : (
-            <div className="flex-1 flex items-center justify-center font-black opacity-10 text-[var(--text-primary)]">ALL SCHEDULE</div>
+            <div className="flex-1 flex items-center justify-center font-black opacity-10 text-[var(--text-main)]">ALL SCHEDULE</div>
           )}
         </main>
 
@@ -129,14 +135,26 @@ function App() {
             { id: 'teammate', label: '동료 근무' },
             { id: 'all', label: '전체 근무' }
           ].map((tab) => (
-            <button key={tab.id} onClick={() => setActiveView(tab.id as any)} className={`flex flex-col items-center gap-1 transition-all ${activeView === tab.id ? 'opacity-100 scale-105' : 'opacity-20'}`}>
-              <div className={`w-1.5 h-1.5 rounded-full bg-[var(--text-primary)] transition-all ${activeView === tab.id ? 'scale-100' : 'scale-0'}`} />
-              <span className="text-[10px] font-black uppercase tracking-tighter text-[var(--text-primary)]">{tab.label}</span>
+            <button 
+              key={tab.id} 
+              onClick={() => setActiveView(tab.id as any)} 
+              className={`flex-1 flex flex-col items-center gap-1 transition-all ${activeView === tab.id ? 'scale-105' : ''}`}
+            >
+              <div className={`w-1.5 h-1.5 rounded-full bg-[var(--text-main)] transition-all ${activeView === tab.id ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`} />
+              <span className={`text-[10px] font-black uppercase tracking-tighter ${activeView === tab.id ? 'text-[var(--text-main)]' : 'text-[var(--text-muted)]'}`}>
+                {tab.label}
+              </span>
             </button>
           ))}
         </nav>
 
-        {showSettings && <SettingsModal onClose={() => setShowSettings(false)} currentConfig={refConfig} onSave={(newConfig: any) => { setRefConfig(newConfig); setShowSettings(false); }} />}
+        {showSettings && (
+          <SettingsModal 
+            onClose={() => setShowSettings(false)} 
+            currentConfig={refConfig} 
+            onSave={(newConfig: any) => { setRefConfig(newConfig); setShowSettings(false); }} 
+          />
+        )}
       </div>
     </div>
   );

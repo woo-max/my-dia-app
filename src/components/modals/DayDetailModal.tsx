@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
-import { X, ChevronLeft, GripVertical, Trash2, Plus } from 'lucide-react';
+import { X, Edit3, ChevronLeft, GripVertical, Trash2, Plus } from 'lucide-react';
 import { App as CapacitorApp } from '@capacitor/app';
 import { getShiftMapping, calculateReportTime, getBaseDayType } from '../../utils/rotation';
 import MemoModal from './MemoModal';
@@ -57,26 +57,18 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
         transition={{ duration: 0.1 }}
         className="bg-[var(--bg-main)] w-full max-w-[430px] h-[85vh] rounded-t-[32px] flex flex-col overflow-hidden relative shadow-2xl"
       >
-        {/* 헤더 부분 수정 */}
-        <header className="p-5 border-b border-[var(--border-line)] flex justify-between items-start">
+        <header className="p-5 border-b border-[var(--border-line)] flex justify-between items-center">
           <div className="flex flex-col gap-1">
-            <div className="flex bg-black/5 dark:bg-white/5 rounded-lg p-0.5 w-fit mb-1 text-[var(--text-main)]">
+            <div className="flex bg-[var(--memo-bg)] rounded-lg p-0.5 w-fit mb-1">
               {['wd', 'hd'].map(t => (
-                <button key={t} onClick={() => onDayTypeChange(date, t)} className={`px-4 py-1 text-[10px] rounded-md font-black ${(customDayTypes[dateKey] || getBaseDayType(date)) === t ? 'bg-[var(--surface-card)] shadow-sm opacity-100' : 'opacity-30'}`}>{t==='wd'?'평일':'휴일'}</button>
+                <button key={t} onClick={() => onDayTypeChange(date, t)} className={`px-4 py-1 text-[10px] rounded-md font-black ${(customDayTypes[dateKey] || getBaseDayType(date)) === t ? 'bg-[var(--surface-card)] text-[var(--text-main)] shadow-sm' : 'text-[var(--text-main)] opacity-30'}`}>{t==='wd'?'평일':'휴일'}</button>
               ))}
             </div>
             <h2 className="text-3xl font-serif font-black italic text-[var(--text-main)]">{format(date || new Date(), 'MM.dd')} <span className="text-sm font-sans opacity-20 ml-1">{format(date || new Date(), 'eee', { locale: ko }).charAt(0)}</span></h2>
           </div>
-          
-          {/* X표 밑으로 근무변경 버튼 배치 */}
           <div className="flex flex-col items-end gap-2">
-            <button onClick={onClose} className="p-1 opacity-20 text-[var(--text-main)]"><X size={24}/></button>
-            <button 
-              onClick={() => setShowOverrideMenu(true)} 
-              className="px-3 py-1.5 bg-[var(--bg-main)] border border-[var(--border-line)] rounded-full text-[10px] font-black shadow-sm text-[var(--text-main)] active:scale-95 transition-transform"
-            >
-              근무변경
-            </button>
+            <button onClick={onClose} className="p-1 text-[var(--text-muted)]"><X size={24}/></button>
+            <button onClick={() => setShowOverrideMenu(true)} className="px-3 py-1.5 bg-[var(--surface-card)] border border-[var(--border-line)] rounded-full text-[10px] font-black shadow-sm text-[var(--text-main)] active:scale-95 transition-transform">근무변경</button>
           </div>
         </header>
 
@@ -87,11 +79,8 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
                 <span className={`text-5xl font-black ${currentOverrideType === 'red' ? 'text-red-500' : currentOverrideType === 'blue' ? 'text-blue-500' : currentOverrideType === 'yellow' ? 'text-amber-500' : 'text-[var(--text-main)]'}`}>{currentDia}</span>
                 <span className="text-[12pt] font-black opacity-60 mt-2 text-[var(--text-main)]">{mapping.label} {currentOverride && <span className="opacity-30 text-[10pt] ml-2">(원래 {originalDia})</span>}</span>
               </div>
-              
               {currentOverrideType !== 'red' && (
-                <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter leading-none">
-                  {calculateReportTime(realData[0]?.content || "")}
-                </span>
+                <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter leading-none">{calculateReportTime(realData[0]?.content || "")}</span>
               )}
             </div>
             
@@ -107,8 +96,8 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
 
           <div className="flex flex-col gap-4 border-t border-[var(--border-line)] pt-6">
             <div className="flex justify-between items-center px-1">
-              <span className="text-[10px] font-black opacity-30 uppercase tracking-widest italic text-[var(--text-main)]">MEMOS</span>
-              <button onClick={() => setShowMemoInput({})} className="p-1.5 bg-[var(--memo-bg)] rounded-full text-[var(--text-main)] opacity-40"><Plus size={16}/></button>
+              <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest italic">MEMOS</span>
+              <button onClick={() => setShowMemoInput({})} className="p-1.5 bg-[var(--memo-bg)] rounded-full text-[var(--text-muted)]"><Plus size={16}/></button>
             </div>
             <Reorder.Group axis="y" values={dayMemos} onReorder={(o) => setMemos({...memos, [dateKey]: o})} className="flex flex-col">
               {dayMemos.map((m: any) => ( <MemoItem key={m.id} memo={m} onEdit={setShowMemoInput} onDelete={(id: string) => setMemos({...memos, [dateKey]: dayMemos.filter((x:any)=>x.id!==id)})} /> ))}
@@ -116,16 +105,29 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
           </div>
         </main>
 
-        {/* Override Menu 및 Picker 생략 (동일) */}
         <AnimatePresence>
           {showOverrideMenu && (
             <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ duration: 0.1 }} className="absolute inset-0 z-[120] bg-[var(--bg-main)] p-6 pt-10 flex flex-col">
-              <div className="flex justify-end mb-4"><button onClick={() => setShowOverrideMenu(false)} className="p-2 opacity-20 text-[var(--text-main)]"><X /></button></div>
+              <div className="flex justify-end mb-4"><button onClick={() => setShowOverrideMenu(false)} className="p-2 text-[var(--text-muted)]"><X /></button></div>
               <div className="grid grid-cols-2 grid-rows-6 gap-3 flex-1 pb-6">
-                {['연차','촉진연차','대체휴가','만근휴가','개인학습','지정휴무'].map(i => <button key={i} onClick={() => { setOverrides({...overrides, [dateKey]: { dia: i, type: 'red' }}); setShowOverrideMenu(false); }} className="bg-red-50 text-red-600 rounded-2xl font-black text-sm active:scale-95">{i}</button>)}
-                {['지정근무','대기충당','교번교체'].map(i => <button key={i} onClick={() => setShowDiaPicker({ label: i, type: 'blue' })} className="bg-blue-50 text-blue-600 rounded-2xl font-black text-sm active:scale-95">{i}</button>)}
-                <button onClick={() => setShowDiaPicker({ label: '휴무충당', type: 'yellow' })} className="bg-amber-50 text-amber-600 rounded-2xl font-black text-sm active:scale-95">휴무충당</button>
-                <button onClick={() => {}} className="bg-red-50 text-red-600 rounded-2xl font-black text-sm opacity-30">기타</button>
+                {/* [교정] 연차 계열: 배경 농도를 10%로 낮춰 부담 제거 */}
+                {['연차','촉진연차','대체휴가','만근휴가','개인학습','지정휴무'].map(i => (
+                  <button key={i} onClick={() => { setOverrides({...overrides, [dateKey]: { dia: i, type: 'red' }}); setShowOverrideMenu(false); }} className="bg-red-500/10 text-red-500 rounded-2xl font-black text-sm active:scale-95 transition-all">
+                    {i}
+                  </button>
+                ))}
+                {/* [교정] 지정근무 계열: 초록색 배경 제거 후 파란색 10% 농도 적용 */}
+                {['지정근무','대기충당','교번교체'].map(i => (
+                  <button key={i} onClick={() => setShowDiaPicker({ label: i, type: 'blue' })} className="bg-blue-500/10 text-blue-500 rounded-2xl font-black text-sm active:scale-95 transition-all">
+                    {i}
+                  </button>
+                ))}
+                {/* [교정] 휴무충당: 옐로우 10% 농도 적용 */}
+                <button onClick={() => setShowDiaPicker({ label: '휴무충당', type: 'yellow' })} className="bg-amber-500/10 text-amber-500 rounded-2xl font-black text-sm active:scale-95 transition-all">휴무충당</button>
+                
+                {/* [교정] 기타: 연차와 동일한 빨간 톤으로 교정 */}
+                <button onClick={() => {}} className="bg-red-500/10 text-red-500 rounded-2xl font-black text-sm active:scale-95 transition-all">기타</button>
+                
                 <button onClick={() => { const next = { ...overrides }; delete next[dateKey]; setOverrides(next); setShowOverrideMenu(false); }} className="bg-[var(--surface-card)] border border-[var(--border-line)] text-[var(--text-muted)] rounded-2xl font-black text-sm active:scale-95">원래근무로</button>
               </div>
             </motion.div>
@@ -133,11 +135,11 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
           {showMemoInput && <MemoModal memo={showMemoInput} onClose={() => setShowMemoInput(null)} onSave={(n: any) => { const updated = showMemoInput.id ? dayMemos.map((m: any) => m.id === showMemoInput.id ? n : m) : [...dayMemos, { ...n, id: Date.now().toString() }]; setMemos({ ...memos, [dateKey]: updated }); setShowMemoInput(null); }} />}
           {showDiaPicker && (
             <div className="absolute inset-0 z-[130] bg-black/60 flex items-center justify-center p-6">
-              <div className="bg-[var(--surface-card)] rounded-[32px] p-6 w-full max-h-[70vh] flex flex-col border border-[var(--border-line)]">
+              <div className="bg-[var(--surface-card)] rounded-[32px] p-6 w-full max-h-[70vh] flex flex-col border border-[var(--border-line)] shadow-2xl">
                 <div className="flex justify-between items-center mb-4"><span className="font-black text-lg text-[var(--text-main)]">{showDiaPicker.label} - DIA 선택</span><button onClick={() => setShowDiaPicker(null)} className="text-[var(--text-main)]"><X size={20}/></button></div>
-                <div className="grid grid-cols-5 gap-2 overflow-y-auto">
+                <div className="grid grid-cols-5 gap-2 overflow-y-auto no-scrollbar">
                   {[...Array.from({length: 54}, (_, i) => String(i + 1)), '~', ...Array.from({length: 14}, (_, i) => `대${i + 1}`)].map(d => (
-                    <button key={d} onClick={() => { setOverrides({...overrides, [dateKey]: { dia: d, type: showDiaPicker.type }}); setShowDiaPicker(null); setShowOverrideMenu(false); }} className="py-3 bg-[var(--memo-bg)] rounded-xl font-black text-xs text-[var(--text-main)] active:bg-blue-500 active:text-white">{d}</button>
+                    <button key={d} onClick={() => { setOverrides({...overrides, [dateKey]: { dia: d, type: showDiaPicker.type }}); setShowDiaPicker(null); setShowOverrideMenu(false); }} className="py-3 bg-[var(--memo-bg)] rounded-xl font-black text-xs text-[var(--text-main)] active:bg-blue-500 active:text-white transition-colors">{d}</button>
                   ))}
                 </div>
               </div>
