@@ -69,7 +69,10 @@ function App() {
         setSheetData(data);
       } catch (e) {
         console.error("Sheet loading failed", e);
-      }
+      }{
+      // 🚀 성공하든 실패하든, 로딩이 끝나면 '무조건' 화면을 가리는 막을 치웁니다.
+      await SplashScreen.hide();
+    }
     };
     initApp();
   }, []);

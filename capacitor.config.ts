@@ -4,6 +4,9 @@ const config: CapacitorConfig = {
   appId: 'com.hyunwook.shift',
   appName: '다이아리',
   webDir: 'dist',
+  plugins: {
+    CapacitorHttp: {
+      enabled: true, // 🚀 이 줄이 반드시 있어야 합니다!
 
   plugins: {
     SplashScreen: {
@@ -13,5 +16,7 @@ const config: CapacitorConfig = {
     },
   },
 };
+},
+  },
 
 export default config;
