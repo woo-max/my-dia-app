@@ -40,15 +40,32 @@ export const getShiftMapping = (date: Date, dia: string, customDayTypes: any) =>
 
 // [로직] HH:mm 인식 후 30분 차감
 export const calculateReportTime = (content: string) => {
-  if (!content) return '--:--';
-  const match = content.match(/(\d{2}):(\d{2})/);
-  if (match) {
-    try {
-      const time = parse(match[0], 'HH:mm', new Date());
-      return format(subMinutes(time, 30), 'HH:mm');
-    } catch (e) { return '--:--'; }
+  if (!content || typeof content !== 'string') return '';
+
+  try {
+    // 1. 문자열 내의 모든 시간 형태(HH:mm)를 순서대로 찾습니다.
+    const allTimes = content.match(/(\d{1,2}):(\d{2})/g);
+    if (!allTimes || allTimes.length === 0) return '';
+
+    // 2. [진짜 핵심] 무조건 '첫 번째'로 등장하는 시간을 선택 (야간 근무 대응)
+    let startTime = allTimes[0]; 
+
+    // 3. 시간 포맷 보정 (7:30 -> 07:30)
+    if (startTime.length === 4) startTime = '0' + startTime;
+
+    const [hours, minutes] = startTime.split(':').map(Number);
+    
+    // 4. 30분 차감 계산
+    let totalMinutes = hours * 60 + minutes - 30;
+    if (totalMinutes < 0) totalMinutes += 1440; // 00:00 이전 보정
+
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  } catch (e) {
+    return '';
   }
-  return '--:--';
 };
 
 export const getShiftForDate = (targetDate: Date, refDate: Date, refDia: string) => {
@@ -59,3 +76,17 @@ export const getShiftForDate = (targetDate: Date, refDate: Date, refDia: string)
   const index = ((startOffset + diff) % totalLength + totalLength) % totalLength;
   return { dia: MASTER_121_DIAS[index] };
 };
+
+// 🚀 여기서부터 새로 추가되는 마스터 명단입니다!
+export const ALL_DIA_OPTIONS = [
+  // 1번부터 54번까지 자동으로 숫자를 만들어요
+  ...Array.from({ length: 54 }, (_, i) => String(i + 1)), 
+  
+  '~', // 비번
+  
+  // 실제로 사용하는 대기 다이아만 딱 골랐어요 (7, 8, 9, 10은 뺐어요!)
+  '대1', '대2', '대3', '대4', '대5', '대6', 
+  '대11', '대12', '대13', '대14',
+
+  ...Array.from({ length: 32 }, (_, i) => `휴${i + 1}`)   // 휴1~휴32 
+];

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 
-const COLORS = ["#FF3B30", "#FF9500", "#FFCC00", "#4CD964", "#5AC8FA", "#007AFF", "#5856D6", "#FF2D55", "#8E8E93", "#000000"];
+const COLORS = ["#FF3B30", "#FF9500", "#FFCC00", "#4CD964", "#5AC8FA", "#007AFF", "#5856D6", "#f86796", "#8E8E93", "#000000", "#f5baba", "#a5e9f5", "#a5e3a2", "#e39df1", "#efd982"];
 
 const MemoModal = ({ memo, onClose, onSave }: any) => {
   const [text, setText] = useState(memo?.text || "");
@@ -37,7 +37,7 @@ const MemoModal = ({ memo, onClose, onSave }: any) => {
             )}</AnimatePresence>
           </div>
 
-          <button disabled={!text.trim()} onClick={() => onSave({ text, color })} className="w-full py-4 bg-black text-white dark:bg-white dark:text-black rounded-2xl font-black text-lg active:scale-95 disabled:opacity-20 transition-all shadow-xl">등록</button>
+          <button disabled={!text.trim()} onClick={() => onSave({ ...memo,text, color })} className="w-full py-4 bg-black text-white dark:bg-white dark:text-black rounded-2xl font-black text-lg active:scale-95 disabled:opacity-20 transition-all shadow-xl">등록</button>
         </div>
       </motion.div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Hash, ChevronLeft, ChevronRight, Save } from 'lucide-react';
 import { format, startOfMonth, startOfWeek, eachDayOfInterval, isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
+import { ALL_DIA_OPTIONS } from '../../utils/rotation';
 
 const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
   // TeammateAddModal의 상태 로직 이식
@@ -15,8 +16,6 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
     const start = startOfWeek(startOfMonth(tempDate));
     return eachDayOfInterval({ start, end: addMonths(start, 1) }).slice(0, 42);
   }, [tempDate]);
-
-  const diaList = [...Array.from({length: 54}, (_, i)=>String(i+1)), '대1','대2','대3','대4','대5','대6','대11','대12','대13','대14','~'];
 
   return (
     <div className="fixed inset-0 z-[300] flex items-end justify-center p-0 bg-black/60 backdrop-blur-sm" onClick={onClose}>
@@ -77,7 +76,7 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
             <AnimatePresence>
               {openSection === 'dia' && (
                 <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="p-4 border-t border-[var(--border-line)] max-h-40 overflow-y-auto no-scrollbar grid grid-cols-5 gap-2">
-                  {diaList.map(d => (
+                  {ALL_DIA_OPTIONS.map(d => (
                     <button 
                       key={d} 
                       onClick={()=>{setSelectedDia(d); setOpenSection(null);}} 

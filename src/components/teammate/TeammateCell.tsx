@@ -10,22 +10,42 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     const isTodayHoliday = !!getHolidayName(date) || [0, 6].includes(date.getDay());
     const diaNum = parseInt(shift.dia.replace(/[^0-9]/g, '')) || 0;
     
-    let targetTab = '';
-    if (diaNum >= 1 && diaNum <= 33) {
-      targetTab = isTodayHoliday ? '휴일주간' : '평일주간';
+    // 1. 예측 탭 설정
+    let predictedTab = '';
+    const isPureJukan = /^\d+$/.test(shift.dia.trim()) && diaNum >= 1 && diaNum <= 33;
+    if (isPureJukan) {
+      predictedTab = isTodayHoliday ? '휴일주간' : '평일주간';
     } else {
       const nextDay = addDays(date, 1);
       const isNextHoliday = !!getHolidayName(nextDay) || [0, 6].includes(nextDay.getDay());
-      if (isTodayHoliday && isNextHoliday) targetTab = '휴휴';
-      else if (isTodayHoliday && !isNextHoliday) targetTab = '휴평';
-      else if (!isTodayHoliday && isNextHoliday) targetTab = '평휴';
-      else targetTab = '평평';
+      if (isTodayHoliday && isNextHoliday) predictedTab = '휴휴';
+      else if (isTodayHoliday && !isNextHoliday) predictedTab = '휴평';
+      else if (!isTodayHoliday && isNextHoliday) predictedTab = '평휴';
+      else predictedTab = '평평';
     }
 
-    const rows = sheetData[targetTab] || [];
-    const diaIndex = rows.findIndex((r: any) => String(r.dia).trim() === String(shift.dia).trim());
-    const rowN = rows[diaIndex] || { content: '', train: '', dia: shift.dia };
-    const rowN1 = rows[diaIndex + 1] || { content: '', train: '' };
+    // 2. [핀셋] 전수 조사 로직: 예측한 탭에 없으면 모든 탭을 다 뒤짐
+    const allTabs = ['평일주간', '휴일주간', '평평', '평휴', '휴휴', '휴평'];
+    const searchOrder = [predictedTab, ...allTabs.filter(t => t !== predictedTab)];
+    
+    let rowN = null;
+    let rowN1 = null;
+    let finalTab = '';
+
+    for (const tab of searchOrder) {
+      const rows = sheetData[tab] || [];
+      const idx = rows.findIndex((r: any) => String(r.dia).trim() === String(shift.dia).trim());
+      if (idx !== -1) {
+        rowN = rows[idx];
+        rowN1 = rows[idx + 1] || { content: '', train: '' };
+        finalTab = tab;
+        break;
+      }
+    }
+
+    // 데이터가 아예 없을 경우 예외처리
+    if (!rowN) rowN = { content: shift.dia === '~' ? '비번/휴무' : '', train: '', dia: shift.dia };
+    if (!rowN1) rowN1 = { content: '', train: '' };
 
     const findInterim = (text: string) => {
       const targets = ['기', '불', '동', '진', '사', '오'];
@@ -34,12 +54,18 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     };
 
     const findEndTime = (text: string) => {
-      const matches = text.match(/\d{2}:\d{2}/);
+      const matches = text.match(/\d{2}:\d{2}/g);
       return matches ? matches[matches.length - 1] : "";
     };
 
+    // 3. [핀셋] rowN, rowN1, tabLabel을 보따리에 담아서 리턴
     return { 
-      ...shift, interim: findInterim(rowN.content), endTime: findEndTime(rowN1.content), 
+      ...shift, 
+      rowN, 
+      rowN1, 
+      tabLabel: finalTab || predictedTab,
+      interim: findInterim(rowN.content), 
+      endTime: findEndTime(rowN1.content || rowN.content), 
       isRedHighlight: shift.dia.includes('휴') || shift.dia.includes('운') || rowN.content.includes('운휴')
     };
   }, [date, teammate, sheetData]);
@@ -60,17 +86,14 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
         isToday(date) ? 'bg-[var(--today-highlight)]' : ''
       } ${dutyInfo.isRedHighlight ? 'bg-[var(--holiday-red)]' : dutyInfo.dia === '~' ? 'bg-[var(--off-gray)]' : 'bg-[var(--surface-card)]'}`}
     >
-      {/* 좌상단: 가독성을 위해 opacity-70으로 상향 */}
       {dutyInfo.interim && (
         <span className="absolute top-0.5 left-0.5 text-[9.5px] font-black leading-none opacity-90" style={{ color: getInterimColor(dutyInfo.interim) }}>
           {dutyInfo.interim}
         </span>
       )}
-      {/* 가운데: 14.5px */}
       <span className={`text-[14.5px] font-black leading-none ${dutyInfo.isRedHighlight ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
         {dutyInfo.dia}
       </span>
-      {/* 우하단: [교정] text-main + opacity-50 조합으로 라이트모드 시인성 확보 */}
       <span className="absolute bottom-0.5 right-0.5 text-[9px] font-black text-[var(--text-main)] tracking-tighter leading-none opacity-50">
         {dutyInfo.endTime}
       </span>

@@ -24,7 +24,7 @@ const TeammateDashboard = ({
   useEffect(() => {
     if (!scrollRef.current || days.length === 0) return;
     const todayIdx = days.findIndex(d => isToday(d));
-    if (todayIdx !== -1) scrollRef.current.scrollLeft = (todayIdx * 50) - 10;
+    if (todayIdx !== -1) scrollRef.current.scrollLeft = (todayIdx * 40) ;
   }, [days]);
 
   const filteredTeammates = useMemo(() => {

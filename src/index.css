@@ -43,5 +43,5 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-.tm-cell-width { width: 50px; min-width: 50px; }
-.tm-name-width { width: 65px; min-width: 65px; }
+.tm-cell-width { width: 40px; min-width: 40px; }
+.tm-name-width { width: 50px; min-width: 50px; }

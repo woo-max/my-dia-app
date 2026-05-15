@@ -55,7 +55,7 @@ const FullScheduleTab = ({ sheetData }: any) => {
           return (
             <div 
               key={i} 
-              className={`h-[30px] flex items-center justify-center transition-all ${
+              className={`h-[35px] flex items-center justify-center transition-all ${
                 isMatch ? 'bg-[rgba(76,217,100,0.5)]' : 'bg-[var(--surface-card)]'
               }`}
             >
@@ -113,10 +113,10 @@ const FullScheduleTab = ({ sheetData }: any) => {
 
           return (
             <div key={idx} className="flex border-b border-[var(--border-line)] min-h-0 h-fit">
-              <div className={`w-[38px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] text-[12px] font-black py-0 ${isDiaMatch ? 'bg-[rgba(255,159,10,0.3)] text-[var(--text-main)]' : 'bg-[var(--surface-card)] text-[var(--text-main)]'}`}>{rowN.dia}</div>
-              <div className="w-[52px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] font-black text-[11px] text-[var(--text-muted)] bg-[var(--bg-main)] py-0">{calculateCheckIn(rowN.content)}</div>
-              <div className={`flex-[1.3] flex items-center justify-center text-center text-[11.5px] font-black border-r border-[var(--border-line)] leading-none tracking-tighter py-0 px-0.5 ${isRowNMatch ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowNUnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN.content}</div>
-              <div className={`flex-[0.7] flex items-center justify-center text-center text-[11.5px] font-black leading-none tracking-tighter py-0 px-0.5 ${isRowN1Match ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowN1UnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN1.content}</div>
+              <div className={`w-[38px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] text-[12px] font-black py-[1.7px] ${isDiaMatch ? 'bg-[rgba(255,159,10,0.3)] text-[var(--text-main)]' : 'bg-[var(--surface-card)] text-[var(--text-main)]'}`}>{rowN.dia}</div>
+              <div className="w-[52px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] font-black text-[11px] text-[var(--text-muted)] bg-[var(--bg-main)] py-[1.7px]">{calculateCheckIn(rowN.content)}</div>
+              <div className={`flex-[1.3] flex items-center justify-center text-center text-[11.5px] font-black border-r border-[var(--border-line)] leading-none tracking-tighter py-[1.7px] px-0.5 ${isRowNMatch ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowNUnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN.content}</div>
+              <div className={`flex-[0.7] flex items-center justify-center text-center text-[11.5px] font-black leading-none tracking-tighter py-[1.7px] px-0.5 ${isRowN1Match ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowN1UnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN1.content}</div>
             </div>
           );
         })}

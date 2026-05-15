@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Hash, ChevronLeft, ChevronRight, Users } from 'lucide-react';
 import { format, startOfMonth, startOfWeek, eachDayOfInterval, isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
+import { ALL_DIA_OPTIONS } from '../../utils/rotation';
 
 const TeammateAddModal = ({ onClose, onAdd, groupNames, currentGroup }: any) => {
   const [name, setName] = useState("");
@@ -19,25 +20,39 @@ const TeammateAddModal = ({ onClose, onAdd, groupNames, currentGroup }: any) => 
   const diaList = [...Array.from({length: 54}, (_, i)=>String(i+1)), '대1','대2','대3','대4','대5','대6','대11','대12','대13','대14','~'];
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end justify-center p-0 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    /* 🚀 배경 Overlay: 일반 div를 motion.div로 바꾸고 배경을 0.08초 만에 걷어냅니다. */
+    <motion.div 
+      className="fixed inset-0 z-[200] flex items-end justify-center p-0 bg-black/30" 
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.08 }}
+    >
       <motion.div 
         onClick={e => e.stopPropagation()} 
-        initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+        initial={{ y: "100%" }} 
+        animate={{ y: 0 }} 
+        /* 🚀 퇴장 로직: 물리 연산을 빼고 0.12초 만에 직선으로 퇴장 */
+        exit={{ y: "100%", transition: { duration: 0.12, ease: "easeIn" } }}
+        
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.2}
+        drag="y" 
+        dragConstraints={{ top: 0, bottom: 0 }} 
+        dragElastic={0.2}
         onDragEnd={(_, info) => { if (info.offset.y > 100) onClose(); }}
         className="bg-[var(--surface-card)] w-full max-w-[430px] rounded-t-[40px] p-8 pb-12 shadow-2xl border-t border-[var(--border-line)]"
       >
         <div className="w-12 h-1.5 bg-[var(--text-main)] opacity-10 rounded-full mx-auto mb-6" />
         
         <header className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-black italic font-serif text-[var(--text-main)]">Add Teammate</h2>
+          <h2 className="text-xl font-black italic font-serif text-[var(--text-main)]"></h2>
           <button onClick={onClose} className="p-1 text-[var(--text-muted)]"><X size={24}/></button>
         </header>
 
         <div className="space-y-4">
           <input 
-            autoFocus value={name} onChange={e => setName(e.target.value)} 
+            value={name} onChange={e => setName(e.target.value)} 
             placeholder="동료 이름" 
             className="w-full bg-[var(--memo-bg)] text-[var(--text-main)] rounded-2xl p-4 font-black outline-none border border-[var(--border-line)] placeholder:text-[var(--text-muted)]" 
           />
@@ -69,19 +84,54 @@ const TeammateAddModal = ({ onClose, onAdd, groupNames, currentGroup }: any) => 
           {/* 섹션: DIA 선택 */}
           <div className="bg-[var(--memo-bg)] rounded-2xl border border-[var(--border-line)] overflow-hidden">
             <button onClick={() => setOpenSection(openSection==='dia'?null:'dia')} className="w-full p-4 flex justify-between items-center text-sm font-black">
-              <span className="text-[var(--text-muted)] flex items-center gap-3"><Hash size={18}/> 기준 DIA</span>
+              <span className="text-[var(--text-muted)] flex items-center gap-3"><Hash size={18}/> DIA</span>
               <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">{selectedDia}</span>
             </button>
             <AnimatePresence>
               {openSection === 'dia' && (
                 <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="p-4 border-t border-[var(--border-line)] max-h-40 overflow-y-auto no-scrollbar grid grid-cols-5 gap-2">
-                  {diaList.map(d => (
+                  {ALL_DIA_OPTIONS.map(d => (
                     <button key={d} onClick={()=>{setSelectedDia(d); setOpenSection(null);}} className={`h-10 rounded-xl text-[10px] font-black transition-colors ${selectedDia===d?'bg-[var(--text-main)] text-[var(--surface-card)]':'bg-[var(--surface-card)] text-[var(--text-muted)] border border-[var(--border-line)]'}`}>{d}</button>
                   ))}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+
+          {/* 섹션: 그룹 선택 (추가된 부분) */}
+<div className="bg-[var(--memo-bg)] rounded-2xl border border-[var(--border-line)] overflow-hidden">
+  <button 
+    onClick={() => setOpenSection(openSection === 'group' ? null : 'group')} 
+    className="w-full p-4 flex justify-between items-center text-sm font-black"
+  >
+    <span className="text-[var(--text-muted)] flex items-center gap-3"><Users size={18}/> 그룹 선택</span>
+    <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">
+      {groupNames[selectedGroup]}
+    </span>
+  </button>
+  <AnimatePresence>
+    {openSection === 'group' && (
+      <motion.div 
+        initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} 
+        className="p-4 border-t border-[var(--border-line)] grid grid-cols-2 gap-2 overflow-hidden"
+      >
+        {groupNames.map((name: string, idx: number) => (
+          <button 
+            key={idx} 
+            onClick={() => { setSelectedGroup(idx); setOpenSection(null); }} 
+            className={`h-12 rounded-xl text-[11px] font-black transition-colors ${
+              selectedGroup === idx 
+                ? 'bg-[var(--text-main)] text-[var(--surface-card)]' 
+                : 'bg-[var(--surface-card)] text-[var(--text-muted)] border border-[var(--border-line)]'
+            }`}
+          >
+            {name}
+          </button>
+        ))}
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
 
           <button 
             onClick={() => { if(!name.trim()) return; onAdd({id: Date.now().toString(), name, group: selectedGroup, refDate: selectedDate, refDia: selectedDia}); onClose(); }} 
@@ -91,7 +141,7 @@ const TeammateAddModal = ({ onClose, onAdd, groupNames, currentGroup }: any) => 
           </button>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 

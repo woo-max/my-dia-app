@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 
 const TeammateDetailModal = ({ duty, onClose }: any) => {
   const calculateCheckIn = (text: string) => {
-    const match = text.match(/\d{2}:\d{2}/);
+    const match = text?.match(/\d{2}:\d{2}/);
     if (!match) return '--:--';
     const [h, m] = match[0].split(':').map(Number);
     const date = new Date();
@@ -15,20 +15,34 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end justify-center p-0 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    /* 🚀 배경 Overlay: 동일하게 0.08초 페이드 아웃 적용 */
+    <motion.div 
+      className="fixed inset-0 z-[500] flex items-end justify-center p-0 bg-black/30" 
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.08 }}
+    >
       <motion.div 
         onClick={e => e.stopPropagation()} 
-        initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.2}
-        onDragEnd={(_, info) => { if (info.offset.y > 100) onClose(); }}
-        className="bg-[var(--surface-card)] w-full max-w-[430px] rounded-t-[40px] p-8 pb-12 shadow-2xl border-t border-[var(--border-line)]"
+        initial={{ y: "100%" }} 
+        animate={{ y: 0 }} 
+        /* 🚀 퇴장 로직: 0.12초 만에 즉시 퇴근 */
+        exit={{ y: "100%", transition: { duration: 0.12, ease: "easeIn" } }}
+        
+        transition={{ type: "spring", damping: 32, stiffness: 500 }}
+        drag="y" 
+        dragConstraints={{ top: 0, bottom: 0 }} 
+        dragElastic={0.1}
+        onDragEnd={(_, info) => { if (info.offset.y > 80 || info.velocity.y > 500) onClose(); }}
+        className="bg-[var(--surface-card)] w-full max-w-[430px] rounded-t-[40px] p-8 pb-12 shadow-2xl border-t border-[var(--border-line)] touch-none"
       >
-        {/* 드래그 핸들 바: 다크모드에서 너무 흐리지 않게 조정 */}
         <div className="w-12 h-1.5 bg-[var(--text-main)] opacity-20 rounded-full mx-auto mb-6" />
 
         <header className="flex justify-between items-start mb-6">
           <div>
+            {/* [수정] 불필요한 '기관사' 텍스트 삭제 */}
             <h3 className="text-2xl font-black text-[var(--text-main)]">{duty.name}</h3>
             <p className="text-[12px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-1">
               {format(duty.date, 'MM.dd eee', { locale: ko })}
@@ -46,22 +60,26 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
           </div>
           <div className="flex flex-col items-end">
             <span className="text-[11px] font-black text-[var(--text-muted)] mb-1">&lt;출근시간&gt;</span>
-            <span className="text-3xl font-black text-[var(--text-main)] leading-none">{calculateCheckIn(duty.rowN?.content || "")}</span>
+            <span className="text-3xl font-black text-[var(--text-main)] leading-none">{calculateCheckIn(duty.rowN?.content)}</span>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="p-5 bg-[var(--memo-bg)] rounded-[24px] border border-[var(--border-line)]">
+          <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
             <span className="text-[10px] font-black text-[var(--text-muted)] block mb-2 uppercase">전반 {duty.rowN?.train && `(${duty.rowN.train})`}</span>
-            <p className="text-[15px] font-black leading-snug text-[var(--text-main)]">{duty.rowN?.content || '-'}</p>
+            <p className={`text-[15px] font-black leading-snug ${duty.rowN?.content.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
+              {duty.rowN?.content || '-'}
+            </p>
           </div>
-          <div className="p-5 bg-[var(--memo-bg)] rounded-[24px] border border-[var(--border-line)]">
+          <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
             <span className="text-[10px] font-black text-[var(--text-muted)] block mb-2 uppercase">후반 {duty.rowN1?.train && `(${duty.rowN1.train})`}</span>
-            <p className="text-[15px] font-black leading-snug text-[var(--text-main)]">{duty.rowN1?.content || '-'}</p>
+            <p className={`text-[15px] font-black leading-snug ${duty.rowN1?.content.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
+              {duty.rowN1?.content || '-'}
+            </p>
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 

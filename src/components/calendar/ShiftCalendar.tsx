@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'; // 💡 useRef 추가
 import { format, addMonths, subMonths, startOfMonth, eachDayOfInterval, isSameDay, startOfWeek, isSameMonth, startOfDay } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Target, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
 import { App as CapacitorApp } from '@capacitor/app';
-import { getShiftForDate, getShiftMapping } from '../../utils/rotation';
+import { getShiftForDate, getShiftMapping, calculateReportTime, getHolidayName } from '../../utils/rotation';
 import CalendarCell from './CalendarCell';
 import DayDetailModal from '../modals/DayDetailModal';
 
@@ -11,18 +11,55 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [confirmModal, setConfirmModal] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<any>(null);
+  
+  // 🚀 [핵심 추가] 드래그 중인지 판별하는 차단기 (Ref를 써야 렌더링 지연 없이 즉시 작동함)
+  const isDraggingRef = useRef(false);
 
   useEffect(() => {
     const backListener = CapacitorApp.addListener('backButton', () => {
       if (selectedDay) { setSelectedDay(null); } 
       else if (confirmModal) { setConfirmModal(null); }
     });
-    return () => { backListener.then(h => h.remove()); };
+    return () => { backListener.then(h => { if(h) h.remove(); }); };
   }, [selectedDay, confirmModal]);
+
+  const handleDayClick = useCallback((day: any) => {
+    // 💡 드래그 중이 아닐 때만 클릭 허용
+    if (!isDraggingRef.current) {
+      setSelectedDay(day);
+    }
+  }, []);
+
+  const handleLongPress = useCallback((date: any, dia: any, isLocked: any) => {
+    // 💡 드래그 중에는 롱프레스도 차단
+    if (!isDraggingRef.current) {
+      setConfirmModal({ date, dia, isLocked });
+    }
+  }, []);
+
+  const sheetLookup = useMemo(() => {
+    const lookup: any = {};
+    if (!sheetData) return lookup;
+    Object.entries(sheetData).forEach(([tab, rows]: any) => {
+      lookup[tab] = {};
+      rows.forEach((row: any) => {
+        const diaKey = String(row.dia).trim();
+        if (!lookup[tab][diaKey]) { 
+        lookup[tab][diaKey] = {
+          reportTime: calculateReportTime(row.content || ''),
+          isUnhyu: row.content?.includes('운휴') || false,
+        };
+      }
+    });
+  });
+  return lookup;
+}, [sheetData]);
 
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
     const calendarStart = startOfWeek(monthStart);
+    const UNHYU_CANDIDATES = ['28', '29', '30', '31', '32', '33', '34', '35', '36'];
+
     return Array.from({ length: 42 }, (_, i) => {
       const date = new Date(calendarStart);
       date.setDate(calendarStart.getDate() + i);
@@ -33,44 +70,59 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       const overrideData = overrides[dateKey];
       const lockData = lockedShifts[dateKey];
 
-      if (overrideData) { finalInfo = { dia: overrideData.dia, type: overrideData.type }; }
-      else if (lockData) { finalInfo = { dia: lockData.dia }; }
+      if (overrideData) finalInfo = { dia: overrideData.dia, type: overrideData.type };
+      else if (lockData) finalInfo = { dia: lockData.dia };
+
+      const cleanDia = String(finalInfo.dia).trim();
+      const mapping = getShiftMapping(date, cleanDia, customDayTypes);
+      const lookupData = sheetLookup[mapping.tab]?.[cleanDia];
+      const holidayName = getHolidayName(date);
+
+      const dayMemos = memos[dateKey] || [];
+      const memoHash = dayMemos.map((m: any) => `${m.id}-${m.text.length}-${m.color}`).join('|');
 
       return { 
         date, ...finalInfo, originalDia: originalInfo.dia, 
         isToday: isSameDay(date, startOfDay(new Date())), 
         isInMonth: isSameMonth(date, monthStart), 
         isLocked: !!lockData,
-        memos: memos[dateKey] || [],
+        isUnhyu: lookupData?.isUnhyu || cleanDia.includes('휴'), 
+        reportTime: lookupData?.reportTime ?? '', 
+        holidayName,
+        memos: dayMemos,
+        memoHash,
         overrideType: overrideData?.type
       };
     });
-  }, [currentDate, refConfig, lockedShifts, overrides, memos]);
+  }, [currentDate, refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes]);
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[var(--bg-main)] overflow-hidden relative transition-none">
+    <div className="flex-1 flex flex-col h-full bg-[var(--bg-main)] overflow-hidden relative">
       <header className="p-6 pt-12 flex justify-between items-end z-10">
         <div className="flex items-end gap-3">
           <div className="flex gap-2 mb-1 items-center">
-            {/* [수정] 다크모드 시인성을 위해 opacity 제거 및 변수 적용 */}
             <button onClick={() => setCurrentDate(prev => subMonths(prev, 1))} className="p-1 text-[var(--text-muted)] active:scale-90 transition-all">
               <ChevronLeft size={24}/>
             </button>
-            
             <h1 className="text-5xl font-black font-serif tracking-tighter text-[var(--text-main)] leading-none italic mx-1">
               {format(currentDate, 'M월')}
             </h1>
-            
-            {/* [수정] 다크모드 시인성을 위해 opacity 제거 및 변수 적용 */}
             <button onClick={() => setCurrentDate(prev => addMonths(prev, 1))} className="p-1 text-[var(--text-muted)] active:scale-90 transition-all">
               <ChevronRight size={24}/>
             </button>
           </div>
         </div>
+
         <div className="flex gap-3 items-center">
-          <button onClick={toggleDarkMode} className="p-2 opacity-30 text-[var(--text-main)]">{isDarkMode ? <Sun size={22}/> : <Moon size={22}/>}</button>
-          <button onClick={() => setCurrentDate(new Date())} className="p-2 opacity-30 text-[var(--text-main)]"><Target size={22}/></button>
-          <button onClick={onOpenSettings} className="p-2 bg-black/5 rounded-full opacity-20 text-[var(--text-main)]"><Settings size={20}/></button>
+          <button onClick={toggleDarkMode} className="p-2 opacity-30 text-[var(--text-main)]">
+            {isDarkMode ? <Sun size={22}/> : <Moon size={22}/>}
+          </button>
+          <button onClick={() => setCurrentDate(new Date())} className="p-2 opacity-30 text-[var(--text-main)]">
+            <Target size={22}/>
+          </button>
+          <button onClick={onOpenSettings} className="p-2 bg-black/5 rounded-full opacity-20 text-[var(--text-main)]">
+            <Settings size={20}/>
+          </button>
         </div>
       </header>
 
@@ -81,21 +133,43 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       </div>
 
       <div className="flex-1 relative bg-[var(--border-line)] min-h-0 px-px">
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={format(currentDate, 'yyyy-MM')}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0 }}
-            drag="x" dragConstraints={{ left: 0, right: 0 }}
+            initial={false} animate={false}
+            
+            // 🚀 드래그 최적화 설정
+            drag="x" 
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.5} 
+            dragMomentum={false} 
+
+            // 💡 드래그 시작 시 차단기 ON
+            onDragStart={() => { isDraggingRef.current = true; }}
+            
             onDragEnd={(_, info) => {
-              if (info.offset.x < -100) setCurrentDate(prev => addMonths(prev, 1));
-              if (info.offset.x > 100) setCurrentDate(prev => subMonths(prev, 1));
+              const swipeThreshold = 80;
+              if (info.offset.x < -swipeThreshold) setCurrentDate(prev => addMonths(prev, 1));
+              else if (info.offset.x > swipeThreshold) setCurrentDate(prev => subMonths(prev, 1));
+              
+              // 💡 드래그 종료 후 아주 잠깐(100ms) 뒤에 차단기 OFF 
+              // (드래그 끝나자마자 발생하는 유령 클릭 방지용)
+              setTimeout(() => { isDraggingRef.current = false; }, 100);
             }}
-            className="grid grid-cols-7 grid-rows-6 absolute inset-0 touch-none bg-[var(--bg-main)] gap-[0.5px]"
+            className="grid grid-cols-7 grid-rows-6 absolute inset-0 bg-[var(--bg-main)] gap-[0.5px] select-none touch-pan-y"
           >
             {days.map(day => (
-              <div key={day.date.toString()} onClick={() => setSelectedDay(day)}>
-                <CalendarCell day={day} isLocked={day.isLocked} memos={day.memos} onLongPress={(date: any, dia: any, isLocked: any) => setConfirmModal({ date, dia, isLocked })} />
+              <div 
+                key={format(day.date, 'yyyy-MM-dd')}
+                // 💡 PointerUp 대신 표준 onClick 사용 (isDraggingRef가 필터링해줌)
+                onClick={() => handleDayClick(day)}
+              >
+                <CalendarCell 
+                  day={day} 
+                  isLocked={day.isLocked} 
+                  memos={day.memos} 
+                  onLongPress={handleLongPress} 
+                />
               </div>
             ))}
           </motion.div>
