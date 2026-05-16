@@ -133,7 +133,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
         ))}
       </div>
 
-      <div className="flex-1 relative bg-[var(--border-line)] min-h-0 px-px">
+      <div className="flex-1 relative min-h-0">
         <AnimatePresence initial={false}>
           <motion.div
             key={format(currentDate, 'yyyy-MM')}
@@ -157,7 +157,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
               // (드래그 끝나자마자 발생하는 유령 클릭 방지용)
               setTimeout(() => { isDraggingRef.current = false; }, 100);
             }}
-            className="grid grid-cols-7 grid-rows-6 absolute inset-0 bg-[var(--bg-main)] gap-[0.5px] select-none touch-pan-y"
+            className="grid grid-cols-7 grid-rows-6 absolute inset-0 bg-gray-300/50 gap-[1px] border-t border-b border-gray-100/50 select-none touch-pan-y"
           >
             {days.map(day => (
               <div 
@@ -170,7 +170,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
                   isLocked={day.isLocked} 
                   memos={day.memos} 
                   onLongPress={handleLongPress} 
-                  todayColor="#b5da92"
+                  todayColor="#d6ffbd"
                 />
               </div>
             ))}

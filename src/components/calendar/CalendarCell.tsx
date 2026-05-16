@@ -4,6 +4,9 @@ import { format } from 'date-fns';
 // 🚀 1. todayColor 프롭스 추가 (기본값은 기존 회색빛 유지)
 const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress, todayColor = 'var(--surface-active)' }: any) => {
   const { date, dia, isToday, isInMonth, isUnhyu, overrideType, reportTime, holidayName } = day;
+  if (!isInMonth) {
+    return <div className="h-full bg-[var(--surface-card)]" />;
+  }
   const isSun = format(date, 'i') === '7';
   const isSat = format(date, 'i') === '6';
   
@@ -22,7 +25,8 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress, today
       onMouseDown={handleStart} onMouseUp={handleEnd} onMouseLeave={handleEnd}
       onTouchStart={handleStart} onTouchEnd={handleEnd} onTouchCancel={handleEnd}
       style={{ transition: 'none' }}
-      className={`relative flex flex-col border-r border-b border-[var(--border-line)] h-full bg-[var(--surface-card)] ${
+      // 🚀 겉 테두리를 싹 뜯어냅니다. (이제 부모의 짙은 회색 바탕이 틈새로 비쳐서 선이 됨)
+      className={`relative flex flex-col h-full bg-[var(--surface-card)] ${
         !isInMonth ? 'opacity-[0.2]' : ''
       }`}
     >
