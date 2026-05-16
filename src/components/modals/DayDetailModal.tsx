@@ -4,21 +4,39 @@ import { ko } from 'date-fns/locale';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { X, Edit3, ChevronLeft, GripVertical, Trash2, Plus } from 'lucide-react';
 import { App as CapacitorApp } from '@capacitor/app';
-import { getShiftMapping, calculateReportTime, getBaseDayType, ALL_DIA_OPTIONS } from '../../utils/rotation';
+import { getShiftMapping, calculateReportTime, getBaseDayType, ALL_DIA_OPTIONS, getHolidayName } from '../../utils/rotation';
 import MemoModal from './MemoModal';
 import { LiveTrainChip } from '../LiveTrainChip';
 
 const OTHER_LEAVES = ['병가', '공가', '장기재직', '청원휴가', '회행', '육아휴직'];
 
-const MemoItem = ({ memo, onEdit, onDelete }: any) => {
+const MemoItem = ({ memo, onEdit, onDelete, onDragStart, onDragEnd }: any) => { // 👈 프롭스 추가
   const controls = useDragControls();
   return (
-    <Reorder.Item value={memo} dragListener={false} dragControls={controls} className="relative mb-1.5 touch-none">
+    <Reorder.Item 
+      value={memo} 
+      dragListener={false} 
+      dragControls={controls} 
+      onDragEnd={onDragEnd} // 👈 드래그가 완전히 끝났을 때 락 해제 보장
+      className="relative mb-1.5 touch-none"
+    >
       <motion.div 
         drag="x" dragConstraints={{ left: -75, right: 0 }} dragElastic={0.05} dragMomentum={false}
         className="bg-[var(--surface-card)] border border-[var(--border-line)] rounded-xl flex items-center p-2.5 relative z-10 shadow-sm"
       >
-        <div onPointerDown={(e) => controls.start(e)} className="mr-2.5 p-1 opacity-20 cursor-grab text-[var(--text-main)]"><GripVertical size={18} /></div>
+        {/* 🚀 센서 부착: 누르면 락 걸기, 떼면 락 풀기 */}
+        <div 
+          onPointerDown={(e) => {
+            if (onDragStart) onDragStart();
+            controls.start(e);
+          }} 
+          onPointerUp={onDragEnd}
+          onPointerCancel={onDragEnd}
+          style={{ touchAction: 'none' }}
+          className="mr-2.5 p-1 opacity-20 cursor-grab text-[var(--text-main)]"
+        >
+          <GripVertical size={18} />
+        </div>
         <div className="w-[3.5px] self-stretch rounded-full mr-3.5" style={{ backgroundColor: memo.color }} />
         <p className="text-[1rem] font-black leading-tight flex-1 py-0.5 text-[var(--text-main)]" onClick={() => onEdit(memo)}>{memo.text}</p>
       </motion.div>
@@ -33,8 +51,11 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
   const [showDiaPicker, setShowDiaPicker] = useState<any>(null);
   const [showOtherLeavePicker, setShowOtherLeavePicker] = useState(false);
   const [isLiveMode, setIsLiveMode] = useState(false);
+  const [showCongrats, setShowCongrats] = useState(false);
+  const [isSorting, setIsSorting] = useState(false);
 
   const dateKey = format(date || new Date(), 'yyyy-MM-dd');
+  const holidayName = getHolidayName(date || new Date());
   const currentOverride = overrides[dateKey];
   const currentDia = currentOverride ? currentOverride.dia : originalDia;
   const currentOverrideType = currentOverride ? currentOverride.type : overrideType;
@@ -75,7 +96,11 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
         onClick={e => e.stopPropagation()} 
         initial={{ y: "100%" }} animate={{ y: 0 }} 
         exit={{ y: "100%", transition: { duration: 0.12, ease: "easeIn" } }}
-        drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.7} dragMomentum={false} 
+        
+        // 🚀 2. 모터 전원 제어: isSorting이 켜지면 drag 기능을 끕니다.
+        drag={isSorting ? false : "y"} 
+        
+        dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.7} dragMomentum={false} 
         onDragEnd={(_, info) => { if (info.offset.y > 70 || info.velocity.y > 300) onClose(); }}
         transition={{ type: "spring", damping: 35, stiffness: 500 }} 
         className="bg-[var(--bg-main)] w-full max-w-[430px] h-[85vh] rounded-t-[32px] flex flex-col overflow-hidden relative shadow-2xl"
@@ -136,11 +161,21 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
     </div>
 
     {/* 2. 오른쪽: 출근 시간 (기존 로직 유지) */}
-    {currentOverrideType !== 'red' && (
-      <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter leading-none">
-        {calculateReportTime(realData[0]?.content || "")}
-      </span>
-    )}
+    {/* 2. 오른쪽: 공휴일 이름 + 출근 시간 세로 정렬 */}
+    <div className="flex flex-col items-end gap-1">
+      {/* 공휴일 이름이 존재할 때만 빨간 글씨로 노출 */}
+      {holidayName && (
+        <span className="text-[13px] font-black text-red-500 tracking-tight mb-0.5 animate-fade-in">
+          {holidayName}
+        </span>
+      )}
+      
+      {currentOverrideType !== 'red' && (
+        <span className="text-4xl font-black text-[var(--text-main)] tracking-tighter leading-none">
+          {calculateReportTime(realData[0]?.content || "")}
+        </span>
+      )}
+    </div>
   </div>
   
   {/* 3. 하단 다이아 라벨 (기존 로직 유지) */}
@@ -174,7 +209,18 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
               <button onClick={() => setShowMemoInput({})} className="p-1.5 bg-[var(--memo-bg)] rounded-full text-[var(--text-muted)]"><Plus size={16}/></button>
             </div>
             <Reorder.Group axis="y" values={dayMemos} onReorder={(o) => setMemos({...memos, [dateKey]: o})} className="flex flex-col">
-              {dayMemos.map((m: any) => ( <MemoItem key={m.id} memo={m} onEdit={setShowMemoInput} onDelete={(id: string) => setMemos({...memos, [dateKey]: dayMemos.filter((x:any)=>x.id!==id)})} /> ))}
+              {dayMemos.map((m: any) => ( 
+                <MemoItem 
+                  key={m.id} 
+                  memo={m} 
+                  onEdit={setShowMemoInput} 
+                  onDelete={(id: string) => setMemos({...memos, [dateKey]: dayMemos.filter((x:any)=>x.id!==id)})} 
+                  
+                  // 🚀 3. 센서 연결: 손잡이를 잡고 놓을 때 팝업창에 신호 전달
+                  onDragStart={() => setIsSorting(true)}
+                  onDragEnd={() => setIsSorting(false)}
+                /> 
+              ))}
             </Reorder.Group>
           </div>
         </main>
@@ -200,13 +246,35 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
 
           {showMemoInput && <MemoModal memo={showMemoInput} onClose={() => setShowMemoInput(null)} onSave={(n: any) => { const updated = showMemoInput.id ? dayMemos.map((m: any) => m.id === showMemoInput.id ? n : m) : [...dayMemos, { ...n, id: Date.now().toString() }]; setMemos({ ...memos, [dateKey]: updated }); setShowMemoInput(null); }} />}
 
+          {/* 📍 150번 줄 근처 showDiaPicker 구역 */}
           {showDiaPicker && (
             <div className="absolute inset-0 z-[130] bg-black/60 flex items-center justify-center p-6">
               <div className="bg-[var(--surface-card)] rounded-[32px] p-6 w-full max-h-[70vh] flex flex-col border border-[var(--border-line)] shadow-2xl">
-                <div className="flex justify-between items-center mb-4"><span className="font-black text-lg text-[var(--text-main)]">{showDiaPicker.label} - DIA 선택</span><button onClick={() => setShowDiaPicker(null)} className="text-[var(--text-main)]"><X size={20}/></button></div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-black text-lg text-[var(--text-main)]">{showDiaPicker.label} - DIA 선택</span>
+                  <button onClick={() => setShowDiaPicker(null)} className="text-[var(--text-main)]"><X size={20}/></button>
+                </div>
                 <div className="grid grid-cols-5 gap-2 overflow-y-auto no-scrollbar">
                   {ALL_DIA_OPTIONS.map(d => (
-                    <button key={d} onClick={() => { setOverrides({...overrides, [dateKey]: { dia: d, type: showDiaPicker.type }}); setShowDiaPicker(null); setShowOverrideMenu(false); }} className="py-3 bg-[var(--memo-bg)] rounded-xl font-black text-xs text-[var(--text-main)] active:bg-blue-500 active:text-white transition-colors">{d}</button>
+                    <button 
+                      key={d} 
+                      onClick={() => { 
+                        // 1. 데이터 저장
+                        setOverrides({...overrides, [dateKey]: { dia: d, type: showDiaPicker.type }}); 
+                        
+                        // 🚀 2. 휴무충당이면 팝업 켜기
+                        if (showDiaPicker.label === '휴무충당') {
+                          setShowCongrats(true);
+                        }
+
+                        // 3. 메뉴 닫기
+                        setShowDiaPicker(null); 
+                        setShowOverrideMenu(false); 
+                      }} 
+                      className="py-3 bg-[var(--memo-bg)] rounded-xl font-black text-xs text-[var(--text-main)] active:bg-blue-500 active:text-white transition-colors"
+                    >
+                      {d}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -225,6 +293,31 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
               </motion.div>
             </div>
           )}
+          {/* 🚀 자본주의의 승리 팝업 시작 */}
+          {showCongrats && (
+            <div className="absolute inset-0 z-[200] bg-black/60 flex items-center justify-center p-8">
+              <motion.div 
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                className="bg-[var(--surface-card)] rounded-[40px] p-8 w-full max-w-xs flex flex-col items-center border-4 border-amber-400 shadow-[0_0_30px_rgba(251,191,36,0.4)]"
+              >
+                <div className="text-6xl mb-4">💰</div>
+                <h3 className="text-2xl font-black text-[var(--text-main)] mb-2 text-center">
+                  축하합니다~~
+                </h3>
+                
+                
+                <button 
+                  onClick={() => setShowCongrats(false)}
+                  className="w-32 py-2 bg-amber-400/50 hover:bg-amber-500 text-black rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all"
+                >
+                  🎉🎊
+                </button>
+              </motion.div>
+            </div>
+          )}
+          {/* 🚀 자본주의의 승리 팝업 끝 */}
         </AnimatePresence>
       </motion.div>
     </motion.div>

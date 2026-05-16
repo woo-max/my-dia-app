@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
 
-const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any) => {
+// 🚀 1. todayColor 프롭스 추가 (기본값은 기존 회색빛 유지)
+const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress, todayColor = 'var(--surface-active)' }: any) => {
   const { date, dia, isToday, isInMonth, isUnhyu, overrideType, reportTime, holidayName } = day;
   const isSun = format(date, 'i') === '7';
   const isSat = format(date, 'i') === '6';
@@ -20,13 +21,16 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any
     <div 
       onMouseDown={handleStart} onMouseUp={handleEnd} onMouseLeave={handleEnd}
       onTouchStart={handleStart} onTouchEnd={handleEnd} onTouchCancel={handleEnd}
-      // 🚀 [최적화 3] 애니메이션 엔진 간섭을 피하기 위해 인라인 스타일로 transition 강제 제거
       style={{ transition: 'none' }}
       className={`relative flex flex-col border-r border-b border-[var(--border-line)] h-full bg-[var(--surface-card)] ${
         !isInMonth ? 'opacity-[0.2]' : ''
       }`}
     >
-      <div className={`h-[16px] px-1 flex justify-between items-center border-b border-[var(--border-line)] ${isToday ? 'bg-[var(--surface-active)]' : 'bg-transparent'}`}>
+      {/* 🚀 2. className에 고정되어 있던 배경색을 빼고, style 속성으로 직접 색을 주입받는 구조로 변경 */}
+      <div 
+        className="h-[16px] px-1 flex justify-between items-center border-b border-[var(--border-line)]"
+        style={{ backgroundColor: isToday ? todayColor : 'transparent' }}
+      >
         <div className="flex items-center gap-0.5">
           <span className={`text-[9pt] font-black leading-none ${isSun || holidayName ? 'text-red-500' : isSat ? 'text-blue-500' : 'text-[var(--text-main)]'}`}>
             {format(date, 'd')}
@@ -42,12 +46,11 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any
 
       <div className="flex flex-col p-1 gap-0.5 overflow-hidden flex-1">
         <div className="flex justify-between items-start w-full">
-          <span className={`font-black leading-none tracking-tighter text-[10pt] mb-1 ${textColor}`}>
+          <span className={`font-black leading-none tracking-tighter text-[12pt] mb-1 ${textColor}`}>         
             {dia}
           </span>
-          {/* 🚀 [최적화 4] 빈 문자열 체크로 즉시 렌더링 유도 */}
           {reportTime !== '' && !dia.includes('휴') && (
-            <span className="text-[8pt] font-black text-[var(--text-main)] tracking-tighter leading-none mt-0.5">
+            <span className="text-[8pt] font-black text-[var(--text-main)] tracking-tighter leading-none mt-0.5">  
               {reportTime}
             </span>
           )}
@@ -78,8 +81,8 @@ const CalendarCell = React.memo(({ day, isLocked, memos = [], onLongPress }: any
     prev.day.date.getTime() === next.day.date.getTime() &&
     prev.day.memoHash === next.day.memoHash &&
     prev.isLocked === next.isLocked &&
-    // 🚀 [최적화 2] 이제 handleDayClick도 안정화되었으므로 onLongPress만 봐도 충분합니다.
-    prev.onLongPress === next.onLongPress
+    prev.onLongPress === next.onLongPress &&
+    prev.todayColor === next.todayColor // 🚀 3. 메모이제이션에 색상 변경 조건 추가
   );
 });
 

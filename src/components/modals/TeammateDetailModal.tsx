@@ -52,12 +52,16 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
         </header>
 
         <div className="flex justify-between items-end border-b border-[var(--border-line)] pb-6 mb-6">
-          <div className="flex flex-col">
-            <span className="text-5xl font-black italic font-serif text-[var(--text-main)] leading-none tracking-tighter">
-              {duty.dia}
-            </span>
-            <span className="text-xs font-black text-[var(--text-muted)] mt-3">{duty.tabLabel}</span>
-          </div>
+          {/* ✅ 수정 후 (강제 필터링 적용) */}
+<div className="flex flex-col">
+  <span className="text-5xl font-black italic font-serif text-[var(--text-main)] leading-none tracking-tighter">
+    {duty.dia}
+  </span>
+  <span className="text-[14px] font-black text-[var(--text-main)] mt-3">
+    {/* 🚀 duty.dia가 '~'일 때는 '비번'으로, 그 외에는 원래 tabLabel 출력! */}
+    {duty.dia === '~' ? '비번' : duty.tabLabel}
+  </span>
+</div>
           <div className="flex flex-col items-end">
             <span className="text-[11px] font-black text-[var(--text-muted)] mb-1">&lt;출근시간&gt;</span>
             <span className="text-3xl font-black text-[var(--text-main)] leading-none">{calculateCheckIn(duty.rowN?.content)}</span>
@@ -65,18 +69,27 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
         </div>
 
         <div className="space-y-4">
+          {/* 전반 구역 (B열: type 사용) */}
           <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
-            <span className="text-[10px] font-black text-[var(--text-muted)] block mb-2 uppercase">전반 {duty.rowN?.train && `(${duty.rowN.train})`}</span>
-            <p className={`text-[15px] font-black leading-snug ${duty.rowN?.content.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
+            <span className="text-[15px] font-black text-[var(--text-main)] block mb-2 uppercase">
+  {duty.rowN?.type || '전반'}
+</span>
+            <p className={`text-[15px] font-black leading-snug ${duty.rowN?.content?.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
               {duty.rowN?.content || '-'}
             </p>
           </div>
-          <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
-            <span className="text-[10px] font-black text-[var(--text-muted)] block mb-2 uppercase">후반 {duty.rowN1?.train && `(${duty.rowN1.train})`}</span>
-            <p className={`text-[15px] font-black leading-snug ${duty.rowN1?.content.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
-              {duty.rowN1?.content || '-'}
-            </p>
-          </div>
+
+          {/* 후반 구역 (데이터가 있을 때만 렌더링) */}
+          {duty.rowN1 && (
+            <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
+              <span className="text-[15px] font-black text-[var(--text-main)] block mb-2 uppercase">
+  {duty.rowN1?.type || '후반'}
+</span>
+              <p className={`text-[15px] font-black leading-snug ${duty.rowN1?.content?.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
+                {duty.rowN1?.content || '-'}
+              </p>
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>

@@ -44,7 +44,7 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     }
 
     // 데이터가 아예 없을 경우 예외처리
-    if (!rowN) rowN = { content: shift.dia === '~' ? '비번/휴무' : '', train: '', dia: shift.dia };
+    if (!rowN) rowN = { content: shift.dia === '~' ? '비번' : '', train: '', dia: shift.dia };
     if (!rowN1) rowN1 = { content: '', train: '' };
 
     const findInterim = (text: string) => {

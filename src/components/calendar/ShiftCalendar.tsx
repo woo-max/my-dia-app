@@ -12,6 +12,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
   const [confirmModal, setConfirmModal] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<any>(null);
   
+  
   // 🚀 [핵심 추가] 드래그 중인지 판별하는 차단기 (Ref를 써야 렌더링 지연 없이 즉시 작동함)
   const isDraggingRef = useRef(false);
 
@@ -169,6 +170,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
                   isLocked={day.isLocked} 
                   memos={day.memos} 
                   onLongPress={handleLongPress} 
+                  todayColor="#b5da92"
                 />
               </div>
             ))}

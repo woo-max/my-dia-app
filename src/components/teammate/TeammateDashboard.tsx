@@ -13,6 +13,7 @@ const TeammateDashboard = ({
 }: any) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedGroup, setSelectedGroup] = useState(0);
+  const [editingGroup, setEditingGroup] = useState<{index: number, name: string} | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const days = useMemo(() => {
@@ -78,17 +79,79 @@ const TeammateDashboard = ({
           <button onClick={() => setShowAddModal(true)} className="pointer-events-auto w-11 h-11 bg-[var(--surface-card)] border border-[var(--border-line)] rounded-full flex items-center justify-center shadow-md active:scale-95 transition-all"><Plus size={22} className="text-[var(--text-main)] opacity-60" /></button>
         </div>
         {groupNames.map((name: string, i: number) => (
-          <button key={i} onClick={() => setSelectedGroup(i)} className={`flex-1 flex flex-col items-center justify-center transition-all ${selectedGroup === i ? 'opacity-100' : 'text-[var(--text-muted)]'}`}>
-            <span className="text-[10px] font-black truncate w-full text-center">{name}</span>
-            {selectedGroup === i && <motion.div layoutId="tab-underline" className="w-4 h-0.5 bg-blue-500 mt-1 rounded-full" />}
-          </button>
-        ))}
+  <button 
+    key={i} 
+    onClick={() => setSelectedGroup(i)}
+    // 🚀 꾹 눌렀을 때 커스텀 모달을 띄우는 회로입니다.
+    onContextMenu={(e) => {
+      e.preventDefault();
+      setEditingGroup({ index: i, name: name });
+    }}
+    className={`flex-1 flex flex-col items-center justify-center transition-all ${selectedGroup === i ? 'opacity-100' : 'text-[var(--text-muted)]'}`}
+  >
+    <span className="text-[10px] font-black truncate w-full text-center">{name}</span>
+    {selectedGroup === i && <motion.div layoutId="tab-underline" className="w-4 h-0.5 bg-blue-500 mt-1 rounded-full" />}
+  </button>
+))}
       </div>
 
       <AnimatePresence>
         {selectedDuty && <TeammateDetailModal duty={selectedDuty} onClose={() => setSelectedDuty(null)} />}
         {showAddModal && <TeammateAddModal onClose={() => setShowAddModal(false)} onAdd={(t: any) => setTeammates([...teammates, t])} groupNames={groupNames} currentGroup={selectedGroup} />}
         {showGroupModal && <GroupEditModal mode={showGroupModal} onClose={() => setShowGroupModal(null)} onSave={setGroupNames} onUpdateTeammates={setTeammates} teammates={teammates} groupNames={groupNames} />}
+          {/* 🚀 여기서부터 그룹 이름 변경 커스텀 모달 시작 */}
+        {editingGroup && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setEditingGroup(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-sm bg-[var(--surface-card)] rounded-[32px] p-8 shadow-2xl border border-[var(--border-line)]"
+            >
+              <h3 className="text-xl font-black text-[var(--text-main)] mb-6 italic">이름 변경</h3>
+              <input 
+                autoFocus
+                className="w-full bg-[var(--bg-main)] border border-[var(--border-line)] rounded-2xl px-5 py-4 text-[var(--text-main)] font-bold text-lg focus:outline-none focus:border-blue-500 mb-6"
+                defaultValue={editingGroup.name}
+                id="group-name-input"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const val = e.currentTarget.value.trim();
+                    if (val) {
+                      const next = [...groupNames];
+                      next[editingGroup.index] = val;
+                      setGroupNames(next);
+                      setEditingGroup(null);
+                    }
+                  }
+                }}
+              />
+              <div className="flex gap-3">
+                <button onClick={() => setEditingGroup(null)} className="flex-1 py-4 bg-[var(--bg-main)] text-[var(--text-muted)] rounded-2xl font-black text-sm active:scale-95">취소</button>
+                <button 
+                  onClick={() => {
+                    const input = document.getElementById('group-name-input') as HTMLInputElement;
+                    const val = input?.value.trim();
+                    if (val) {
+                      const next = [...groupNames];
+                      next[editingGroup.index] = val;
+                      setGroupNames(next);
+                      setEditingGroup(null);
+                    }
+                  }}
+                  className="flex-1 py-4 bg-blue-500 text-white rounded-2xl font-black text-sm shadow-lg active:scale-95"
+                >
+                  변경하기
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </AnimatePresence>
     </div>
   );

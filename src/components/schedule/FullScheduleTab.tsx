@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { format, parse } from 'date-fns';
 
@@ -8,6 +8,38 @@ const FullScheduleTab = ({ sheetData }: any) => {
   const [isError, setIsError] = useState(false);
 
   const tabs = ['평일주간', '휴일주간', '평평', '평휴', '휴휴', '휴평', '교번순서'];
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    handleSwipe();
+  };
+
+  const handleSwipe = () => {
+    const distance = touchStartX.current - touchEndX.current;
+    const swipeThreshold = 50; // 이 픽셀 이상 움직여야 탭이 넘어감
+
+    const currentIndex = tabs.indexOf(activeTab);
+
+    if (distance > swipeThreshold) {
+      // 🚀 왼쪽으로 스와이프 (다음 탭으로)
+      // 마지막 탭이면 0번(처음)으로 돌아가고, 아니면 +1
+      const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+      setActiveTab(tabs[nextIndex]);
+      setSearchQuery('');
+    } else if (distance < -swipeThreshold) {
+      // 🚀 오른쪽으로 스와이프 (이전 탭으로)
+      // 0번(처음) 탭이면 마지막으로 돌아가고, 아니면 -1
+      const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+      setActiveTab(tabs[prevIndex]);
+      setSearchQuery('');
+    }
+  };
 
   // 동준 님이 지정한 121개 순환근무 고정 데이터
   const rotationData = [
@@ -155,7 +187,11 @@ const FullScheduleTab = ({ sheetData }: any) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      <div 
+        className="flex-1 flex flex-col min-h-0 overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {activeTab === '교번순서' ? renderRotationGrid() : renderScheduleList()}
       </div>
     </div>
