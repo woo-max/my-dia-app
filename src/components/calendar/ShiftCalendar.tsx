@@ -95,31 +95,15 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
     });
   }, [currentDate, refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes]);
 
-  // 위젯 원격 딥링크 수신 동기화 리스너
-  useEffect(() => {
-    const handleWidgetDeepLink = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const clickedDateStr = customEvent.detail;
-      
-      if (clickedDateStr) {
-        const targetDateObj = startOfDay(new Date(clickedDateStr));
-        const matchedDay = days.find(d => isSameDay(startOfDay(d.date), targetDateObj));
-        if (matchedDay) {
-          setSelectedDay(matchedDay); 
-        }
-      }
-    };
+  // =========================================================================
+// 🚀 [추가 및 보완] ShiftCalendar.tsx 내부 위젯 연동 가공 모듈 고도화 스펙
+// =========================================================================
+// saveWidgetData를 처리하는 기존 useEffect 내부에 'monthDays' 파이프라인 매트릭스를 추가 통합하십시오.
 
-    window.addEventListener('widgetClickDate', handleWidgetDeepLink);
-    return () => window.removeEventListener('widgetClickDate', handleWidgetDeepLink);
-  }, [days]);
-
-  // 🚀 오늘/내일 위젯 자동 동기화 데이터 가공 엔진
   useEffect(() => {
     const generatePayloadForDate = (targetDate: Date) => {
       const cleanDate = startOfDay(targetDate);
       const dateKey = format(cleanDate, 'yyyy-MM-dd');
-      
       const originalInfo = getShiftForDate(cleanDate, refConfig.date, refConfig.dia);
       
       let finalInfo = { ...originalInfo };
@@ -143,8 +127,6 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       const memo3 = dayMemos[2] ? { text: dayMemos[2].text, color: dayMemos[2].color || "#ef4444" } : null;
 
       const hasReportTime = lookupData?.reportTime && lookupData.reportTime.trim() !== '';
-
-      // 🚀 진짜 정규 출근형태 근무인지 필터링 스크리닝
       const isWorkingShift = /^\d+$/.test(cleanDia) || cleanDia.startsWith('대');
       
       let diaDisplay = "";
@@ -152,12 +134,10 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       let timeTextDisplay = "";
 
       if (isWorkingShift) {
-        // 1. 정상 근무일 때만 순수 DIA 번호와 평/휴 라벨을 철저히 분리 주입
         diaDisplay = cleanDia;
         labelDisplay = mapping.label || '';
         timeTextDisplay = hasReportTime ? lookupData.reportTime : "--:--";
       } else {
-        // 2. 휴무 혹은 ~ 와 같은 공백 스케줄일 때 (라벨과 시간 모두 숨김 공백화)
         diaDisplay = cleanDia || "휴무";
         labelDisplay = "";
         timeTextDisplay = "";
@@ -167,7 +147,7 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
         dateString: dateKey,
         dateText: `${format(cleanDate, 'd')}(${dayOfWeek})`,
         dia: diaDisplay,
-        label: labelDisplay, // 🚀 쪼개진 라벨 데이터 패이로드 추가
+        label: labelDisplay,
         timeText: timeTextDisplay,
         memo1,
         memo2,
@@ -180,14 +160,40 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
     const realTomorrow = new Date();
     realTomorrow.setDate(realToday.getDate() + 1);
 
+    // 🚀 42칸 전체 격자 고밀도 변환 매핑
+    const monthDaysPayload = days.map(day => {
+      const cleanDia = String(day.dia).trim();
+      const mapping = getShiftMapping(day.date, cleanDia, customDayTypes);
+      const isWorkingShift = /^\d+$/.test(cleanDia) || cleanDia.startsWith('대');
+
+      return {
+        dateString: format(day.date, 'yyyy-MM-dd'),
+        dateText: format(day.date, 'd'),
+        dia: isWorkingShift ? cleanDia : (cleanDia || "휴무"),
+        label: isWorkingShift ? (mapping.label || "") : "",
+        timeText: isWorkingShift ? (day.reportTime || "--:--") : "",
+        isToday: day.isToday,
+        isInMonth: day.isInMonth,
+        isHoliday: day.date.getDay() === 0 || day.date.getDay() === 6 || !!day.holidayName,
+        isSat: day.date.getDay() === 6,
+        isSun: day.date.getDay() === 0,
+        holidayName: day.holidayName || "",
+        memo1: day.memos[0] ? day.memos[0].text : "",
+        memo2: day.memos[1] ? day.memos[1].text : "",
+        hasMore: day.memos.length > 2
+      };
+    });
+
     const widgetPayload = {
       today: generatePayloadForDate(realToday),
       tomorrow: generatePayloadForDate(realTomorrow),
+      monthDays: monthDaysPayload, // 🚀 4x6 한달치 위젯용 원본 컨테이너 채널 추가
       updatedAt: Date.now()
     };
 
     saveWidgetData(widgetPayload);
-  }, [refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes]);
+  }, [refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes, days]);
+
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[var(--bg-main)] overflow-hidden relative">

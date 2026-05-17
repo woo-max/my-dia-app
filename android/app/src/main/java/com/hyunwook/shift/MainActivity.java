@@ -15,12 +15,12 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 💡 [해결 1] SharedPreferences 실시간 변경 감지 및 위젯 강제 새로고침 시그널 발생
         SharedPreferences prefs = getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);
         prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if ("WidgetAlarmData".equals(key)) {
+                    // 1. 기존 오늘/내일 (4x2) 위젯 실시간 강제 새로고침 시그널
                     Intent intent = new Intent(MainActivity.this, ShiftWidgetProvider.class);
                     intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                     int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(
@@ -28,6 +28,15 @@ public class MainActivity extends BridgeActivity {
                     );
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                     sendBroadcast(intent);
+
+                    // 🚀 [추가 완료]: 신규 한달치 (4x6) 달력 위젯 실시간 강제 새로고침 시그널
+                    Intent intentMonthly = new Intent(MainActivity.this, MonthlyWidgetProvider.class);
+                    intentMonthly.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                    int[] idsMonthly = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(
+                            new ComponentName(getApplication(), MonthlyWidgetProvider.class)
+                    );
+                    intentMonthly.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idsMonthly);
+                    sendBroadcast(intentMonthly);
                 }
             }
         };
@@ -48,7 +57,7 @@ public class MainActivity extends BridgeActivity {
         if (intent != null && intent.hasExtra("targetDate")) {
             final String targetDate = intent.getStringExtra("targetDate");
             
-            // 💡 [해결 3] WebView 내부에 JS 커스텀 이벤트를 비동기로 직접 주입하여 팝업 강제 트리거
+            // WebView 내부에 JS 커스텀 이벤트를 비동기로 직접 주입하여 팝업 강제 트리거
             getBridge().getWebView().post(new Runnable() {
                 @Override
                 public void run() {
