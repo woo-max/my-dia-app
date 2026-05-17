@@ -20,13 +20,11 @@ public class AlarmScheduler {
     public static void refreshAlarms(Context context) {
         Log.d(TAG, "⏰ [엔진 가동] 알람 스케줄러 동기화 스캔을 시작합니다.");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager == null) {
-            Log.e(TAG, "❌ 시스템 AlarmManager를 불러올 수 없습니다.");
-            return;
-        }
+        if (alarmManager == null) return;
 
         String rawJson = null;
         int alarmOffset = 90;
+        boolean isAlarmEnabled = true; // 🚀 알람 전체 기능 ON/OFF 마스터 플래그
         JSONArray monthDays = null;
 
         try {
@@ -36,33 +34,56 @@ public class AlarmScheduler {
 
             JSONObject root = new JSONObject(rawJson);
             alarmOffset = root.optInt("alarmOffset", 90);
+            
+            // 🚀 React에서 넘겨받을 스위치 키값 (보내주지 않으면 기본값 true로 작동)
+            isAlarmEnabled = root.optBoolean("isAlarmEnabled", true); 
+            
             if (!root.has("monthDays")) return;
             monthDays = root.getJSONArray("monthDays");
         } catch (Exception e) {
-            Log.e(TAG, "❌ 초기 JSON 로드 단계 치명적 에러 발생: ", e);
+            Log.e(TAG, "❌ 초기 JSON 로드 단계 에러: ", e);
             return;
         }
 
         SimpleDateFormat dateOnlySdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         String todayStr = dateOnlySdf.format(new Date());
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
         long currentTime = System.currentTimeMillis();
         int alarmCount = 0;
 
-        for (int i = 0; i < monthDays.length(); i++) {
-            if (alarmCount >= 7) break;
+        Log.d(TAG, "📢 현재 알람 기능 사용 여부 스위치 상태: " + isAlarmEnabled);
 
+        for (int i = 0; i < monthDays.length(); i++) {
             try {
                 JSONObject day = monthDays.getJSONObject(i);
-                if (!day.has("dateString") || !day.has("timeText")) continue;
+                if (!day.has("dateString")) continue;
 
                 String dateString = day.getString("dateString");
+                int intentId = dateString.hashCode();
+
+                // 알람 취소/등록에 공통으로 필요한 고유 펜딩 인텐트 조립
+                Intent receiverIntent = new Intent(context, AlarmReceiver.class);
+                receiverIntent.setAction("com.hyunwook.shift.ACTION_ALARM_TIMER");
+                PendingIntent operationPi = PendingIntent.getBroadcast(
+                        context, intentId, receiverIntent, 
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
+
+                // 🚀 [마스터 OFF 메커니즘]: 스위치가 꺼져있다면 기존에 예약된 모든 칸의 알람을 OS 원장에서 강제 철거(Cancel)
+                if (!isAlarmEnabled) {
+                    alarmManager.cancel(operationPi);
+                    continue;
+                }
+
+                // --- 아래는 스위치가 켜져있을(true) 때만 실행되는 정식 예약 공정 ---
+                if (alarmCount >= 7) continue;
+                if (!day.has("timeText")) continue;
+                
                 String timeText = day.getString("timeText");
-
                 if (dateString.compareTo(todayStr) < 0) continue;
-
+                
                 if (timeText.isEmpty() || timeText.equals("--:--") || timeText.contains("휴") || timeText.contains("운")) {
+                    alarmManager.cancel(operationPi); // 근무 없는 날도 알람 확실히 파괴
                     continue;
                 }
 
@@ -74,27 +95,14 @@ public class AlarmScheduler {
                 calendar.add(Calendar.MINUTE, -alarmOffset);
                 long alarmTargetMillis = calendar.getTimeInMillis();
 
-                if (alarmTargetMillis <= currentTime) continue;
-
-                int intentId = dateString.hashCode();
-
-                Intent receiverIntent = new Intent(context, AlarmReceiver.class);
-                receiverIntent.setAction("com.hyunwook.shift.ACTION_ALARM_TIMER");
-                receiverIntent.putExtra("dateString", dateString);
-                receiverIntent.putExtra("timeText", timeText);
-
-                PendingIntent operationPi = PendingIntent.getBroadcast(
-                        context, 
-                        intentId, 
-                        receiverIntent, 
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                );
+                if (alarmTargetMillis <= currentTime) {
+                    alarmManager.cancel(operationPi);
+                    continue;
+                }
 
                 Intent activityIntent = new Intent(context, MainActivity.class);
                 PendingIntent showPi = PendingIntent.getActivity(
-                        context,
-                        intentId,
-                        activityIntent,
+                        context, intentId, activityIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
 
@@ -108,23 +116,19 @@ public class AlarmScheduler {
                 alarmCount++;
 
             } catch (Exception cellException) {
-                Log.e(TAG, "❌ 격자 분석 오류: ", cellException);
+                Log.e(TAG, "❌ 격자 데이터 동기화 에러: ", cellException);
             }
         }
 
-        // 🚀 [최종 커널 팩트체크 검증부 신설]
+        // 최종 커널 검증부 로그 출력 변경
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AlarmManager.AlarmClockInfo nextAlarm = alarmManager.getNextAlarmClock();
             if (nextAlarm != null) {
-                // 🔮 이 로그가 찍히면 빅스비가 뭐라 하든 안드로이드 시스템에 완벽히 등록되어 내일 100% 울립니다.
-                Log.d(TAG, "🔮 [OS 커널 원장 실시간 조회 결과]: 현재 안드로이드 시스템에 최종 대기 중인 마스터 알람 시각은 [ " 
-                        + sdf.format(new Date(nextAlarm.getTriggerTime())) + " ] 입니다.");
+                Log.d(TAG, "🔮 [OS 커널 원장 조회 결과]: 현재 대기 중인 최상위 마스터 알람 시각 -> [ " + sdf.format(new Date(nextAlarm.getTriggerTime())) + " ]");
             } else {
-                // ❌ 이 로그가 찍히면 안드로이드 OS 가드가 알람을 차단한 것입니다. (권한 설정 필요)
-                Log.e(TAG, "❌ [OS 커널 조회 결과 실패]: 시스템 대기열이 텅 비어있습니다. OS 가드가 알람 등록을 거부했습니다.");
+                Log.d(TAG, "🔮 [OS 커널 원장 조회 결과]: 현재 예약된 시스템 알람 대기열이 완전히 비어있습니다.");
             }
         }
-
-        Log.d(TAG, "🏁 [공정 완료] 총 " + alarmCount + "개의 정식 규격 마스터 알람이 이식되었습니다.");
+        Log.d(TAG, "🏁 [공정 완료] 동기화 스캔 종료 (최종 등록 개수: " + alarmCount + "개)");
     }
 }

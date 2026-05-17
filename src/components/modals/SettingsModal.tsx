@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // 💡 오타 전면 교정 완료
 import { X, Calendar, Hash, ChevronLeft, ChevronRight, Save, Clock } from 'lucide-react';
 import { format, startOfMonth, startOfWeek, eachDayOfInterval, isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
 import { ALL_DIA_OPTIONS } from '../../utils/rotation';
@@ -11,8 +11,13 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
   const [selectedDate, setSelectedDate] = useState(new Date(currentConfig.date));
   const [selectedDia, setSelectedDia] = useState(currentConfig.dia);
   
-  // 🚀 [추가] React 상태창에 사용자가 직접 입력할 알람 분 단위 변수 추가 (기본 방어값 90분)
+  // React 상태창에 사용자가 직접 입력할 알람 분 단위 변수 (기본 방어값 90분)
   const [alarmOffset, setAlarmOffset] = useState(currentConfig.alarmOffset || 90);
+
+  // 알람 자체를 완전히 켜고 끌 마스터 스위치 상태 추가 (기본값 true)
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState<boolean>(
+    currentConfig.isAlarmEnabled !== undefined ? currentConfig.isAlarmEnabled : true
+  );
 
   // 미니 달력 계산 로직
   const miniDays = useMemo(() => {
@@ -42,7 +47,7 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
           <div className="bg-[var(--memo-bg)] rounded-2xl border border-[var(--border-line)] overflow-hidden">
             <button onClick={() => setOpenSection(openSection==='date'?null:'date')} className="w-full p-4 flex justify-between items-center text-sm font-black">
               <span className="text-[var(--text-muted)] flex items-center gap-3"><Calendar size={18}/> 기준 날짜</span>
-              <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">{format(selectedDate, 'yyyy. MM. dd')}</span>
+              <span className="text && text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">{format(selectedDate, 'yyyy. MM. dd')}</span>
             </button>
             <AnimatePresence>
               {openSection === 'date' && (
@@ -95,37 +100,58 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
             </AnimatePresence>
           </div>
 
-          {/* 🚀 [신규 추가] 섹션 3: 자동 출근 알람 설정 (아코디언) */}
+          {/* 섹션 3: 자동 출근 알람 설정 (아코디언) */}
           <div className="bg-[var(--memo-bg)] rounded-2xl border border-[var(--border-line)] overflow-hidden">
             <button onClick={() => setOpenSection(openSection==='alarm'?null:'alarm')} className="w-full p-4 flex justify-between items-center text-sm font-black">
               <span className="text-[var(--text-muted)] flex items-center gap-3"><Clock size={18}/> 자동 출근 알람</span>
-              <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">{alarmOffset}분 전</span>
+              <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">
+                {isAlarmEnabled ? `${alarmOffset}분 전` : '사용 안 함'}
+              </span>
             </button>
             <AnimatePresence>
               {openSection === 'alarm' && (
                 <motion.div 
                   initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} 
-                  className="p-5 border-t border-[var(--border-line)] flex items-center justify-between gap-4 bg-[var(--surface-card)] overflow-hidden"
+                  className="p-5 border-t border-[var(--border-line)] flex flex-col gap-4 bg-[var(--surface-card)] overflow-hidden"
                 >
-                  <span className="text-xs text-[var(--text-muted)] font-black">출근 시간 기준</span>
-                  <div className="flex items-center gap-2">
+                  {/* 알람 기능 ON/OFF 마스터 체크박스 스위치 */}
+                  <div className="flex items-center justify-between pb-2 border-b border-[var(--border-line)]">
+                    <span className="text-xs text-[var(--text-main)] font-black">자동 알람 기능 활성화</span>
                     <input 
-                      type="number" 
-                      pattern="\d*"
-                      value={alarmOffset} 
-                      onChange={(e) => setAlarmOffset(Math.max(0, parseInt(e.target.value, 10) || 0))}
-                      className="w-20 p-2 text-center text-sm font-black bg-[var(--memo-bg)] border border-[var(--border-line)] rounded-xl text-[var(--text-main)] focus:outline-none focus:border-[var(--text-main)]"
+                      type="checkbox" 
+                      checked={isAlarmEnabled} 
+                      onChange={(e) => setIsAlarmEnabled(e.target.checked)}
+                      className="w-5 h-5 cursor-pointer accent-[var(--text-main)]"
                     />
-                    <span className="text-xs font-black text-[var(--text-main)]">분 전에 알람 구동</span>
+                  </div>
+
+                  {/* 분 단위 타이머 인풋 (스위치 오프 시 비활성화 스타일 처리) */}
+                  <div className={`flex items-center justify-between transition-opacity duration-200 ${!isAlarmEnabled ? 'opacity-30 pointer-events-none' : ''}`}>
+                    <span className="text-xs text-[var(--text-muted)] font-black">출근 시간 기준</span>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="number" 
+                        pattern="\d*"
+                        value={alarmOffset} 
+                        onChange={(e) => setAlarmOffset(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                        className="w-20 p-2 text-center text-sm font-black bg-[var(--memo-bg)] border border-[var(--border-line)] rounded-xl text-[var(--text-main)] focus:outline-none focus:border-[var(--text-main)]"
+                      />
+                      <span className="text-xs font-black text-[var(--text-main)]">분 전에 알람 구동</span>
+                    </div>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* 저장 버튼: 구조 변경으로 alarmOffset 파라미터 백엔드 결합 */}
+          {/* SAVE 버튼 클릭 시 Java 단이 가로챌 마스터 토글 값 연동 */}
           <button 
-            onClick={() => onSave({ date: selectedDate, dia: selectedDia, alarmOffset: Number(alarmOffset) })} 
+            onClick={() => onSave({ 
+              date: selectedDate, 
+              dia: selectedDia, 
+              alarmOffset: Number(alarmOffset),
+              isAlarmEnabled: isAlarmEnabled 
+            })} 
             className="w-full mt-4 py-5 bg-[var(--text-main)] text-[var(--surface-card)] rounded-3xl text-sm font-black shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <Save size={18} /> SAVE SETTINGS
