@@ -185,16 +185,14 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
 </div>
 
           <div className="flex flex-col gap-4">
-            
-            
             <div className="flex flex-col gap-4">
               {realData.map((item: any, i: number) => {
                 const rawContent = String(item.content || "");
                 return (
                   <div key={i} className="border border-[var(--border-line)] p-5 rounded-2xl bg-[var(--memo-bg)]">
-                    {/* 머리말 색상 진한 검정 고정 */}
-                    <span className="text-[14px] font-black text-black uppercase mb-2 block">{item.type}</span>
-                    <p className={`text-[1.5rem] font-black leading-snug ${rawContent.includes('운휴') ? 'text-red-500' : 'text-black'}`}>
+                    {/* 🚀 하드코딩된 text-black을 제거하고 테마 변수를 주입하여 다크모드 자동 대응 */}
+                    <span className="text-[14px] font-black text-[var(--text-main)] opacity-50 uppercase mb-2 block">{item.type}</span>
+                    <p className={`text-[1.5rem] font-black leading-snug ${rawContent.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
                       {rawContent}
                     </p>
                   </div>

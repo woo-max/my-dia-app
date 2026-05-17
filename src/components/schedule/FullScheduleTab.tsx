@@ -1,11 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react'; // 🚀 닫기 버튼(X) 추가
 import { format, parse } from 'date-fns';
+import { motion, AnimatePresence } from 'framer-motion'; // 🚀 애니메이션 부품 장착
 
 const FullScheduleTab = ({ sheetData }: any) => {
   const [activeTab, setActiveTab] = useState('평일주간');
   const [searchQuery, setSearchQuery] = useState('');
   const [isError, setIsError] = useState(false);
+  
+  // 🚀 행로표 이미지 팝업 상태 제어실
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const tabs = ['평일주간', '휴일주간', '평평', '평휴', '휴휴', '휴평', '교번순서'];
   const touchStartX = useRef(0);
@@ -22,26 +26,21 @@ const FullScheduleTab = ({ sheetData }: any) => {
 
   const handleSwipe = () => {
     const distance = touchStartX.current - touchEndX.current;
-    const swipeThreshold = 50; // 이 픽셀 이상 움직여야 탭이 넘어감
+    const swipeThreshold = 50; 
 
     const currentIndex = tabs.indexOf(activeTab);
 
     if (distance > swipeThreshold) {
-      // 🚀 왼쪽으로 스와이프 (다음 탭으로)
-      // 마지막 탭이면 0번(처음)으로 돌아가고, 아니면 +1
       const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
       setActiveTab(tabs[nextIndex]);
       setSearchQuery('');
     } else if (distance < -swipeThreshold) {
-      // 🚀 오른쪽으로 스와이프 (이전 탭으로)
-      // 0번(처음) 탭이면 마지막으로 돌아가고, 아니면 -1
       const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
       setActiveTab(tabs[prevIndex]);
       setSearchQuery('');
     }
   };
 
-  // 동준 님이 지정한 121개 순환근무 고정 데이터
   const rotationData = [
     '대1', '49', '~', '휴1', '16', '34', '~', '휴10', '8', '26', '휴16', '대12', '~', '휴22',
     '3', '33', '42', '~', '휴4', '9', '46', '~', '휴29', '대4', '18', '휴13', '51', '~',
@@ -77,7 +76,6 @@ const FullScheduleTab = ({ sheetData }: any) => {
     }
   };
 
-  // [교번순서] 121개 그리드 (번호 지우고 글자에 맞춰 박스 축소)
   const renderRotationGrid = () => (
     <div className="flex-1 overflow-y-auto touch-auto no-scrollbar bg-[var(--bg-main)]">
       <div className="grid grid-cols-7 gap-px bg-[var(--border-line)] border-b border-[var(--border-line)]">
@@ -110,7 +108,7 @@ const FullScheduleTab = ({ sheetData }: any) => {
       const row = rawRows[i];
       if (!row.dia || /dia|number/i.test(row.dia)) continue;
       const nextRow = rawRows[i + 1];
-      let block = { rowN: row, rowN1: { content: "", train: "" } };
+      let block = { rowN: row, rowN1: { content: "", train: "", image: row.image || null } }; // 🚀 E열 데이터 연동 구조 보존
       if (nextRow && (!nextRow.dia || nextRow.dia.trim() === "" || nextRow.dia === row.dia)) {
         block.rowN1 = nextRow; i++; 
       }
@@ -145,7 +143,19 @@ const FullScheduleTab = ({ sheetData }: any) => {
 
           return (
             <div key={idx} className="flex border-b border-[var(--border-line)] min-h-0 h-fit">
-              <div className={`w-[38px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] text-[12px] font-black py-[1.7px] ${isDiaMatch ? 'bg-[rgba(255,159,10,0.3)] text-[var(--text-main)]' : 'bg-[var(--surface-card)] text-[var(--text-main)]'}`}>{rowN.dia}</div>
+              {/* 🚀 [비밀 통로 개설] 클릭 시 이미지가 있을 때만 조용히 가동 (active 효과 완전 제거) */}
+              <div 
+                onClick={() => {
+                  if (rowN.image) {
+                    setSelectedImage(rowN.image);
+                  }
+                }}
+                className={`w-[38px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] text-[12px] font-black py-[1.7px] cursor-default select-none ${
+                  isDiaMatch ? 'bg-[rgba(255,159,10,0.3)] text-[var(--text-main)]' : 'bg-[var(--surface-card)] text-[var(--text-main)]'
+                }`}
+              >
+                {rowN.dia}
+              </div>
               <div className="w-[52px] shrink-0 flex items-center justify-center border-r border-[var(--border-line)] font-black text-[11px] text-[var(--text-muted)] bg-[var(--bg-main)] py-[1.7px]">{calculateCheckIn(rowN.content)}</div>
               <div className={`flex-[1.3] flex items-center justify-center text-center text-[11.5px] font-black border-r border-[var(--border-line)] leading-none tracking-tighter py-[1.7px] px-0.5 ${isRowNMatch ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowNUnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN.content}</div>
               <div className={`flex-[0.7] flex items-center justify-center text-center text-[11.5px] font-black leading-none tracking-tighter py-[1.7px] px-0.5 ${isRowN1Match ? 'bg-[rgba(255,159,10,0.2)]' : 'bg-[var(--surface-card)]'} ${isRowN1UnHyu ? 'text-red-500' : 'text-[var(--text-main)]'}`}>{rowN1.content}</div>
@@ -158,7 +168,6 @@ const FullScheduleTab = ({ sheetData }: any) => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0 bg-[var(--bg-main)] overflow-hidden">
-      {/* 상단 탭: 가로선 제거, 흑백 대비 강화, 세로 구분선 */}
       <nav className="flex bg-[var(--surface-card)] shrink-0 h-10">
         {tabs.map((tab, i) => (
           <button 
@@ -194,6 +203,37 @@ const FullScheduleTab = ({ sheetData }: any) => {
       >
         {activeTab === '교번순서' ? renderRotationGrid() : renderScheduleList()}
       </div>
+
+      {/* 🚀 [행로표 전용 이미지 뷰어 모달 부품] */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[600] bg-black/95 flex items-center justify-center p-4"
+          >
+            {/* 행로표 이미지 출력부 (클릭 시 창 닫힘 전파 방지) */}
+            <motion.img 
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              src={selectedImage} 
+              alt="행로표 상세" 
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {/* 상단 닫기 우회 버튼 */}
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-12 right-6 p-2 text-white/60 active:text-white transition-colors"
+            >
+              <X size={28} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

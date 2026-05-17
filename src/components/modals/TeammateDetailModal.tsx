@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // 🚀 AnimatePresence 추가
 import { X } from 'lucide-react';
+import { LiveTrainChip } from '../LiveTrainChip'; // 🚀 실시간 위치 칩 컴포넌트 로드
 
 const TeammateDetailModal = ({ duty, onClose }: any) => {
+  const [isLiveMode, setIsLiveMode] = useState(false); // 🚀 라이브 모드 온/오프 상태
+
   const calculateCheckIn = (text: string) => {
     const match = text?.match(/\d{2}:\d{2}/);
     if (!match) return '--:--';
@@ -13,6 +16,15 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
     date.setHours(h, m - 30);
     return format(date, 'HH:mm');
   };
+
+  // 🚀 전반(rowN)과 후반(rowN1) 머리말에서 4자리 열차번호 추출 로직
+  const globalTrainNos = useMemo(() => {
+    const type1 = String(duty.rowN?.type || "");
+    const type2 = String(duty.rowN1?.type || "");
+    const allTypeText = `${type1} ${type2}`;
+    const matches = allTypeText.match(/\d{4}/g) || [];
+    return Array.from(new Set(matches));
+  }, [duty.rowN, duty.rowN1]);
 
   return (
     /* 🚀 배경 Overlay: 동일하게 0.08초 페이드 아웃 적용 */
@@ -42,7 +54,6 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
 
         <header className="flex justify-between items-start mb-6">
           <div>
-            {/* [수정] 불필요한 '기관사' 텍스트 삭제 */}
             <h3 className="text-2xl font-black text-[var(--text-main)]">{duty.name}</h3>
             <p className="text-[12px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-1">
               {format(duty.date, 'MM.dd eee', { locale: ko })}
@@ -52,16 +63,38 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
         </header>
 
         <div className="flex justify-between items-end border-b border-[var(--border-line)] pb-6 mb-6">
-          {/* ✅ 수정 후 (강제 필터링 적용) */}
-<div className="flex flex-col">
-  <span className="text-5xl font-black italic font-serif text-[var(--text-main)] leading-none tracking-tighter">
-    {duty.dia}
-  </span>
-  <span className="text-[14px] font-black text-[var(--text-main)] mt-3">
-    {/* 🚀 duty.dia가 '~'일 때는 '비번'으로, 그 외에는 원래 tabLabel 출력! */}
-    {duty.dia === '~' ? '비번' : duty.tabLabel}
-  </span>
-</div>
+          <div className="flex flex-col">
+            {/* 🚀 다이아 번호 터치 영역 및 미니 관제창 슬라이딩 배선 */}
+            <div className="flex items-center gap-3">
+              <div 
+                onClick={() => setIsLiveMode(!isLiveMode)}
+                className="cursor-default active:scale-95 transition-transform"
+              >
+                <span className="text-5xl font-black italic font-serif text-[var(--text-main)] leading-none tracking-tighter">
+                  {duty.dia}
+                </span>
+              </div>
+
+              <AnimatePresence>
+                {isLiveMode && globalTrainNos.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -15, scale: 0.9 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -15, scale: 0.9 }}
+                    className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-2xl backdrop-blur-sm"
+                  >
+                    {globalTrainNos.map(no => (
+                      <LiveTrainChip key={no} trainNo={no} line="4" />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
+            <span className="text-[14px] font-black text-[var(--text-main)] mt-3">
+              {duty.dia === '~' ? '비번' : duty.tabLabel}
+            </span>
+          </div>
           <div className="flex flex-col items-end">
             <span className="text-[11px] font-black text-[var(--text-muted)] mb-1">&lt;출근시간&gt;</span>
             <span className="text-3xl font-black text-[var(--text-main)] leading-none">{calculateCheckIn(duty.rowN?.content)}</span>
@@ -72,8 +105,8 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
           {/* 전반 구역 (B열: type 사용) */}
           <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
             <span className="text-[15px] font-black text-[var(--text-main)] block mb-2 uppercase">
-  {duty.rowN?.type || '전반'}
-</span>
+              {duty.rowN?.type || '전반'}
+            </span>
             <p className={`text-[15px] font-black leading-snug ${duty.rowN?.content?.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
               {duty.rowN?.content || '-'}
             </p>
@@ -83,8 +116,8 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
           {duty.rowN1 && (
             <div className="p-5 bg-[var(--bg-main)] rounded-[24px] border border-[var(--border-line)]">
               <span className="text-[15px] font-black text-[var(--text-main)] block mb-2 uppercase">
-  {duty.rowN1?.type || '후반'}
-</span>
+                {duty.rowN1?.type || '후반'}
+              </span>
               <p className={`text-[15px] font-black leading-snug ${duty.rowN1?.content?.includes('운휴') ? 'text-red-500' : 'text-[var(--text-main)]'}`}>
                 {duty.rowN1?.content || '-'}
               </p>

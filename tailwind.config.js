@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class', // 🚀 테일윈드에게 시스템 설정이 아닌 코드가 주입하는 'dark' 클래스를 감시하라고 명령
   theme: {
     extend: {
       colors: {
