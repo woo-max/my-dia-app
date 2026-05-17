@@ -1,15 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Hash, ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { X, Calendar, Hash, ChevronLeft, ChevronRight, Save, Clock } from 'lucide-react';
 import { format, startOfMonth, startOfWeek, eachDayOfInterval, isSameDay, isSameMonth, addMonths, subMonths } from 'date-fns';
 import { ALL_DIA_OPTIONS } from '../../utils/rotation';
 
 const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
-  // TeammateAddModal의 상태 로직 이식
-  const [openSection, setOpenSection] = useState<'date' | 'dia' | null>(null);
+  // 아코디언 제어용 섹션 확장 (alarm 추가)
+  const [openSection, setOpenSection] = useState<'date' | 'dia' | 'alarm' | null>(null);
   const [tempDate, setTempDate] = useState(new Date(currentConfig.date));
   const [selectedDate, setSelectedDate] = useState(new Date(currentConfig.date));
   const [selectedDia, setSelectedDia] = useState(currentConfig.dia);
+  
+  // 🚀 [추가] React 상태창에 사용자가 직접 입력할 알람 분 단위 변수 추가 (기본 방어값 90분)
+  const [alarmOffset, setAlarmOffset] = useState(currentConfig.alarmOffset || 90);
 
   // 미니 달력 계산 로직
   const miniDays = useMemo(() => {
@@ -92,9 +95,37 @@ const SettingsModal = ({ onClose, currentConfig, onSave }: any) => {
             </AnimatePresence>
           </div>
 
-          {/* 저장 버튼 */}
+          {/* 🚀 [신규 추가] 섹션 3: 자동 출근 알람 설정 (아코디언) */}
+          <div className="bg-[var(--memo-bg)] rounded-2xl border border-[var(--border-line)] overflow-hidden">
+            <button onClick={() => setOpenSection(openSection==='alarm'?null:'alarm')} className="w-full p-4 flex justify-between items-center text-sm font-black">
+              <span className="text-[var(--text-muted)] flex items-center gap-3"><Clock size={18}/> 자동 출근 알람</span>
+              <span className="text-[11px] font-black text-[var(--text-main)] underline underline-offset-4 decoration-2">{alarmOffset}분 전</span>
+            </button>
+            <AnimatePresence>
+              {openSection === 'alarm' && (
+                <motion.div 
+                  initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} 
+                  className="p-5 border-t border-[var(--border-line)] flex items-center justify-between gap-4 bg-[var(--surface-card)] overflow-hidden"
+                >
+                  <span className="text-xs text-[var(--text-muted)] font-black">출근 시간 기준</span>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="number" 
+                      pattern="\d*"
+                      value={alarmOffset} 
+                      onChange={(e) => setAlarmOffset(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                      className="w-20 p-2 text-center text-sm font-black bg-[var(--memo-bg)] border border-[var(--border-line)] rounded-xl text-[var(--text-main)] focus:outline-none focus:border-[var(--text-main)]"
+                    />
+                    <span className="text-xs font-black text-[var(--text-main)]">분 전에 알람 구동</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* 저장 버튼: 구조 변경으로 alarmOffset 파라미터 백엔드 결합 */}
           <button 
-            onClick={() => onSave({ date: selectedDate, dia: selectedDia })} 
+            onClick={() => onSave({ date: selectedDate, dia: selectedDia, alarmOffset: Number(alarmOffset) })} 
             className="w-full mt-4 py-5 bg-[var(--text-main)] text-[var(--surface-card)] rounded-3xl text-sm font-black shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <Save size={18} /> SAVE SETTINGS

@@ -185,11 +185,13 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
     });
 
     const widgetPayload = {
-      today: generatePayloadForDate(realToday),
-      tomorrow: generatePayloadForDate(realTomorrow),
-      monthDays: monthDaysPayload, // 🚀 4x6 한달치 위젯용 원본 컨테이너 채널 추가
-      updatedAt: Date.now()
-    };
+  today: generatePayloadForDate(realToday),
+  tomorrow: generatePayloadForDate(realTomorrow),
+  monthDays: monthDaysPayload,
+  // 💡 교정 완료: 이미 상단 props로 들어와 있는 refConfig 내부의 설정값을 직접 호출 (기본값 90분)
+  alarmOffset: refConfig.alarmOffset || 90, 
+  updatedAt: Date.now()
+};
 
     saveWidgetData(widgetPayload);
   }, [refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes, days]);
