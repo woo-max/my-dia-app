@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'; // 💡 useRef 추가
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'; 
 import { format, addMonths, subMonths, startOfMonth, eachDayOfInterval, isSameDay, startOfWeek, isSameMonth, startOfDay } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Target, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -7,13 +7,14 @@ import { getShiftForDate, getShiftMapping, calculateReportTime, getHolidayName }
 import CalendarCell from './CalendarCell';
 import DayDetailModal from '../modals/DayDetailModal';
 
+// 위젯 저장 함수 임포트
+import { saveWidgetData } from '../../utils/saveWidgetData';
+
 const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, lockedShifts, setLockedShifts, customDayTypes, setCustomDayTypes, overrides, setOverrides, memos, setMemos, sheetData }: any) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [confirmModal, setConfirmModal] = useState<any>(null);
   const [selectedDay, setSelectedDay] = useState<any>(null);
   
-  
-  // 🚀 [핵심 추가] 드래그 중인지 판별하는 차단기 (Ref를 써야 렌더링 지연 없이 즉시 작동함)
   const isDraggingRef = useRef(false);
 
   useEffect(() => {
@@ -25,14 +26,12 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
   }, [selectedDay, confirmModal]);
 
   const handleDayClick = useCallback((day: any) => {
-    // 💡 드래그 중이 아닐 때만 클릭 허용
     if (!isDraggingRef.current) {
       setSelectedDay(day);
     }
   }, []);
 
   const handleLongPress = useCallback((date: any, dia: any, isLocked: any) => {
-    // 💡 드래그 중에는 롱프레스도 차단
     if (!isDraggingRef.current) {
       setConfirmModal({ date, dia, isLocked });
     }
@@ -46,20 +45,19 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       rows.forEach((row: any) => {
         const diaKey = String(row.dia).trim();
         if (!lookup[tab][diaKey]) { 
-        lookup[tab][diaKey] = {
-          reportTime: calculateReportTime(row.content || ''),
-          isUnhyu: row.content?.includes('운휴') || false,
-        };
-      }
+          lookup[tab][diaKey] = {
+            reportTime: calculateReportTime(row.content || ''),
+            isUnhyu: row.content?.includes('운휴') || false,
+          };
+        }
+      });
     });
-  });
-  return lookup;
-}, [sheetData]);
+    return lookup;
+  }, [sheetData]);
 
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
     const calendarStart = startOfWeek(monthStart);
-    const UNHYU_CANDIDATES = ['28', '29', '30', '31', '32', '33', '34', '35', '36'];
 
     return Array.from({ length: 42 }, (_, i) => {
       const date = new Date(calendarStart);
@@ -96,6 +94,100 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
       };
     });
   }, [currentDate, refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes]);
+
+  // 위젯 원격 딥링크 수신 동기화 리스너
+  useEffect(() => {
+    const handleWidgetDeepLink = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const clickedDateStr = customEvent.detail;
+      
+      if (clickedDateStr) {
+        const targetDateObj = startOfDay(new Date(clickedDateStr));
+        const matchedDay = days.find(d => isSameDay(startOfDay(d.date), targetDateObj));
+        if (matchedDay) {
+          setSelectedDay(matchedDay); 
+        }
+      }
+    };
+
+    window.addEventListener('widgetClickDate', handleWidgetDeepLink);
+    return () => window.removeEventListener('widgetClickDate', handleWidgetDeepLink);
+  }, [days]);
+
+  // 🚀 오늘/내일 위젯 자동 동기화 데이터 가공 엔진
+  useEffect(() => {
+    const generatePayloadForDate = (targetDate: Date) => {
+      const cleanDate = startOfDay(targetDate);
+      const dateKey = format(cleanDate, 'yyyy-MM-dd');
+      
+      const originalInfo = getShiftForDate(cleanDate, refConfig.date, refConfig.dia);
+      
+      let finalInfo = { ...originalInfo };
+      const overrideData = overrides[dateKey];
+      const lockData = lockedShifts[dateKey];
+
+      if (overrideData) finalInfo = { dia: overrideData.dia, type: overrideData.type };
+      else if (lockData) finalInfo = { dia: lockData.dia };
+
+      const cleanDia = String(finalInfo.dia).trim();
+      const mapping = getShiftMapping(cleanDate, cleanDia, customDayTypes);
+      const lookupData = sheetLookup[mapping.tab]?.[cleanDia];
+      const holidayName = getHolidayName(cleanDate);
+
+      const isHoliday = cleanDate.getDay() === 0 || cleanDate.getDay() === 6 || (!!holidayName);
+      const dayOfWeek = ['일','월','화','수','목','금','토'][cleanDate.getDay()];
+      
+      const dayMemos = memos[dateKey] || [];
+      const memo1 = dayMemos[0] ? { text: dayMemos[0].text, color: dayMemos[0].color || "#3b82f6" } : null;
+      const memo2 = dayMemos[1] ? { text: dayMemos[1].text, color: dayMemos[1].color || "#10b981" } : null;
+      const memo3 = dayMemos[2] ? { text: dayMemos[2].text, color: dayMemos[2].color || "#ef4444" } : null;
+
+      const hasReportTime = lookupData?.reportTime && lookupData.reportTime.trim() !== '';
+
+      // 🚀 진짜 정규 출근형태 근무인지 필터링 스크리닝
+      const isWorkingShift = /^\d+$/.test(cleanDia) || cleanDia.startsWith('대');
+      
+      let diaDisplay = "";
+      let labelDisplay = "";
+      let timeTextDisplay = "";
+
+      if (isWorkingShift) {
+        // 1. 정상 근무일 때만 순수 DIA 번호와 평/휴 라벨을 철저히 분리 주입
+        diaDisplay = cleanDia;
+        labelDisplay = mapping.label || '';
+        timeTextDisplay = hasReportTime ? lookupData.reportTime : "--:--";
+      } else {
+        // 2. 휴무 혹은 ~ 와 같은 공백 스케줄일 때 (라벨과 시간 모두 숨김 공백화)
+        diaDisplay = cleanDia || "휴무";
+        labelDisplay = "";
+        timeTextDisplay = "";
+      }
+
+      return {
+        dateString: dateKey,
+        dateText: `${format(cleanDate, 'd')}(${dayOfWeek})`,
+        dia: diaDisplay,
+        label: labelDisplay, // 🚀 쪼개진 라벨 데이터 패이로드 추가
+        timeText: timeTextDisplay,
+        memo1,
+        memo2,
+        memo3,
+        isHoliday
+      };
+    };
+
+    const realToday = new Date();
+    const realTomorrow = new Date();
+    realTomorrow.setDate(realToday.getDate() + 1);
+
+    const widgetPayload = {
+      today: generatePayloadForDate(realToday),
+      tomorrow: generatePayloadForDate(realTomorrow),
+      updatedAt: Date.now()
+    };
+
+    saveWidgetData(widgetPayload);
+  }, [refConfig, lockedShifts, overrides, memos, sheetLookup, customDayTypes]);
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[var(--bg-main)] overflow-hidden relative">
@@ -138,23 +230,15 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
           <motion.div
             key={format(currentDate, 'yyyy-MM')}
             initial={false} animate={false}
-            
-            // 🚀 드래그 최적화 설정
             drag="x" 
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.5} 
             dragMomentum={false} 
-
-            // 💡 드래그 시작 시 차단기 ON
             onDragStart={() => { isDraggingRef.current = true; }}
-            
             onDragEnd={(_, info) => {
               const swipeThreshold = 80;
               if (info.offset.x < -swipeThreshold) setCurrentDate(prev => addMonths(prev, 1));
               else if (info.offset.x > swipeThreshold) setCurrentDate(prev => subMonths(prev, 1));
-              
-              // 💡 드래그 종료 후 아주 잠깐(100ms) 뒤에 차단기 OFF 
-              // (드래그 끝나자마자 발생하는 유령 클릭 방지용)
               setTimeout(() => { isDraggingRef.current = false; }, 100);
             }}
             className="grid grid-cols-7 grid-rows-6 absolute inset-0 bg-gray-300/50 gap-[1px] border-t border-b border-gray-100/50 select-none touch-pan-y"
@@ -162,7 +246,6 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
             {days.map(day => (
               <div 
                 key={format(day.date, 'yyyy-MM-dd')}
-                // 💡 PointerUp 대신 표준 onClick 사용 (isDraggingRef가 필터링해줌)
                 onClick={() => handleDayClick(day)}
               >
                 <CalendarCell 

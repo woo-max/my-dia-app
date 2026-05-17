@@ -91,8 +91,9 @@ const TeammateDetailModal = ({ duty, onClose }: any) => {
               </AnimatePresence>
             </div>
             
+            {/* 🚀 하단 라벨 영역: ~ 이나 휴 근무일 때는 아무것도 표시하지 않고 완전 공백 처리 */}
             <span className="text-[14px] font-black text-[var(--text-main)] mt-3">
-              {duty.dia === '~' ? '비번' : duty.tabLabel}
+              {duty.dia === '~' || duty.dia.includes('휴') ? '' : duty.tabLabel}
             </span>
           </div>
           <div className="flex flex-col items-end">

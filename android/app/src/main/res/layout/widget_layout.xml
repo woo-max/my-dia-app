@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121314"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <LinearLayout
+        android:id="@+id/layout_today_row"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5dp"
+        android:background="#1A1C1E"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            
+            <LinearLayout
+                android:id="@+id/block_today_bg"
+                android:layout_width="match_parent"
+                android:layout_height="14dp"
+                android:gravity="center"
+                android:background="@drawable/bg_date_today">
+                <TextView
+                    android:id="@+id/txt_today_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#121314"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:text="--(--)"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/bg_info_box"
+                android:paddingHorizontal="4dp">
+                <TextView
+                    android:id="@+id/txt_today_dia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="-"/>
+                <TextView
+                    android:id="@+id/txt_today_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:layout_marginStart="2dp"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/txt_today_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:layout_marginStart="4dp"
+                    android:text="--:--"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginStart="10dp">
+            
+            <LinearLayout android:id="@+id/layout_today_memo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="2dp">
+                <LinearLayout android:id="@+id/v_today_memo1_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+                <TextView android:id="@+id/txt_today_memo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layout_today_memo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="2dp">
+                <LinearLayout android:id="@+id/v_today_memo2_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+                <TextView android:id="@+id/txt_today_memo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layout_today_memo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                <LinearLayout android:id="@+id/v_today_memo3_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+                <TextView android:id="@+id/txt_today_memo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_tomorrow_row"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#1A1C1E"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            
+            <LinearLayout
+                android:id="@+id/block_tomorrow_bg"
+                android:layout_width="match_parent"
+                android:layout_height="14dp"
+                android:gravity="center"
+                android:background="@drawable/bg_date_black">
+                <TextView
+                    android:id="@+id/txt_tomorrow_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:text="--(--)"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/bg_info_box"
+                android:paddingHorizontal="4dp">
+                <TextView
+                    android:id="@+id/txt_tomorrow_dia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="-"/>
+                <TextView
+                    android:id="@+id/txt_tomorrow_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:layout_marginStart="2dp"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/txt_tomorrow_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:layout_marginStart="4dp"
+                    android:text="--:--"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginStart="10dp">
+            
+            <LinearLayout android:id="@+id/layout_tomorrow_memo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="2dp">
+                <LinearLayout android:id="@+id/v_tomorrow_memo1_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+                <TextView android:id="@+id/txt_tomorrow_memo1" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layout_tomorrow_memo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="2dp">
+                <LinearLayout android:id="@+id/v_tomorrow_memo2_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+                <TextView android:id="@+id/txt_tomorrow_memo2" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layout_tomorrow_memo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+    <LinearLayout android:id="@+id/v_tomorrow_memo3_bar" android:layout_width="3dp" android:layout_height="9dp" android:background="#3b82f6" android:orientation="horizontal"/>
+    <TextView android:id="@+id/txt_tomorrow_memo3" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E3E2E6" android:textSize="11sp" android:layout_marginStart="3dp" android:maxLines="1" android:ellipsize="end" android:text=""/>
+</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

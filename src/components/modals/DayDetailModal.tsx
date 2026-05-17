@@ -178,9 +178,9 @@ const DayDetailModal = ({ date, originalDia, overrideType, onClose, customDayTyp
     </div>
   </div>
   
-  {/* 3. 하단 다이아 라벨 (기존 로직 유지) */}
+  {/* 🚀 3. 하단 다이아 라벨: ~ 이나 휴 근무일 때는 아무것도 적지 않도록 정밀 필터링 */}
   <span className="text-[12pt] font-black opacity-60 mt-2 text-[var(--text-main)]">
-    {mapping.label} {currentOverride && <span className="opacity-30 text-[10pt] ml-2">(원래 {originalDia})</span>}
+    {currentDia === '~' || currentDia.includes('휴') ? '' : mapping.label} {currentOverride && <span className="opacity-30 text-[10pt] ml-2">(원래 {originalDia})</span>}
   </span>
 </div>
 
