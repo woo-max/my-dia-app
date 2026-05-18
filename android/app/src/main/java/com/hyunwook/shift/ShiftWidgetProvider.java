@@ -25,7 +25,8 @@ public class ShiftWidgetProvider extends AppWidgetProvider {
 
         try {
             SharedPreferences prefs = context.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);
-            String rawJson = prefs.getString("WidgetAlarmData", null);
+            // 🚀 [교정]: 실제 원장 테이블 명칭인 _cap_ 접두사 주입
+            String rawJson = prefs.getString("_cap_WidgetAlarmData", null); 
 
             if (rawJson != null) {
                 JSONObject root = new JSONObject(rawJson);

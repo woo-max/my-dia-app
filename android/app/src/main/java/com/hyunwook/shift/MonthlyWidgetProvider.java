@@ -27,7 +27,6 @@ public class MonthlyWidgetProvider extends AppWidgetProvider {
         try {
             SharedPreferences prefs = context.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);
             String rawJson = prefs.getString("WidgetAlarmData", null);
-
             if (rawJson != null) {
                 JSONObject root = new JSONObject(rawJson);
 
@@ -51,6 +50,9 @@ public class MonthlyWidgetProvider extends AppWidgetProvider {
                         String dia = day.getString("dia");
                         String label = day.optString("label", "");
                         String timeText = day.getString("timeText");
+                        String overrideType = day.optString("overrideType", "");
+                        // 🚀 [추가]: React가 보낸 구글시트 운휴 원장 판정 도장 획득 (꺼내오기)
+boolean isUnhyu = day.optBoolean("isUnhyu", false);
                         boolean isToday = day.getBoolean("isToday");
                         boolean isInMonth = day.getBoolean("isInMonth");
                         boolean isHoliday = day.getBoolean("isHoliday");
@@ -93,21 +95,33 @@ public class MonthlyWidgetProvider extends AppWidgetProvider {
                         views.setTextViewText(txtTimeId, timeText);
 
                         // Colors binding
-                        int baseTextColor = Color.parseColor("#E3E2E6");
-                        if (isSun || isHoliday) {
-                            baseTextColor = Color.parseColor("#FF4D4D");
-                        } else if (isSat) {
-                            baseTextColor = Color.parseColor("#4D94FF");
-                        }
-                        views.setTextColor(txtDateId, baseTextColor);
+int baseTextColor = Color.parseColor("#E3E2E6");
+if (isSun || isHoliday) {
+    baseTextColor = Color.parseColor("#FF4D4D");
+} else if (isSat) {
+    baseTextColor = Color.parseColor("#4D94FF");
+}
+views.setTextColor(txtDateId, baseTextColor);
 
-                        if (dia.contains("휴") || dia.contains("운")) {
-                            views.setTextColor(txtDiaId, Color.parseColor("#FF4D4D"));
-                        } else if (dia.startsWith("대")) {
-                            views.setTextColor(txtDiaId, Color.parseColor("#4D94FF"));
-                        } else {
-                            views.setTextColor(txtDiaId, Color.WHITE);
-                        }
+// 🚀 [완전 교정]: CalendarCell.tsx 소스 코드와 1:1 대치되는 위젯 전용 텍스트 컬러 분기 엔진
+int diaTextColor = Color.WHITE; // 기본값 (흰색)
+
+// 🚀 [완전 교정]: overrideType이 red(휴가류)이거나 구글 시트 원장 판정이 운휴(isUnhyu == true)인 경우 강제 빨간색 렌더링
+if (overrideType.equals("red") || isUnhyu) { 
+    diaTextColor = Color.parseColor("#FF4D4D");
+     // 휴가류 및 시트상 운휴 확정일 (빨간색)
+} else if (overrideType.equals("blue")) {
+    diaTextColor = Color.parseColor("#4D94FF");
+     // 교번교체, 대기충당, 지정근무 (파란색)
+} else if (overrideType.equals("yellow")) {
+    diaTextColor = Color.parseColor("#FFB300");
+     // 휴무충당 (노란색/Amber)
+} else if (dia.contains("휴") || dia.contains("운")) {
+    diaTextColor = Color.parseColor("#FF4D4D");
+     // 일반 스케줄상의 휴무 및 운휴 (빨간색)
+}
+
+views.setTextColor(txtDiaId, diaTextColor);
 
                         // Today Highlight matrix
                         if (isToday) {

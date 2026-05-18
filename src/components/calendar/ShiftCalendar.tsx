@@ -180,7 +180,9 @@ const ShiftCalendar = ({ onOpenSettings, isDarkMode, toggleDarkMode, refConfig, 
         holidayName: day.holidayName || "",
         memo1: day.memos[0] ? day.memos[0].text : "",
         memo2: day.memos[1] ? day.memos[1].text : "",
-        hasMore: day.memos.length > 2
+        hasMore: day.memos.length > 2,
+        overrideType: day.overrideType || '',
+        isUnhyu: day.isUnhyu
       };
     });
 

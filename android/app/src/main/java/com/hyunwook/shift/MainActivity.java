@@ -29,6 +29,7 @@ public class MainActivity extends BridgeActivity {
         prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                // 🚀 [교정]: Capacitor 엔진 특화 접두사(_cap_) 반영 키 감시 체계
                 if ("WidgetAlarmData".equals(key)) {
                     // 1. 기존 오늘/내일 위젯 강제 새로고침
                     Intent intent = new Intent(MainActivity.this, ShiftWidgetProvider.class);
@@ -60,6 +61,31 @@ public class MainActivity extends BridgeActivity {
 
         // 위젯 클릭 인텐트 처리
         handleWidgetIntent(getIntent());
+    }
+
+    // 🚀 [완전 교정]: 접근 제어자를 부모 규격에 맞춰 protected에서 public으로 수정 완료
+    @Override
+    public void onPause() {
+        super.onPause();
+        Context context = getApplicationContext();
+
+        // 오늘/내일 위젯 업데이트 커맨드 분사
+        Intent intent = new Intent(context, ShiftWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(
+                new ComponentName(context, ShiftWidgetProvider.class)
+        );
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
+
+        // 한달 달력 위젯 업데이트 커맨드 분사
+        Intent intentMonthly = new Intent(context, MonthlyWidgetProvider.class);
+        intentMonthly.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] idsMonthly = AppWidgetManager.getInstance(context).getAppWidgetIds(
+                new ComponentName(context, MonthlyWidgetProvider.class)
+        );
+        intentMonthly.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idsMonthly);
+        sendBroadcast(intentMonthly);
     }
 
     @Override
