@@ -22,23 +22,19 @@ public class ShiftWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-// [확인용 로그] 위젯 갱신 시작 시점 확인
-        android.util.Log.d("ShiftWidget", "위젯 업데이트 시작 ID: " + appWidgetId);
 
         try {
             SharedPreferences prefs = context.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);
-            // 🚀 [교정]: 실제 원장 테이블 명칭인 _cap_ 접두사 주입
-            String rawJson = prefs.getString("_cap_WidgetAlarmData", null); 
+            String rawJson = prefs.getString("WidgetAlarmData", null);
 
             if (rawJson != null) {
                 JSONObject root = new JSONObject(rawJson);
                 
-                // 1. 오늘 영역 데이터 처리
                 if (root.has("today")) {
                     JSONObject today = root.getJSONObject("today");
                     views.setTextViewText(R.id.txt_today_date, today.getString("dateText"));
                     views.setTextViewText(R.id.txt_today_dia, today.getString("dia"));
-                    views.setTextViewText(R.id.txt_today_label, today.optString("label", "")); // 🚀 라벨 독립 수신
+                    views.setTextViewText(R.id.txt_today_label, today.optString("label", "")); 
                     views.setTextViewText(R.id.txt_today_time, today.getString("timeText"));
                     
                     views.setInt(R.id.block_today_bg, "setBackgroundResource", R.drawable.bg_date_today);
@@ -55,12 +51,11 @@ public class ShiftWidgetProvider extends AppWidgetProvider {
                     views.setOnClickPendingIntent(R.id.layout_today_row, pi);
                 }
 
-                // 2. 내일 영역 데이터 처리
                 if (root.has("tomorrow")) {
                     JSONObject tomorrow = root.getJSONObject("tomorrow");
                     views.setTextViewText(R.id.txt_tomorrow_date, tomorrow.getString("dateText"));
                     views.setTextViewText(R.id.txt_tomorrow_dia, tomorrow.getString("dia"));
-                    views.setTextViewText(R.id.txt_tomorrow_label, tomorrow.optString("label", "")); // 🚀 라벨 독립 수신
+                    views.setTextViewText(R.id.txt_tomorrow_label, tomorrow.optString("label", "")); 
                     views.setTextViewText(R.id.txt_tomorrow_time, tomorrow.getString("timeText"));
                     
                     if (tomorrow.getBoolean("isHoliday")) {
