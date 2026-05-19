@@ -22,6 +22,8 @@ public class ShiftWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+// [확인용 로그] 위젯 갱신 시작 시점 확인
+        android.util.Log.d("ShiftWidget", "위젯 업데이트 시작 ID: " + appWidgetId);
 
         try {
             SharedPreferences prefs = context.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE);

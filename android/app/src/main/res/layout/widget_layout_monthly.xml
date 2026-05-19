@@ -88,7 +88,6 @@
             android:textStyle="bold"
             android:text="S"/>
     </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="1dp" android:background="#2C2C2E" android:orientation="horizontal"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -101,11 +100,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_0"
                 android:layout_width="match_parent"
@@ -113,59 +109,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_0"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_0"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_0"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_0"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_0"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_1"
@@ -174,11 +149,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_1"
                 android:layout_width="match_parent"
@@ -186,59 +158,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_1"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_1"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_1"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_1"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_1"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_2"
@@ -247,11 +198,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_2"
                 android:layout_width="match_parent"
@@ -259,59 +207,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_2"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_2"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_2"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_2"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_2"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_3"
@@ -320,11 +247,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_3"
                 android:layout_width="match_parent"
@@ -332,59 +256,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_3"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_3"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_3"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_3"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_3"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_4"
@@ -393,11 +296,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_4"
                 android:layout_width="match_parent"
@@ -405,59 +305,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_4"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_4"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_4"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_4"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_4"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_5"
@@ -466,11 +345,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_5"
                 android:layout_width="match_parent"
@@ -478,59 +354,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_5"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_5"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_5"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_5"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_5"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_6"
@@ -539,11 +394,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_6"
                 android:layout_width="match_parent"
@@ -551,59 +403,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_6"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_6"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_6"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_6"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_6"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -618,11 +449,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_7"
                 android:layout_width="match_parent"
@@ -630,59 +458,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_7"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_7"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_7"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_7"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_7"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_8"
@@ -691,11 +498,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_8"
                 android:layout_width="match_parent"
@@ -703,59 +507,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_8"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_8"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_8"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_8"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_8"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_9"
@@ -764,11 +547,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_9"
                 android:layout_width="match_parent"
@@ -776,59 +556,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_9"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_9"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_9"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_9"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_9"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_10"
@@ -837,11 +596,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_10"
                 android:layout_width="match_parent"
@@ -849,59 +605,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_10"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_10"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_10"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_10"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_10"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_11"
@@ -910,11 +645,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_11"
                 android:layout_width="match_parent"
@@ -922,59 +654,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_11"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_11"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_11"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_11"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_11"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_12"
@@ -983,11 +694,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_12"
                 android:layout_width="match_parent"
@@ -995,59 +703,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_12"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_12"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_12"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_12"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_12"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_13"
@@ -1056,11 +743,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_13"
                 android:layout_width="match_parent"
@@ -1068,59 +752,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_13"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_13"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_13"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_13"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_13"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -1135,11 +798,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_14"
                 android:layout_width="match_parent"
@@ -1147,59 +807,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_14"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_14"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_14"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_14"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_14"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_15"
@@ -1208,11 +847,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_15"
                 android:layout_width="match_parent"
@@ -1220,59 +856,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_15"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_15"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_15"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_15"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_15"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_16"
@@ -1281,11 +896,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_16"
                 android:layout_width="match_parent"
@@ -1293,59 +905,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_16"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_16"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_16"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_16"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_16"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_17"
@@ -1354,11 +945,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_17"
                 android:layout_width="match_parent"
@@ -1366,59 +954,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_17"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_17"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_17"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_17"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_17"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_18"
@@ -1427,11 +994,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_18"
                 android:layout_width="match_parent"
@@ -1439,59 +1003,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_18"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_18"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_18"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_18"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_18"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_19"
@@ -1500,11 +1043,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_19"
                 android:layout_width="match_parent"
@@ -1512,59 +1052,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_19"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_19"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_19"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_19"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_19"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_20"
@@ -1573,11 +1092,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_20"
                 android:layout_width="match_parent"
@@ -1585,59 +1101,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_20"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_20"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_20"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_20"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_20"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -1652,11 +1147,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_21"
                 android:layout_width="match_parent"
@@ -1664,59 +1156,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_21"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_21"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_21"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_21"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_21"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_22"
@@ -1725,11 +1196,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_22"
                 android:layout_width="match_parent"
@@ -1737,59 +1205,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_22"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_22"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_22"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_22"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_22"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_23"
@@ -1798,11 +1245,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_23"
                 android:layout_width="match_parent"
@@ -1810,59 +1254,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_23"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_23"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_23"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_23"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_23"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_24"
@@ -1871,11 +1294,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_24"
                 android:layout_width="match_parent"
@@ -1883,59 +1303,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_24"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_24"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_24"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_24"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_24"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_25"
@@ -1944,11 +1343,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_25"
                 android:layout_width="match_parent"
@@ -1956,59 +1352,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_25"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_25"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_25"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_25"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_25"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_26"
@@ -2017,11 +1392,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_26"
                 android:layout_width="match_parent"
@@ -2029,59 +1401,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_26"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_26"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_26"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_26"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_26"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_27"
@@ -2090,11 +1441,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_27"
                 android:layout_width="match_parent"
@@ -2102,59 +1450,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_27"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_27"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_27"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_27"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_27"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -2169,11 +1496,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_28"
                 android:layout_width="match_parent"
@@ -2181,59 +1505,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_28"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_28"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_28"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_28"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_28"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_29"
@@ -2242,11 +1545,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_29"
                 android:layout_width="match_parent"
@@ -2254,59 +1554,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_29"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_29"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_29"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_29"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_29"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_30"
@@ -2315,11 +1594,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_30"
                 android:layout_width="match_parent"
@@ -2327,59 +1603,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_30"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_30"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_30"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_30"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_30"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_31"
@@ -2388,11 +1643,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_31"
                 android:layout_width="match_parent"
@@ -2400,59 +1652,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_31"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_31"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_31"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_31"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_31"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_31"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_32"
@@ -2461,11 +1692,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_32"
                 android:layout_width="match_parent"
@@ -2473,59 +1701,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_32"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_32"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_32"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_32"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_32"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_33"
@@ -2534,11 +1741,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_33"
                 android:layout_width="match_parent"
@@ -2546,59 +1750,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_33"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_33"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_33"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_33"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_33"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_33"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_34"
@@ -2607,11 +1790,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_34"
                 android:layout_width="match_parent"
@@ -2619,59 +1799,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_34"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_34"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_34"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_34"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_34"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_34"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -2686,11 +1845,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_35"
                 android:layout_width="match_parent"
@@ -2698,59 +1854,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_35"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_35"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_35"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_35"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_35"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_35"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_36"
@@ -2759,11 +1894,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_36"
                 android:layout_width="match_parent"
@@ -2771,59 +1903,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_36"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_36"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_36"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_36"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_36"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_36"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_37"
@@ -2832,11 +1943,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_37"
                 android:layout_width="match_parent"
@@ -2844,59 +1952,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_37"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_37"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_37"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_37"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_37"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_37"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_38"
@@ -2905,11 +1992,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_38"
                 android:layout_width="match_parent"
@@ -2917,59 +2001,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_38"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_38"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_38"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_38"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_38"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_39"
@@ -2978,11 +2041,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_39"
                 android:layout_width="match_parent"
@@ -2990,59 +2050,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_39"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_39"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_39"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_39"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_39"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_39"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_40"
@@ -3051,11 +2090,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_40"
                 android:layout_width="match_parent"
@@ -3063,59 +2099,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_40"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_40"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_40"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_40"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_40"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_40"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cell_41"
@@ -3124,11 +2139,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#1A1C1E"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:layout_margin="1dp">
+            android:padding="1dp"
+            android:layout_margin="0.5dp">
             <TextView
                 android:id="@+id/txt_date_41"
                 android:layout_width="match_parent"
@@ -3136,59 +2148,38 @@
                 android:textStyle="bold"
                 android:textSize="8sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="0"/>
             <TextView
                 android:id="@+id/txt_dia_41"
                 android:layout_width="match_parent"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="-"/>
+            <TextView
+                android:id="@+id/txt_label_41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#A0A0A0"
+                android:text=""/>
             <TextView
                 android:id="@+id/txt_time_41"
                 android:layout_width="match_parent"
-                android:layout_height="11dp"
+                android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="7sp"
-                android:gravity="center_vertical|start"
-                android:singleLine="true"
+                android:textSize="12sp"
                 android:text=""/>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical"/>
             <TextView
                 android:id="@+id/txt_memo1_41"
                 android:layout_width="match_parent"
-                android:layout_height="9dp"
+                android:layout_height="wrap_content"
                 android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:textSize="11sp"
+                android:singleLine="true"
                 android:text=""/>
-            <TextView
-                android:id="@+id/txt_memo2_41"
-                android:layout_width="match_parent"
-                android:layout_height="9dp"
-                android:textColor="#E3E2E6"
-                android:textSize="6sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=""/>
-            <TextView
-                android:id="@+id/txt_more_41"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:textColor="#808080"
-                android:textSize="5sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="..."/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
