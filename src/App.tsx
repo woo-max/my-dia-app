@@ -98,6 +98,17 @@ function App() {
         );
         
         if (matchedRow && matchedRow[1] && String(matchedRow[1]).trim().toUpperCase() === 'ALLOWED') {
+          if (!localStorage.getItem('is_tracking_sent')) {
+            const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgERCO8X6CRJ0ZOi9ZskrOYkhiTLkY2kfdtW80-kVi2m8YpUmAusGbldeJYDXZQM_tTw/exec";
+            fetch(APPS_SCRIPT_URL, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain" },
+              body: JSON.stringify({ code: currentCode })
+            }).then(() => {
+              // 전송 성공 시 표지판을 박아서 다시는 이 로직이 안 돌게 함
+              localStorage.setItem('is_tracking_sent', 'true');
+            }).catch(err => console.error("로그 전송 실패:", err));
+          }
           const data = await fetchSheetData(SHEET_ID, API_KEY);
           setSheetData(data);
           setAuthStatus('allowed');
