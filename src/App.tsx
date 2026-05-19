@@ -259,7 +259,8 @@ function App() {
               showAddModal={showAddModal}
               setShowAddModal={setShowAddModal}
               showGroupModal={showGroupModal}
-              setShowGroupModal={setShowGroupModal}
+                    
+    setOverrides={setOverrides}  // 🚀 데이터 수정 함수 전달
             />
           ) : (
             <FullScheduleTab sheetData={sheetData} />

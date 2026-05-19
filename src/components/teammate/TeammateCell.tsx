@@ -7,12 +7,15 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
     if (!sheetData) return null;
     const baseDate = teammate.refDate instanceof Date ? teammate.refDate : new Date(teammate.refDate);
     const shift = getShiftForDate(date, baseDate, teammate.refDia);
+
+    // 3. 기존 로직 그대로 유지
     const isTodayHoliday = !!getHolidayName(date) || [0, 6].includes(date.getDay());
-    const diaNum = parseInt(shift.dia.replace(/[^0-9]/g, '')) || 0;
+    const diaString = String(shift.dia || "");
+    const diaNum = parseInt(diaString.replace(/[^0-9]/g, '')) || 0;
     
-    // 1. 예측 탭 설정
+    // 4. 나머지 탭 설정 및 로직 (기존과 동일)
     let predictedTab = '';
-    const isPureJukan = /^\d+$/.test(shift.dia.trim()) && diaNum >= 1 && diaNum <= 33;
+    const isPureJukan = /^\d+$/.test(diaString.trim()) && diaNum >= 1 && diaNum <= 33;
     if (isPureJukan) {
       predictedTab = isTodayHoliday ? '휴일주간' : '평일주간';
     } else {
@@ -20,11 +23,10 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
       const isNextHoliday = !!getHolidayName(nextDay) || [0, 6].includes(nextDay.getDay());
       if (isTodayHoliday && isNextHoliday) predictedTab = '휴휴';
       else if (isTodayHoliday && !isNextHoliday) predictedTab = '휴평';
-      else if (!isTodayHoliday && isNextHoliday) predictedTab = '평휴';
+      else if (!isPureJukan && isNextHoliday) predictedTab = '평휴';
       else predictedTab = '평평';
     }
 
-    // 2. [핀셋] 전수 조사 로직: 예측한 탭에 없으면 모든 탭을 다 뒤짐
     const allTabs = ['평일주간', '휴일주간', '평평', '평휴', '휴휴', '휴평'];
     const searchOrder = [predictedTab, ...allTabs.filter(t => t !== predictedTab)];
     
@@ -43,7 +45,6 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
       }
     }
 
-    // 데이터가 아예 없을 경우 예외처리
     if (!rowN) rowN = { content: shift.dia === '~' ? '비번' : '', train: '', dia: shift.dia };
     if (!rowN1) rowN1 = { content: '', train: '' };
 
@@ -58,15 +59,14 @@ const TeammateCell = React.memo(({ date, teammate, sheetData, onClick }: any) =>
       return matches ? matches[matches.length - 1] : "";
     };
 
-    // 3. [핀셋] rowN, rowN1, tabLabel을 보따리에 담아서 리턴
     return { 
       ...shift, 
       rowN, 
       rowN1, 
       tabLabel: finalTab || predictedTab,
-      interim: findInterim(rowN.content), 
-      endTime: findEndTime(rowN1.content || rowN.content), 
-      isRedHighlight: shift.dia.includes('휴') || shift.dia.includes('운') || rowN.content.includes('운휴')
+      interim: findInterim(rowN.content || ""), 
+      endTime: findEndTime(rowN1.content || rowN.content || ""), 
+      isRedHighlight: String(shift.dia).includes('휴') || String(shift.dia).includes('운') || String(rowN.content).includes('운휴')
     };
   }, [date, teammate, sheetData]);
 

@@ -11,6 +11,9 @@ const TeammateDashboard = ({
   teammates, setTeammates, groupNames, setGroupNames, sheetData, myConfig, isDarkMode, toggleDarkMode,
   setSelectedDuty, selectedDuty, showAddModal, setShowAddModal, showGroupModal, setShowGroupModal
 }: any) => {
+  if (!sheetData || !myConfig) {
+    return <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">데이터 로딩 중...</div>;
+  }
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedGroup, setSelectedGroup] = useState(0);
   const [editingGroup, setEditingGroup] = useState<{index: number, name: string} | null>(null);
@@ -97,8 +100,24 @@ const TeammateDashboard = ({
 
       <AnimatePresence>
         {selectedDuty && <TeammateDetailModal duty={selectedDuty} onClose={() => setSelectedDuty(null)} />}
-        {showAddModal && <TeammateAddModal onClose={() => setShowAddModal(false)} onAdd={(t: any) => setTeammates([...teammates, t])} groupNames={groupNames} currentGroup={selectedGroup} />}
-        {showGroupModal && <GroupEditModal mode={showGroupModal} onClose={() => setShowGroupModal(null)} onSave={setGroupNames} onUpdateTeammates={setTeammates} teammates={teammates} groupNames={groupNames} />}
+        {showAddModal && (
+          <TeammateAddModal 
+            onClose={() => setShowAddModal(false)} 
+            onAdd={(t: any) => setTeammates([...teammates, t])} 
+            groupNames={groupNames} 
+            currentGroup={selectedGroup} 
+          />
+        )}
+        {showGroupModal && (
+          <GroupEditModal 
+            mode={showGroupModal} 
+            onClose={() => setShowGroupModal(null)} 
+            onSave={setGroupNames} 
+            onUpdateTeammates={setTeammates} 
+            teammates={teammates} 
+            groupNames={groupNames} 
+          />
+        )}
           {/* 🚀 여기서부터 그룹 이름 변경 커스텀 모달 시작 */}
         {editingGroup && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
